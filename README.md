@@ -12,7 +12,7 @@ Projet de Gestion de Projet
 | En tant que **membre d'un projet**, je souhaite créer un backlog | 2 | | ✗ |
 | En tant que **membre d'un projet**, je souhaite visualiser le backlog (user stories) | 1 | | ✗ |
 | En tant que **membre d'un projet**, je souhaite éditer le backlog | 2 | | ✗ |
-| En tant que **membre d'un projet**, je souhaite créer des tâches | 3 | | ✗ |
+| En tant que **membre d'un projet**, je souhaite créer des tâches dans un sprint | 3 | | ✗ |
 | En tant que **membre d'un projet**, je souhaite éditer les tâches | 2 | | ✗ |
 | En tant que **membre d'un projet**, je souhaite visualiser la burndown chart | 8 | | ✗ |
 | En tant que **membre d'un projet**, je souhaite visualiser le diagramme de Pert | 8 | | ✗ |
@@ -25,6 +25,10 @@ Projet de Gestion de Projet
 | > En tant que **membre d'un projet**, je souhaite éditer le code source de la version actuelle du projet | 1 | | ✗ |
 | En tant que **membre d'un projet**, je souhaite accéder a la documentation de chaque build | 2 | | ✗ |
 | En tant que **chef de projet**, je souhaite valider les modifications apportées au code source | 5 | | ✗ |
-| En tant que **membre d'un projet**, je souhaite pouvoir communiquer avec les autres membres du projet | 5 | | ✗ |
+| En tant que **membre d'un projet**, je souhaite pouvoir communiquer avec les autres membres du projet | 5 |    | ✗ |
 | > En tant que **membre d'un projet**, je souhaite m'assigner une tâche | 1 | | ✗ |
+| En tant que **membre d'un projet**, je souhaite créer des sprints | 1 | | ✗ |
+| En tant que **membre d'un projet**, je souhaite visualiser les sprints, leurs tâches associées, ainsi que leurs dates de début et de fin | 5 | | ✗ |
+
+
 *Note: difficulté 1 2 3 5 8 13 21 34*
