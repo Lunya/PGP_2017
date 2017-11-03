@@ -5,15 +5,15 @@ Projet de Gestion de Projet
 
 | Id | Description | Difficulté | Priorité | Fait |
 |---:|:---|:---:|:---:|:---:|
-| 1 | En tant qu'**utilisateur**, je veux créer un profil (username, password, adresse mail, compte git) | 2 | 1 | ✗ |
+| 1 | En tant qu'**utilisateur**, je veux créer un profil (username, password, adresse mail, ~~compte git~~) | 2 | 1 | ✗ |
 | 2 | En tant qu'**utilisateur**, je souhaite me connecter a mon profil en utilisant mon adresse mail et mon mot de passe | 1 | 1 | ✗ |
-| 3 | En tant qu'**utilisateur connecté**, je souhaite créer un projet (nom, description, dépôt git associé, initialisation du dépôt git, liste des participants avec statut, backlog vide, date de début/fin théorique du projet) | 5 | 1 | ✗ |
+| 3 | En tant qu'**utilisateur connecté**, je souhaite créer un projet (nom, description, dépôt git associé, initialisation du dépôt git, liste des participants avec statut,~~backlog vide~~, date de début/fin théorique du projet) | 5 | 1 | ✗ |
 | 4 | En tant que **membre d'un projet**, je souhaite ajouter des membres a un projet et leur assigner un statut | 1 | 5 | ✗ |
-| 6 | En tant qu'**observateur**, je veux pouvoir visualiser l'ensemble du projet sans pouvoir l'éditer | 2 | 2 | ✗ |
-| 7 | En tant que **propriétaire**, je souhaite avoir les mêmes droits qu'un observeur et avoir le droit d'éditer les priorités des US | 1 | 1 | ✗ |
+| 6 | En tant qu'**observateur**, je veux avoir accès à l'ensemble du projet sans pouvoir l'éditer | 2 | 2 | ✗ |
+| 7 | En tant que propriétaire, je souhaite éditer les priorités des US | 1 | 1 | ✗ |
 | 8 | En tant que **membre d'un projet**, je souhaite visualiser le backlog (user stories) | 1 | 1 | ✗ |
 | 9 | En tant que **chef de projet**, je souhaite pouvoir valider ou refuser l'édition des US | 2 | 1 | ✗ |
-| 10 | En tant que **membre d'un projet**, je souhaite éditer le backlog (demander l'ajout, la modification ou la suppression d'une US contenant (description, priorité, difficulté)) | 2 | 1 | ✗ |
+| 10 | En tant que **membre d'un projet**, je souhaite éditer le backlog (demander l'ajout, la modification ou la suppression d'une US contenant (description, difficulté)) | 2 | 1 | ✗ |
 | 11 | En tant que **chef de projet**, je souhaite créer des sprints (sélection des user stories que l'on souhaite associer au sprint via le backlog, date de début/fin, création dans le dépôt d'une version liée à ce sprint, build) | 2 | 1 | ✗ |
 | 12 | En tant que **membre d'un projet**, je souhaite créer des tâches dans un sprint (priorité, description, état{done, not done}, lien vers le dépôt) | 3 | 1 | ✗ |
 | 13 | En tant que **membre d'un projet**, je souhaite demander à éditer les tâches du sprint (priorité, description, état) | 2 | 2 | ✗ |
