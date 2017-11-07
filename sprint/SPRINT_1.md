@@ -6,7 +6,7 @@
 | 1 | En tant qu'**utilisateur**, je veux créer un profil (username, password, adresse mail) | 2 | 1 | ✗ |
 | 2 | En tant qu'**utilisateur**, je souhaite me connecter a mon profil en utilisant mon adresse mail et mon mot de passe | 1 | 1 | ✗ |
 | 3 | En tant qu'**utilisateur connecté**, je souhaite créer un projet (nom, description, URL dépôt git associé, date de début/fin théorique du projet) | 5 | 1 | ✗ |
-| 7 | En tant que **membre d'un projet**, je souhaite éditer le backlog (ajout, modification ou suppression d'une US contenant (description, difficulté)) | 2 | 1 | ✗ |
+| 7 | En tant que **membre d'un projet**, je souhaite éditer le backlog (ajout, modification, suppression d'une US contenant (description, difficulté)) | 2 | 1 | ✗ |
 
 ## Tâches
 
@@ -20,11 +20,12 @@
 | 6 | **2** | Créer une vue pour la page d'accueil (connexion). | TODO |
 | 7 | **1** | Créer un onglet sur la page d'accueil permettant de créer un profil. | TODO |
 | 9 | **3** | Créer une vue du workspace de l'utilisateur connecté, contenant la liste des projets. | TODO |
-| 9 | **3** | Créer une vue pour la création d'un projet. | TODO |
-| 10 | **-** | Importer le module `mocha` et créer un fichier `src/test/test.js` qui sera la base de tous les tests. | TODO |
-| 11 | **1** | Tester la création d'un compte. | TODO |
-| 12 | **2** | Tester le module de connexion. | TODO |
-| 13 | **3** | Tester la création d'un projet. | TODO |
-| 13 | **1,2,3,7** | Tester la base de données avec des requêtes. | TODO |
-| 14 | **-** | Créer un script de peuplement de base de données, supprimant puis réinsérant des entités dans la base de données. | TODO |
-| 15 | **-** | Mettre en place `travis` qui appelera `mocha`. | TODO |
+| 10 | **3** | Créer une vue pour la création d'un projet. | TODO |
+| 11 | **3,7** | Créer une vue d'un projet sélectionné. | TODO |
+| 12 | **-** | Importer le module `mocha` et créer un fichier `src/test/test.js` qui sera la base de tous les tests. | TODO |
+| 13 | **1** | Tester la création d'un compte. | TODO |
+| 14 | **2** | Tester le module de connexion. | TODO |
+| 15 | **3** | Tester la création d'un projet. | TODO |
+| 16 | **1,2,3,7** | Tester la base de données avec des requêtes. | TODO |
+| 17 | **-** | Créer un script de peuplement de base de données, supprimant puis réinsérant des entités dans la base de données. | TODO |
+| 18 | **-** | Mettre en place `travis` qui appelera `mocha`. | TODO |
