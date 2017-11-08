@@ -22,15 +22,15 @@ Date de fin : 17/11/17
 | 5 | **-** | Créer une vue principale Angular.js avec Bootstrap pour le design qui sera héritée par tout le reste de l'application. | TODO |
 | 6 | **2** | Créer une vue pour la page d'accueil (connexion). | TODO |
 | 7 | **1** | Créer un onglet sur la page d'accueil permettant de créer un profil. | TODO |
-| 9 | **3** | Créer une vue du workspace de l'utilisateur connecté, contenant la liste des projets. | TODO |
-| 10 | **3** | Créer une vue pour la création d'un projet (formulaire avec champs). | TODO |
-| 11 | **3,7** | Créer une vue d'un projet sélectionné, avec backlog du projet. | TODO |
-| 12 | **-** | Importer le module `mocha` et créer un fichier `src/test/test.js` qui sera la base de tous les tests. | TODO |
-| 13 | **1** | Tester la création d'un compte. | TODO |
-| 14 | **2** | Tester le module de connexion. | TODO |
-| 15 | **3** | Tester la création d'un projet. | TODO |
-| 16 | **1,2,3,7** | Tester la base de données avec des requêtes. | TODO |
-| 17 | **-** | Créer un script de peuplement de base de données, supprimant puis réinsérant des entités dans la base de données. | TODO |
-| 18 | **-** | Mettre en place `travis` qui appelera `mocha`. | TODO |
-| 19 | **7** | Rendre le backlog modifiable (ajout, modification, et suppression d'une tâche). | TODO |
-| 20 | **-** | Pouvoir trier les colonnes du backlog par ID, et Statut. | TODO |
+| 8 | **3** | Créer une vue du workspace de l'utilisateur connecté, contenant la liste des projets. | TODO |
+| 9 | **3** | Créer une vue pour la création d'un projet (formulaire avec champs). | TODO |
+| 10 | **3,7** | Créer une vue d'un projet sélectionné, avec backlog du projet. | TODO |
+| 11 | **-** | Importer le module `mocha` et créer un fichier `src/test/test.js` qui sera la base de tous les tests. | TODO |
+| 12 | **1** | Tester la création d'un compte. | TODO |
+| 13 | **2** | Tester le module de connexion. | TODO |
+| 14 | **3** | Tester la création d'un projet. | TODO |
+| 15 | **1,2,3,7** | Tester la base de données avec des requêtes. | TODO |
+| 16 | **-** | Créer un script de peuplement de base de données, supprimant puis réinsérant des entités dans la base de données. | TODO |
+| 17 | **-** | Mettre en place `travis` qui appelera `mocha`. | TODO |
+| 18 | **7** | Rendre le backlog modifiable (ajout, modification, et suppression d'une tâche). | TODO |
+| 19 | **-** | Pouvoir trier les colonnes du backlog par ID, et Statut. | TODO |
