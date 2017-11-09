@@ -4,16 +4,25 @@ On s'autorise à push directement les modifications apportées aux fichiers .md 
 Cependant, le reste des commit (notamment le code) se feront en pull request.
 
 ## Organisation du dépôt
-```
-/src
-  /front
-    /css
-    /js
-    /view
-  /back
-/doc
-/test
-```
+* `/e2e` : tests end to end
+* `/src` : code de l'application
+	* `/api` : API + backend
+	* `/app` : frod end
+* `/doc` : documentation de l'application
+
+
+## Lancement du projet en développement
+* Vérifier que les dépendances NPM sont à jour : `npm update`
+* Compiler Angular et lancer le serveur node : `npm run-script dev`
+	* Ou `pm2 start src/server.js --watch`
+	* Et `ng build --dev --watch true`
+* Arrêter le serveur : `pm2 delete 0`
+
+En développement, les changements effectués sur les fichiers enregistrés seront automatiquement recompilés.
+
+## Lancement du projet en production
+* Vérifier que les dépendances NPM sont à jour : `npm update`
+* Compiler Angular et lancer le serveur node : `npm start`
 
 ## Technologies
 * __Base de données__
