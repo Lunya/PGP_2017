@@ -1,6 +1,8 @@
 # PGP_2017
 Projet de Gestion de Projet
 
+[![Build Status](https://travis-ci.org/Lunya/PGP_2017.svg?branch=master)](https://travis-ci.org/Lunya/PGP_2017)
+
 ## user stories
 
 | Id | Description | Difficulté | Priorité | Fait |
