@@ -9,7 +9,9 @@
 		"build": "ng build",
 		"test": "ng test",
 		"lint": "ng lint",
-		"e2e": "ng e2e"
+		"e2e": "ng e2e",
+		"test:once": "ng test --watch=false",
+		"ci": "npm run lint && npm run test:once && npm run e2e"
 	},
 	"private": true,
 	"dependencies": {
@@ -34,7 +36,7 @@
 		"@types/jasmine": "~2.5.53",
 		"@types/jasminewd2": "~2.0.2",
 		"@types/node": "~6.0.60",
-		"codelyzer": "~3.2.0",
+		"codelyzer": "^3.2.2",
 		"jasmine-core": "~2.6.2",
 		"jasmine-spec-reporter": "~4.1.0",
 		"karma": "~1.7.0",
