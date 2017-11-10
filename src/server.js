@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production')
+	require('dotenv').load();
+
 let express = require('express');
 let path = require('path');
 let http = require('http');
@@ -19,6 +22,5 @@ app.use('/api', api);
 // start server
 let server = http.createServer(app);
 
-const port = 8080; // replace by ENV var
-server.listen(port,
-	() => console.log(`Server running on localhost:${port}`));
+server.listen(process.env.NODE_PORT,
+	() => console.log(`Server running on localhost:${process.env.NODE_PORT}`));
