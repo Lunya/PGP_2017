@@ -16,4 +16,5 @@ install:
   - npm install
   - node_modules/protractor/bin/webdriver-manager update
 script:
-  - npm run ci
+  - ng test --watch=false
+  - ng e2e
