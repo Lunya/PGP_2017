@@ -14,6 +14,6 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 install:
   - npm install
-  - node_modules/protractor/webdriver-manager update
+  - node_modules/protractor/bin/webdriver-manager update
 script:
   - npm run ci
