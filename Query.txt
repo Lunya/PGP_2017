@@ -11,11 +11,14 @@ Query ShowProject:
   AND * IN(SELECT (us,id) WHERE backlog_id = @id FROM Backlog) ;
 
 Query addUS:
-  INSERT INTO Backlog (us, backlog_id)
-  VALUES (@us, @ProjectID);
+  INSERT INTO Backlog (us, backlog_id, difficulty)
+  VALUES (@us, @ProjectID,@difficulty);
 
 Query deleteUS:
   DELETE FROM Backlog WHERE id = @id;
 
 Query updateUS:
-  UPDATE Backlog SET us = @us WHERE id = @id;
+  UPDATE Backlog SET us = @us, WHERE id = @id;
+
+Query updateDifficulty:
+  UPDATE Backlog SET difficulty = @difficulty, WHERE id = @id;
