@@ -4,14 +4,17 @@ Query NewUser:
 
 Query NewProject:
   INSERT INTO Project (ProjectName, description, git, debut, fin)
-  VALUES (@name, @description, @git, @debut, @fin);
+  VALUES (@name, @description, @git, @debut, @fin)
+  AND INSERT INTO Backlog (project_id)
+  VALUES (SELECT id FROM Project WHERE (name = @name,debut = debut) )
+;
 
 Query ShowProject:
   SELECT (ProjectName, description, git, debut, fin) WHERE id = @id FROM Projet
   AND * IN(SELECT (us,id) WHERE backlog_id = @id FROM Backlog) ;
 
 Query addUS:
-  INSERT INTO Backlog (us, backlog_id, difficulty)
+  INSERT INTO Backlog (us, project_id, difficulty)
   VALUES (@us, @ProjectID,@difficulty);
 
 Query deleteUS:
