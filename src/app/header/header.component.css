@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  background-color: LightBlue;
+  color: Black;
+  border: 3px double;
+  border-radius: 25px;
+  font-family: "Arial";
+}
+.jumbotron {
+ background-color: LightBlue;
+}
+
+.team {
+  font-style:italic;
+  position: absolute;
+
+}
