@@ -1,0 +1,14 @@
+#form1 .well{
+  background-color: LightBlue;
+  width: 200px;
+  height: 600px;
+  border-color: black;
+  border-width: medium;
+}
+
+#form2 .container-fluid{
+  border-style: double;
+}
+#form3 .well{
+  background-color: OrangeRed;
+}
