@@ -12,6 +12,7 @@ import { AuthGuard } from './auth.guard';
 import { ConnectedViewComponent } from './connected-view/connected-view.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { HomeComponent } from './home/home.component';
 		AuthComponent,
     ConnectedViewComponent,
     ProjectViewComponent,
-    HomeComponent
+    HomeComponent,
+    HeaderComponent
 	],
 	imports: [
 		BrowserModule,

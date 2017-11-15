@@ -1,14 +1,15 @@
 <!--The content below is only a placeholder and can be replaced.
 <app-auth></app-auth>-->
+<app-header></app-header>
 
+<div *ngIf="routerLink === '/home'">
 <app-home></app-home>
+</div>
 
-<!--
-<div *ngIf="route === '/Connected-view'">
+<div *ngIf="routerLink === '/Workspace'">
 <app-connected-view></app-connected-view>
 </div>
 
-<div *ngIf="route === '/Project-view'">
+<!-- <div *ngIf="route === '/Project-view'">
 <app-project-view></app-project-view>
-</div>
--->
+</div> -->
