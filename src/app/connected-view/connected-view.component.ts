@@ -8,12 +8,21 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class ConnectedViewComponent implements OnInit {
 
+  
+  nomprojet : string;
+  description : string;
+  URLDepot : string;
+  datedebut : string;
+  datefin : string;
+
   constructor() { }
 
   ngOnInit() {
   }
   pseudo='username';
-  onSelect(){
-    alert();
+  onSelect(): void{
+
+
+    };
+
   }
-}

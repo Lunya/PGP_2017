@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { TextComponent } from './text/text.component';
 import { HeaderComponent } from './header/header.component';
 import { ConnectedViewComponent } from './connected-view/connected-view.component';
+import { ProjectViewComponent } from './project-view/project-view.component';
 
 
 
@@ -14,7 +15,8 @@ import { ConnectedViewComponent } from './connected-view/connected-view.componen
     AppComponent,
     TextComponent,
     HeaderComponent,
-    ConnectedViewComponent
+    ConnectedViewComponent,
+    ProjectViewComponent
   ],
   imports: [
     BrowserModule

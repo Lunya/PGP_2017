@@ -9,6 +9,8 @@
 #form2 .container-fluid{
   border-style: double;
 }
+
 #form3 .well{
   background-color: OrangeRed;
+  border-style: double;
 }

@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-2">
-      <h1> <p align="center">LOGO </p></h1>
+
     </div>
 
     <div class="col-md-10">
@@ -20,15 +20,28 @@
       <div class="well">
         <h4>Nos projets</h4><br>
         <h4>Projets suivis</h4><br>
-        <h4>...</h4>
       </div>
     </form>
   </div>
   <div class="col-md-3">
-    <form id="form3">
-    <button type="button" class="btn btn-default" (click)="onSelect()">Création d'un nouveau projet</button>
-    </form>
-    <h3>Liste de vos projets :</h3>
-</div>
+    <h3><u>Liste de vos projets :</u></h3>
+    <div class=well>
+      <ul></ul>
+    </div>
   </div>
+  <div class="col-md-3"></div>
+  <div class="col-md-4">
+    <div class=well>
+      Nouveau projet? Rentrez les champs ici:<br><br>
+      <form>
+      Nom du projet : <input type="text" ng-model="projet"><br><br>
+      Description : <br> <input type="text" ng-model="descr" size="45"><br><br>
+      URLDepot : <input type="text" ng-model="urldepot"><br><br>
+      Date début : <input type="text" ng-model="datedebut"><br><br>
+      Date fin : <input type="text" ng-model="datefin"><br><br>
+      <input type="submit" onclick="onSelect()">
+    </form>
+    </div>
+  </div>
+</div>
 </div>
