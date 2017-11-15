@@ -1,29 +1,37 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, FormControl } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 import { AppComponent } from './app.component';
-import { TextComponent } from './text/text.component';
-import { HeaderComponent } from './header/header.component';
+import { AuthComponent } from './auth/auth.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
 import { ConnectedViewComponent } from './connected-view/connected-view.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
-
-
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TextComponent,
-    HeaderComponent,
+	declarations: [
+		AppComponent,
+		AuthComponent,
     ConnectedViewComponent,
-    ProjectViewComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    ProjectViewComponent,
+    HomeComponent
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		HttpClientModule,
+		FormsModule
+	],
+	providers: [
+		AuthService,
+		AuthGuard
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
