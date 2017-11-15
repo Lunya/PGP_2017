@@ -7,8 +7,25 @@ let router = express.Router();
 
 const secret = 'someSecretString';
 const saltRounds = 8;
-let users = [];
 let _userId = 0;
+let users = [];
+
+function debugAddUser(username, password) {
+	"use strict";
+	bcrypt.genSalt(saltRounds, (err, salt) => {
+		if (!err)
+			bcrypt.hash(password, salt, (err, password) => {
+				users.push({
+					username: username,
+					password: password,
+					salt: salt,
+					id: _userId++
+				});
+			});
+	});
+}
+debugAddUser('john', 'doe');
+debugAddUser('nyan', 'cat');
 
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
@@ -18,7 +35,7 @@ router.post('/register', (req, res) => {
 		else
 			bcrypt.hash(req.body.password, salt, (err, password) => {
 				users.push({
-					name: req.body.name,
+					username: req.body.username,
 					password: password,
 					salt: salt,
 					id: _userId++
@@ -30,7 +47,7 @@ router.post('/register', (req, res) => {
 
 router.post('/connect', (req, res) => {
 	let resObj = {};
-	let user = users.find(u => u.name == req.body.name && u.password == bcrypt.hashSync(req.body.password, u.salt));
+	let user = users.find(u => u.username == req.body.username && u.password == bcrypt.hashSync(req.body.password, u.salt));
 	if (user !== undefined) {
 		let token = jwt.sign(
 			{ id: user.id },
