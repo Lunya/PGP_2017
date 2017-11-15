@@ -9,7 +9,7 @@
 
       <form id="form2">
           <div class="jumbotron">
-            <h2>Bienvenue {{pseudo}} sur votre workspace.</h2>
+            <h2>Bienvenue <!-- Mettre username ici--> sur votre workspace.</h2>
           </div>
       </form>
     </div>
@@ -26,22 +26,33 @@
   <div class="col-md-3">
     <h3><u>Liste de vos projets :</u></h3>
     <div class=well>
-      <ul></ul>
+      <ul><!-- Liste des projets à --></ul>
     </div>
   </div>
   <div class="col-md-3"></div>
   <div class="col-md-4">
-    <div class=well>
+    <div class=well style="height:500px;">
       Nouveau projet? Rentrez les champs ici:<br><br>
-      <form>
-      Nom du projet : <input type="text" ng-model="projet"><br><br>
-      Description : <br> <input type="text" ng-model="descr" size="45"><br><br>
-      URLDepot : <input type="text" ng-model="urldepot"><br><br>
-      Date début : <input type="text" ng-model="datedebut"><br><br>
-      Date fin : <input type="text" ng-model="datefin"><br><br>
-      <input type="submit" onclick="onSelect()">
+      <form #form="ngForm" (ngSubmit) = "logForm(model)">
+        Nom du projet : <input type="text" class="form-control" required [(ngModel)] = "model.nom" id="projet" ><br>
+        Description : <br> <input type="text" class="form-control" required [(ngModel)] = "model.description" id="description" size="45" ><br>
+        URLDepot : <input type="text" class="form-control" required [(ngModel)] = "model.URLgit" id="URLgit" ><br>
+        Date début : <input type="date" class="form-control" required [(ngModel)] = "model.datedebut" id="datedebut" ><br>
+        Date fin : <input type="date" class="form-control" required [(ngModel)] = "model.datefin" id="datefin" ><br>
+      <input type="submit">
     </form>
     </div>
   </div>
 </div>
 </div>
+
+
+
+
+<!--
+Nom du projet : <input type="text" class="form-control" required [(ngModel)] = "test.nom" id="projet" ><br>
+Description : <br> <input type="text" class="form-control" required [(ngModel)] = "model.description" id="description" size="45" ><br>
+URLDepot : <input type="text" class="form-control" required [(ngModel)] = "model.URLgit" id="URLgit" ><br>
+Date début : <input type="date" class="form-control" required [(ngModel)] = "model.datedebut" id="datedebut" ><br>
+Date fin : <input type="date" class="form-control" required [(ngModel)] = "model.datefin" id="datefin" ><br>
+-->

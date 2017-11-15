@@ -5,6 +5,10 @@
 
 <app-text></app-text>
 
+<div *ngIf="route === '/Connected-view'">
 <app-connected-view></app-connected-view>
+</div>
 
+<div *ngIf="route === '/Project-view'">
 <app-project-view></app-project-view>
+</div>
