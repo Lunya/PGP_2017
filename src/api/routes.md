@@ -1,6 +1,10 @@
 # Définitions des différentes routes
 
 Route de base : `/api`
+* `/register` :
+	* **POST** : Crée un utilisateur
+* `/login` :
+	* **POST** : Vérifie qu'un utilisateur peut se connecter
 * `/user` :
 	* **POST** : Récupère les données d'un utilisateur
 	* **PATCH** : Modification des données relatives a l'utilisateur

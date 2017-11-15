@@ -15,3 +15,4 @@ Date de fin :
 
 | Id | US | Description | Statut |
 |---:|:---:|:---|:---:|
+| 24 | **-** | Créer les routes `/sprints/:id, /sprint/:idProject/:idSprint` | TODO |
