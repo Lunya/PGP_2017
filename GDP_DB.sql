@@ -1,107 +1,48 @@
--- MySQL dump 10.15  Distrib 10.0.31-MariaDB, for debian-linux-gnu (x86_64)
---
--- Host: localhost    Database: GDP
--- ------------------------------------------------------
--- Server version	10.0.31-MariaDB-0ubuntu0.16.04.2
+CREATE TABLE Project (
+		id            BIGINT(20)        UNSIGNED        PRIMARY KEY        AUTO_INCREMENT,
+		name          VARCHAR(50)       NOT NULL,
+		description   VARCHAR(2000),
+		git           VARCHAR(512),
+		begin         DATE            	NOT NULL,
+		end           DATE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE TABLE User (
+		id          	BIGINT(20)        	UNSIGNED        PRIMARY KEY      AUTO_INCREMENT,
+		name        	VARCHAR(50)       	NOT NULL,
+		password    	VARCHAR(512)    		NOT NULL,
+		mail        	VARCHAR(100)    		NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
---
--- Table structure for table `Project`
---
+CREATE TABLE User_Project (
+		id_project    BIGINT(20)        UNSIGNED,
+		id_user       BIGINT(20)        UNSIGNED,
+		FOREIGN KEY (id_project) REFERENCES Project(id),
+		FOREIGN KEY (id_user) REFERENCES User(id),
+		PRIMARY KEY (id_project, id_user)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
-DROP TABLE IF EXISTS `Project`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Project` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_name` varchar(50) DEFAULT NULL,
-  `description` text,
-  `git` text,
-  `debut` date DEFAULT NULL,
-  `fin` date DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE UserStory (
+    id            BIGINT(20)        UNSIGNED        PRIMARY KEY        AUTO_INCREMENT,
+    id_project    BIGINT(20)        UNSIGNED        NOT NULL,
+    description   VARCHAR(512)    	NOT NULL,
+    difficulty    INT(11)           UNSIGNED        DEFAULT 1 				 NOT NULL,
+    priority    	INT(11)           UNSIGNED        DEFAULT 1					 NOT NULL,
+    FOREIGN KEY (id_project) REFERENCES Project(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
---
--- Dumping data for table `Project`
---
+CREATE TABLE Sprint (
+    id            BIGINT(20)        UNSIGNED        PRIMARY KEY        AUTO_INCREMENT,
+    id_project    BIGINT(20)        UNSIGNED        NOT NULL,
+    begin        	DATE            	NOT NULL,
+    end           DATE,
+    FOREIGN KEY (id_project) REFERENCES Project(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
-LOCK TABLES `Project` WRITE;
-/*!40000 ALTER TABLE `Project` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Project` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `User`
---
-
-DROP TABLE IF EXISTS `User`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `User` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `mail` varchar(50) DEFAULT NULL,
-  `id_project` int(11) DEFAULT NULL,
-  `salt` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `User`
---
-
-LOCK TABLES `User` WRITE;
-/*!40000 ALTER TABLE `User` DISABLE KEYS */;
-/*!40000 ALTER TABLE `User` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Userstory`
---
-
-DROP TABLE IF EXISTS `Userstory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Userstory` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_backlog` int(11) DEFAULT NULL,
-  `id_project` int(11) DEFAULT NULL,
-  `us` text,
-  `difficulty` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Userstory`
---
-
-LOCK TABLES `Userstory` WRITE;
-/*!40000 ALTER TABLE `Userstory` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Userstory` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2017-11-15 20:33:30
+CREATE TABLE UserStory_Sprint (
+    id_us    		 BIGINT(20)        UNSIGNED,
+    id_sprint    BIGINT(20)        UNSIGNED,
+    FOREIGN KEY (id_us) REFERENCES UserStory(id),
+    FOREIGN KEY (id_sprint) REFERENCES Sprint(id),
+    PRIMARY KEY (id_us, id_sprint)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;

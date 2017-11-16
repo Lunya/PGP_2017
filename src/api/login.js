@@ -1,7 +1,6 @@
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-let db = require('../databaseConnect');
 
 let router = express.Router();
 
@@ -45,7 +44,7 @@ router.post('/register', (req, res) => {
 	});
 });
 
-router.post('/connect', (req, res) => {
+router.post('/login', (req, res) => {
 	let resObj = {};
 	let user = users.find(u => u.username == req.body.username && u.password == bcrypt.hashSync(req.body.password, u.salt));
 	if (user !== undefined) {
