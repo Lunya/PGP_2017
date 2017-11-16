@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,21 +9,48 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
+  model1 = {username: '', password: ''};
+  //model1 = {mail: '', mdp: ''};
+  model2 = {username: '', password: '', confirm: ''};
 
-  model1 = {mail: '', mdp: ''};
-  model2 = {mail: '', mdp: '', confirm: ''};
 
-
-  constructor() { }
+  constructor(private router: Router, private authService: AuthService) {
+   }
+  loading1 = false;
+  loading2 = false;
 
   ngOnInit() {
   }
-  onAction_login(){
-    //INSERER ICI LA REQUETE POST POUR LOGIN
-    alert(this.model1.mail);
-  }
-  onAction_newAccount(){
-    //INSERER ICI LA REQUETE POST POUR CREER UN NOUVEAU COMPTE
-    alert(this.model2.mail);
-  }
+
+
+  login() {
+		this.loading1 = true;
+		this.authService.login({
+			username: this.model1.username,
+			password: this.model1.password})
+			.subscribe(result => {
+				if (result)
+					this.router.navigate(['/projects']);
+				else {
+					console.log('Error : username or password incorrect');
+					this.loading1 = false;
+				}
+			});
+	}
+
+  new() {
+		this.loading2 = true;
+		this.authService.login({
+			username: this.model2.username,
+			password: this.model2.password,
+      confirm : this.model2.confirm})
+			.subscribe(result => {
+				if (result)
+					this.router.navigate(['/projects']);
+				else {
+					console.log('Error : username or password incorrect');
+					this.loading2 = false;
+				}
+			});
+	}
 }
