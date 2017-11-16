@@ -14,7 +14,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 install:
   - npm install
-  - node_modules/protractor/bin/webdriver-manager update
+  - src/front-src/node_modules/protractor/bin/webdriver-manager update
 script:
   - ng test --watch=false
   - ng e2e
