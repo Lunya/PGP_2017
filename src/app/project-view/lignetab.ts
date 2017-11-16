@@ -1,0 +1,14 @@
+export class LigneTab{
+  id : number;
+  desc : string;
+  dif : number;
+  prio : number;
+  done : string;
+  constructor(i:number, d:string,di:number,pri:number,don:string){
+    this.id = i;
+    this.desc = d;
+    this.dif = di;
+    this.prio = pri;
+    this.done = don;
+  }
+}
