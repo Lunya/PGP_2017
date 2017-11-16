@@ -1,5 +1,5 @@
 let express = require('express');
-let bd = require('../databaseConnect');
+let bd = require('./databaseConnect');
 let login = require('./login');
 let project = require('./project');
 let user = require('./user');
@@ -47,9 +47,9 @@ bd.connect(err => {
 		});
 
 		router.use(login.router);
-		router.use(project.router);
-		router.use(user.router);
-		router.use(userstory.router);
+		router.use(project);
+		router.use(user);
+		router.use(userstory);
 	}
 });
 
