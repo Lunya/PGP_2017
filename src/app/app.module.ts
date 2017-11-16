@@ -9,12 +9,20 @@ import { AuthComponent } from './auth/auth.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
+import { ConnectedViewComponent } from './connected-view/connected-view.component';
+import { ProjectViewComponent } from './project-view/project-view.component';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		AuthComponent
+		AuthComponent,
+    ConnectedViewComponent,
+    ProjectViewComponent,
+    HomeComponent,
+    HeaderComponent
 	],
 	imports: [
 		BrowserModule,

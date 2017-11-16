@@ -1,0 +1,43 @@
+#header .container {
+  width: 100%;
+  background-color: LightBlue;
+  color: Black;
+  border: 3px double;
+  border-radius: 25px;
+  font-family: "Arial";
+}
+.jumbotron {
+ background-color: LightBlue;
+}
+
+.team {
+  font-style:italic;
+  position: absolute;
+
+}
+
+.Center-text{
+  font-family: Arial;
+  font-size: 30px;
+}
+
+.container{
+  float:left;
+  width: 600px;
+  height: 300px;
+  border-radius: 20px;
+  border-color: black;
+}
+
+.well{
+  background-color: white;
+  color:black;
+  border-style: groove;
+  width: 600px;
+  height: 300px;
+}
+
+.container{
+  margin-top: 30px;
+
+}

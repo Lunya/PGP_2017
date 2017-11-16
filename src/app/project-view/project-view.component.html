@@ -1,0 +1,54 @@
+<div class="col-md-2"></div>
+<div class="col-md-8">
+  <div class="container-fluid">
+    <div class="jumbotron">
+      <h3 align="center"> Projet : {{nom_du_projet}} </h3>
+    </div>
+  </div>
+</div>
+<div class="col-md-2"></div>
+
+
+
+  <div class="col-md-2"></div>
+  <div class="col-md-5">
+      <div class="well" style="width:550px">
+      Backlog :
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Difficulté</th>
+          <th>Priorité</th>
+          <th>Fait</th>
+        </tr>
+        <tr *ngIf="model">
+          <td>{{this.model.id}}</td>
+          <td>{{this.model.desc}}</td>
+          <td>{{this.model.dif}}</td>
+          <td>{{this.model.prio}}</td>
+          <td>{{this.model.done}}</td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+  <div class=col-md-5>
+    <div class=container>
+      <div class="well" style="height:350px; width:350px;">
+        <form (ngSubmit) = "onAction_newUS()">
+          Id:<input type="number" class="form-control" name=id required [(ngModel)] = "model.id" #id="ngModel">
+          Description:<input type="text" class="form-control" name=desc required [(ngModel)] = "model.desc" #desc="ngModel">
+          Difficulté:<input type="number" class="form-control" name=dif required [(ngModel)] = "model.dif" #dif="ngModel">
+          Priorité:<input type="number" class="form-control" name=prio required [(ngModel)] = "model.prio" #prio="ngModel">
+          Fait:<input type="text" class="form-control" name=done required [(ngModel)] = "model.done" #done="ngModel">
+          <input type="submit">
+        </form>
+      </div>
+    </div>
+  </div>
+    <div class="col-md-8">
+    <div class="well" style="width:550px">
+      Sprint:
+  </div>
+</div>
