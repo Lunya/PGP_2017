@@ -14,12 +14,13 @@ services:
     build: ./back-src
     image: pgp:back-dev
     volumes:
-      - back-src:/home/node/app
+      - ./back-src:/home/node/app
       - /home/node/app/node_modules
-    environment:
-      - NODE_ENV=development
     env_file:
       - ./back-src/.env
+    environment:
+      - NODE_ENV=development
+      - DB_SERVER_HOST=mariadb
     ports:
       - "3000:3000"
     depends_on:
@@ -35,5 +36,3 @@ services:
       - "4200:4200"
     init: true
 
-volumes:
-  back-src:

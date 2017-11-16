@@ -1,7 +1,5 @@
 let express = require('express');
-let jwt = require('jsonwebtoken');
-let bcrypt = require('bcryptjs');
-let db = require('../databaseConnect');
+let db = require('./databaseConnect');
 
 let router = express.Router();
 

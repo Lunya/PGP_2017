@@ -1,7 +1,7 @@
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-let db = require('../databaseConnect');
+let db = require('./databaseConnect');
 
 let router = express.Router();
 
@@ -14,21 +14,21 @@ function treatment(errorStatus, response, values,  rows) {
 			values.push({'result' : 'error', 'msg' : 'No Results Found'});
 		}
 		response.setHeader('Content-Type', 'application/json');
-	response.status(200).send(JSON.stringify(value));
-}
+		response.status(200).send(JSON.stringify(value));
+	}
 };
 
 router.post('/user', (req, res) => {
 	if (typeof req.body.name !== 'undefined' && typeof req.body.password !== 'undefined') {
-	bd.query('SELECT * FROM User WHERE name = ? AND password=? ',[req.body.name, req.body.password], (err,result) => {
-		let value = [];
-		treatment(err,res, value,result);
-	})
-}
-else {
-	values.push({'result' : 'error', 'msg' : 'Missing field'});
-	res.setHeader('Content-Type', 'application/json');
- res.send(200, JSON.stringify(values));
+		bd.query('SELECT * FROM User WHERE name = ? AND password=? ',[req.body.name, req.body.password], (err,result) => {
+			let value = [];
+			treatment(err,res, value,result);
+		})
+	}
+	else {
+		values.push({'result' : 'error', 'msg' : 'Missing field'});
+		res.setHeader('Content-Type', 'application/json');
+		res.send(200, JSON.stringify(values));
 	}
 });
 
@@ -43,9 +43,11 @@ router.patch('/:id', (req, res) => {
 
 router.delete('/user/:id', (req, res) => {
 	let id = req.params.id;
-bd.query("DELETE FROM User WHERE id=?",[id], (err,count) => {
-	let values = [];
-	treatment(err, res, values, "success");
+	bd.query("DELETE FROM User WHERE id=?",[id], (err,count) => {
+		let values = [];
+		treatment(err, res, values, "success");
 
-})
+	})
 });
+
+module.exports = router;
