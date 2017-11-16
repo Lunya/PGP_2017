@@ -15,6 +15,8 @@ services:
     image: pgp:back-dev
     volumes:
       - back-src:/home/node/app
+      - front-src:/home/node/front
+      - front-compiled:/home/node/dist
       - /home/node/app/node_modules
     environment:
       - NODE_ENV=development
@@ -29,11 +31,17 @@ services:
   frontend:
     build: ./front-src
     image: pgp:front-dev
+    volumes:
+      - front-compiled:/us/share/nginx/html
     env_file:
       - ./back-src/.env
     ports:
       - "4200:4200"
     init: true
+    depends_on:
+      - backend
 
 volumes:
+  front-src:
+  front-compiled:
   back-src:
