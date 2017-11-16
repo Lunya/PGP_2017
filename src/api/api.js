@@ -1,18 +1,21 @@
 let express = require('express');
-let mysql = require('mysql');
+let bd = require('../databaseConnect');
+let login = require('./login');
+let project = require('./project');
+let user = require('./user');
+let userstory = require('./userstory');
 
 let router = express.Router();
 
-let bd = mysql.createConnection({
-	host:		process.env.DB_SERVER_HOST,
-	user:		process.env.DB_SERVER_USER,
-	password:	process.env.DB_SERVER_PASSWORD,
-	database:	process.env.DB_NAME
-});
-
 router.get('/', (req, res) => {
 	res.setHeader('Content-Type', 'text/plain');
-	res.end('API Works');
+	res.send('API Works');
+	//res.sendfile(__dirname + '/index.html');
+});
+
+router.get('/secured', login.tokenVerifier, (req, res) => {
+	res.contentType('application/json');
+	res.send('Secured OK');
 });
 
 bd.connect(err => {
@@ -23,8 +26,6 @@ bd.connect(err => {
 		// exemple d'utilisation pour lister toutes les tables de la base de donnée courante
 		router.get('/tables', (req, res) => {
 			res.setHeader('Content-Type', 'application/json');
-			let tableFields;
-			bd
 			bd.query('SHOW TABLES', (error, tables, fields) => {
 				let result = {};
 				for (let i = 0; i < tables.length; i++) {
@@ -44,6 +45,11 @@ bd.connect(err => {
 				}
 			});
 		});
+
+		router.use(login.router);
+		router.use(project.router);
+		router.use(user.router);
+		router.use(userstory.router);
 	}
 });
 
