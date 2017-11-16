@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import {CreateProject} from './create-project';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -12,12 +11,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class ConnectedViewComponent implements OnInit {
 
 
-  // nomprojet : string = "lol";
+  // nom : string = "lol";
   // description : string;
   // URLDepot : string;
   // datedebut : string;
   // datefin : string;
-  model=new CreateProject('non','bla','bla',5,5);
+  model={nom: '', description: '', URLgit: '', datedebut: '', datefin: ''};
 
 
 
@@ -25,8 +24,9 @@ export class ConnectedViewComponent implements OnInit {
 
   ngOnInit() {
   }
-  logForm(value){
-    alert(value);
+
+  onAction_newproject(){
+    //INSERER ICI UNE REQUETE POST POUR LA CREATION D'UN PROJET
     };
 
   }

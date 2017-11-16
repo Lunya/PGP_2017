@@ -8,9 +8,20 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  model1 = {mail: '', mdp: ''};
+  model2 = {mail: '', mdp: '', confirm: ''};
+
+
   constructor() { }
 
   ngOnInit() {
   }
-
+  onAction_login(){
+    //INSERER ICI LA REQUETE POST POUR LOGIN
+    alert(this.model1.mail);
+  }
+  onAction_newAccount(){
+    //INSERER ICI LA REQUETE POST POUR CREER UN NOUVEAU COMPTE
+    alert(this.model2.mail);
+  }
 }

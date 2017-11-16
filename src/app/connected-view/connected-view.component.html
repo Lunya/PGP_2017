@@ -33,12 +33,12 @@
   <div class="col-md-4">
     <div class=well style="height:500px;">
       Nouveau projet? Rentrez les champs ici:<br><br>
-      <form #form="ngForm" (ngSubmit) = "logForm(model)">
-        Nom du projet : <input type="text" class="form-control" required [(ngModel)] = "model.nom" id="projet" ><br>
-        Description : <br> <input type="text" class="form-control" required [(ngModel)] = "model.description" id="description" size="45" ><br>
-        URLDepot : <input type="text" class="form-control" required [(ngModel)] = "model.URLgit" id="URLgit" ><br>
-        Date début : <input type="date" class="form-control" required [(ngModel)] = "model.datedebut" id="datedebut" ><br>
-        Date fin : <input type="date" class="form-control" required [(ngModel)] = "model.datefin" id="datefin" ><br>
+      <form (ngSubmit) = "onAction_newproject()">
+        Nom du projet : <input type="text" class="form-control" name=nom required [(ngModel)] = "model.nom" #nom="ngModel"><br>
+        Description : <br> <input type="text" class="form-control" name=description required [(ngModel)] = "model.description" #description="ngModel" size="45" ><br>
+        URLDepot : <input type="text" class="form-control" name=URLgit required [(ngModel)] = "model.URLgit" #URLgit="ngModel"><br>
+        Date début : <input type="date" class="form-control" name=datedebut required [(ngModel)] = "model.datedebut" #datedebut="ngModel"><br>
+        Date fin : <input type="date" class="form-control" name=datefin required [(ngModel)] = "model.datefin" #datefin="ngModel" ><br>
       <input type="submit">
     </form>
     </div>
