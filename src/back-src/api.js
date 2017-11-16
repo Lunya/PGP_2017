@@ -1,17 +1,19 @@
 let express = require('express');
-let bd = require('./databaseConnect');
-let connection = require('./connection');
+let bd = require('../databaseConnect');
+let login = require('./login');
+let project = require('./project');
+let user = require('./user');
+let userstory = require('./userstory');
 
 let router = express.Router();
 
 router.get('/', (req, res) => {
 	res.setHeader('Content-Type', 'text/plain');
-	res.end('API Works');
+	res.send('API Works');
+	//res.sendfile(__dirname + '/index.html');
 });
 
-router.use(connection.router);
-
-router.get('/secured', connection.tokenVerifier, (req, res) => {
+router.get('/secured', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	res.send('Secured OK');
 });
@@ -43,6 +45,11 @@ bd.connect(err => {
 				}
 			});
 		});
+
+		router.use(login.router);
+		router.use(project.router);
+		router.use(user.router);
+		router.use(userstory.router);
 	}
 });
 
