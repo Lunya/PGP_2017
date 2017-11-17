@@ -6,9 +6,6 @@
   border-radius: 25px;
   font-family: "Arial";
 }
-.jumbotron {
- background-color: LightBlue;
-}
 
 .team {
   font-style:italic;
@@ -21,23 +18,11 @@
   font-size: 30px;
 }
 
-.container{
+#login .container{
   float:left;
   width: 600px;
   height: 300px;
   border-radius: 20px;
   border-color: black;
-}
-
-.well{
-  background-color: white;
-  color:black;
-  border-style: groove;
-  width: 600px;
-  height: 300px;
-}
-
-.container{
   margin-top: 30px;
-
 }
