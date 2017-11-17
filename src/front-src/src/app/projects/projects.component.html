@@ -1,0 +1,20 @@
+<div class="container">
+	<h1>List of projects for {{ user }}</h1>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<td>Name</td>
+			<td>Git</td>
+			<td>Started</td>
+		</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let project of projects"
+				[routerLink]="['/project', project.id]">
+				<td>{{ project.name }}</td>
+				<td>{{ project.git }}</td>
+				<td>{{ project.begin }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

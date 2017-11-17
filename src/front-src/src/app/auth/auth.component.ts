@@ -15,7 +15,6 @@ export class AuthComponent implements OnInit {
 		private router: Router,
 		private authService: AuthService
 	) {}
-
 	ngOnInit() {
 		this.authService.logout();
 	}
@@ -27,15 +26,16 @@ export class AuthComponent implements OnInit {
 			.subscribe(result => {
 				console.log(result);
 				if (result) {
-					this.router.navigate(['/projects'])
-						.then(value => console.log(value))
-						.catch(reason => console.log(reason));
+					this.router.navigate(['projects'])
+						.then(value => console.log('redirect: ', value))
+						.catch(reason => console.log('redirect: ', reason));
 				} else {
 					console.log('Error : username or password incorrect');
 					this.loading = false;
 				}
 			}, err => {
 				this.loading = false;
+				console.log(err);
 			});
 	}
 }
