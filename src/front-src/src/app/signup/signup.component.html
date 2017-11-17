@@ -1,0 +1,50 @@
+<form class="form-signin" (ngSubmit)="f.form.valid && ngOnSubmit()" #f="ngForm" novalidate>
+	<h2 class="form-signin-heading">Please sign in</h2>
+
+	<label for="username" class="sr-only">Email address</label>
+	<input
+		id="username"
+		class="form-control"
+		placeholder="Email address"
+		name="username"
+		[(ngModel)]="form.username"
+		#username="ngModel"
+		required autofocus type="text">
+	<div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
+
+	<label for="mail" class="sr-only">Email address</label>
+	<input
+		id="mail"
+		class="form-control"
+		placeholder="Email address"
+		name="mail"
+		[(ngModel)]="form.mail"
+		#mail="ngModel"
+		required autofocus type="email">
+	<div *ngIf="f.submitted && !mail.valid" class="help-block">Email is required</div>
+
+	<label for="password" class="sr-only">Password</label>
+	<input
+		id="password"
+		class="form-control"
+		placeholder="Password"
+		name="password"
+		[(ngModel)]="form.password"
+		#password="ngModel"
+		required type="password">
+	<div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+
+	<label for="passwordVerif" class="sr-only">Password</label>
+	<input
+		id="passwordVerif"
+		class="form-control"
+		placeholder="Verify password"
+		name="passwordVerif"
+		[(ngModel)]="form.passwordVerif"
+		#passwordVerif="ngModel"
+		required type="password">
+	<div *ngIf="f.submitted && (!passwordVerif.valid || (form.passwordVerif == form.password))" class="help-block">Password does not match</div>
+
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	<img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+</form>

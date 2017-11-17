@@ -20,7 +20,6 @@ function debugAddUser(username, password) {
 					salt: salt,
 					id: _userId++
 				});
-				console.error(users);
 				let user = users.find(u => bcrypt.compareSync(password, u.password));
 				console.log(
 					user,
@@ -30,6 +29,7 @@ function debugAddUser(username, password) {
 }
 debugAddUser('john', 'doe');
 debugAddUser('nyan', 'cat');
+debugAddUser('a', 'a');
 
 router.post('/register', (req, res) => {
 	res.contentType('application/json');

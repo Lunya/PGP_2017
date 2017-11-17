@@ -13,6 +13,8 @@ import { AuthGuard } from './auth.guard';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { SignupComponent } from './signup/signup.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { HeaderComponent } from './header/header.component';
 		AuthComponent,
 		ProjectViewComponent,
 		HomeComponent,
-		HeaderComponent
+		HeaderComponent,
+		ProjectsComponent,
+		SignupComponent
 	],
 	imports: [
 		BrowserModule,
