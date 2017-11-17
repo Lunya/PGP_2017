@@ -1,4 +1,4 @@
-export class LigneTab{
+export class LigneTabUS{
   id : number;
   desc : string;
   dif : number;

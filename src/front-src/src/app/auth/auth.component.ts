@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
@@ -25,12 +25,17 @@ export class AuthComponent implements OnInit {
 			username: this.model.username,
 			password: this.model.password})
 			.subscribe(result => {
-				if (result)
-					this.router.navigate(['/projects']);
-				else {
+				console.log(result);
+				if (result) {
+					this.router.navigate(['/projects'])
+						.then(value => console.log(value))
+						.catch(reason => console.log(reason));
+				} else {
 					console.log('Error : username or password incorrect');
 					this.loading = false;
 				}
+			}, err => {
+				this.loading = false;
 			});
 	}
 }
