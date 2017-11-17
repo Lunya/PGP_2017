@@ -8,11 +8,41 @@
 </div>
 <div class="col-md-2"></div>
 
+<div class="container">
+  <div class="col-md-5">
+      <div class="well" style="height:350px; width:350px;">
 
+        <form id="US" (ngSubmit) = "onAction_newUS()" name="US">
+          Ajouter une userstory :<br/>
+          Id:<input type="number" class="form-control" name=id required [(ngModel)] = "model_US.id" #id="ngModel">
+          Description:<input type="text" class="form-control" name=desc required [(ngModel)] = "model_US.desc" #desc="ngModel">
+          Difficulté:<input type="number" class="form-control" name=dif required [(ngModel)] = "model_US.dif" #dif="ngModel">
+          Priorité:<input type="number" class="form-control" name=prio required [(ngModel)] = "model_US.prio" #prio="ngModel">
+          Fait:<input type="text" class="form-control" name=done required [(ngModel)] = "model_US.done" #done="ngModel">
+          <input type="submit">
+        </form>
+      </div>
+      </div>
+  <div class=col-md-2></div>
+  <div class=col-md-5>
+    <div class=container>
+      <div class="well" style="height:350px; width:350px;">
+        <form id="Sprint" (ngSubmit) = "onAction_newSprint()" name="Sprint">
+          Ajouter un tâche :<br/>
+          Id:<input type="number" class="form-control" name=idSp required [(ngModel)] = "model_Sprint.idSp" #idSp="ngModel">
+          US:<input type="text" class="form-control" name=usSp required [(ngModel)] = "model_Sprint.usSp" #usSp="ngModel">
+          Description:<input type="text" class="form-control" name=descSp required [(ngModel)] = "model_Sprint.descSp" #descSp="ngModel">
+          Statut:<input type="text" class="form-control" name=statutSp required [(ngModel)] = "model_Sprint.statutSp" #statutSp="ngModel">
+          <input type="submit">
+        </form>
 
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
   <div class="col-md-2"></div>
   <div class="col-md-5">
-      <div class="well" style="width:550px">
       Backlog :
       <table>
         <tr>
@@ -22,33 +52,24 @@
           <th>Priorité</th>
           <th>Fait</th>
         </tr>
-        <tr *ngIf="model">
-          <td>{{this.model.id}}</td>
-          <td>{{this.model.desc}}</td>
-          <td>{{this.model.dif}}</td>
-          <td>{{this.model.prio}}</td>
-          <td>{{this.model.done}}</td>
-        </tr>
+        <ng-container *ngFor="let lignetabus of list_US">
+          <tr><th>{{lignetabus.id}}</th><th>{{lignetabus.desc}}</th><th>{{lignetabus.dif}}</th><th>{{lignetabus.prio}}</th><th>{{lignetabus.done}}</th></tr>
+        </ng-container>
 
       </table>
-    </div>
   </div>
-  <div class=col-md-5>
-    <div class=container>
-      <div class="well" style="height:350px; width:350px;">
-        <form (ngSubmit) = "onAction_newUS()">
-          Id:<input type="number" class="form-control" name=id required [(ngModel)] = "model.id" #id="ngModel">
-          Description:<input type="text" class="form-control" name=desc required [(ngModel)] = "model.desc" #desc="ngModel">
-          Difficulté:<input type="number" class="form-control" name=dif required [(ngModel)] = "model.dif" #dif="ngModel">
-          Priorité:<input type="number" class="form-control" name=prio required [(ngModel)] = "model.prio" #prio="ngModel">
-          Fait:<input type="text" class="form-control" name=done required [(ngModel)] = "model.done" #done="ngModel">
-          <input type="submit">
-        </form>
-      </div>
-    </div>
-  </div>
-    <div class="col-md-8">
-    <div class="well" style="width:550px">
+  <div class="col-md-5">
       Sprint:
-  </div>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>US</th>
+          <th>Description</th>
+          <th>Statut</th>
+        </tr>
+        <ng-container *ngFor="let lignetab of list_Sprint">
+          <tr><th>{{lignetab.idSp}}</th><th>{{lignetab.usSp}}</th><th>{{lignetab.descSp}}</th><th>{{lignetab.statutSp}}</th></tr>
+        </ng-container>
+      </table>
+</div>
 </div>

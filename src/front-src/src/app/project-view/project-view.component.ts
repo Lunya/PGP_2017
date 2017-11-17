@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { LigneTab } from './lignetab';
+import { LigneTabUS } from './lignetabus';
+import { LigneTabSprint } from './lignetabsprint'
 
 @Component({
   selector: 'app-project-view',
@@ -11,17 +12,20 @@ export class ProjectViewComponent implements OnInit {
   nom_du_projet : string = "example_project";
   constructor() { }
 
-
-  model={id: '', desc: '', dif: '', prio: '', done: ''};
+  list_US = [];
+  list_Sprint = [];
+  model_US={id: 0, desc: '', dif: 0, prio: 0, done: ''};
+  model_Sprint={idSp: 0, usSp: '', descSp: '', statutSp: ''};
 
   ngOnInit() {
   }
+
   onAction_newUS(){
-    //new_array = new lignetab(this.model.id, this.model.desc, this.model.prio, this.model.done);
-
-
-
-
-
+    let i = new LigneTabUS(this.model_US.id, this.model_US.desc, this.model_US.dif, this.model_US.prio, this.model_US.done);
+    this.list_US.push(i);
+  }
+  onAction_newSprint(){
+    let i = new LigneTabSprint(this.model_Sprint.idSp, this.model_Sprint.usSp, this.model_Sprint.descSp, this.model_Sprint.statutSp);
+    this.list_Sprint.push(i);
   }
 }
