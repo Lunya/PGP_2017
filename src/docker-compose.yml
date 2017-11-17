@@ -32,6 +32,8 @@ services:
     image: pgp:front-dev
     env_file:
       - ./back-src/.env
+    volumes:
+      - ./front-src:/home/node/app
     ports:
       - "4200:4200"
     init: true

@@ -13,13 +13,18 @@ function debugAddUser(username, password) {
 	"use strict";
 	bcrypt.genSalt(saltRounds, (err, salt) => {
 		if (!err)
-			bcrypt.hash(password, salt, (err, password) => {
+			bcrypt.hash(password, salt, (err, cryptedPassword) => {
 				users.push({
 					username: username,
-					password: password,
+					password: cryptedPassword,
 					salt: salt,
 					id: _userId++
 				});
+				console.error(users);
+				let user = users.find(u => bcrypt.compareSync(password, u.password));
+				console.log(
+					user,
+					bcrypt.compareSync(password, users[users.length-1].password));
 			});
 	});
 }
@@ -46,7 +51,7 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 	let resObj = {};
-	let user = users.find(u => u.username == req.body.username && u.password == bcrypt.hashSync(req.body.password, u.salt));
+	let user = users.find(u => u.username == req.body.username && bcrypt.compareSync(req.body.password, u.password));
 	if (user !== undefined) {
 		let token = jwt.sign(
 			{ id: user.id },
