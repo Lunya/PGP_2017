@@ -13,8 +13,9 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:
-  - npm install
+  - npm install --prefix ./src/front-src/
   - src/front-src/node_modules/protractor/bin/webdriver-manager update
 script:
+  - cd src/front-src
   - ng test --watch=false
   - ng e2e

@@ -15,24 +15,24 @@ export class ConnexionPage {
   }
 
   fillAndSendFormConnection(login,passwd) {
-    var form =  browser.findElement(by.id('login'));
-    form.findElement(by.css('input[ng-model=mail]')).sendKeys(login)
+    var form =  browser.element.all(by.css('form')).first();
+		browser.element.all(by.css('input[type=text]')).first().sendKeys(login)
     .then(function() {
-      form.findElement(by.css('input[ng-model=mdp]')).sendKeys(passwd);
+      browser.element.all(by.css('input[type=password]')).first().sendKeys(passwd);
     }).then(function() {
-      form.findElement(by.css('input[type=submit]')).click();
+      browser.element.all(by.css('button')).first().click();
     });
   }
-  fillAndSendFormCreateProfile(login, passwd) {
-    var form = browser.findElement(by.id('signup'));
-    form.findElement(by.css('input[ng-model=new_mail]')).sendKeys(login)
+  fillAndSendFormCreateProfile(login, passwd, conf) {
+		browser.element.all(by.css('input[type=text]')).last().sendKeys(login)
     .then(function() {
-      form.findElement(by.css('input[ng-model=new_mdp]')).sendKeys(passwd);
+      browser.element.all(by.css('input[type=password]')).last().sendKeys(passwd);
+			})
+			.then(function() {
+				browser.element.all(by.css('input[type=confirm]')).last().sendKeys(conf);
     }).then(function() {
-      form.findElement(by.css('input[ng-model=new_mdp_conf]')).sendKeys(passwd);
-    }).then(function() {
-      form.findElement(by.css('input[type=submit]')).click();
-  });
+      browser.element.all(by.css('button')).first().click();
+    });
   }
 
   errorMessageExist() {
