@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"scripts": {
 		"ng": "ng",
-		"docker-dev": "node app.js",
+		"docker-dev": "pm2-dev start app.js",
 		"dev": "pm2 start app.js --watch"
 	},
 	"private": true,
@@ -20,6 +20,7 @@
 		"@angular/router": "^5.0.1",
 		"bcryptjs": "^2.4.3",
 		"core-js": "^2.5.1",
+		"cors": "^2.8.4",
 		"dotenv": "^4.0.0",
 		"jsonwebtoken": "^8.1.0",
 		"mysql2": "^1.5.0",

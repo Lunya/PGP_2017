@@ -4,8 +4,11 @@ let login = require('./login');
 let project = require('./project');
 let user = require('./user');
 let userstory = require('./userstory');
+let cors = require('cors');
 
 let router = express.Router();
+
+router.use(cors());
 
 router.get('/', (req, res) => {
 	res.setHeader('Content-Type', 'text/plain');
