@@ -10,31 +10,26 @@ function httpGet(siteUrl) {
     var defer = protractor.promise.defer();
 
     http.get(siteUrl, function(response) {
-
         var bodyString = '';
-
         response.setEncoding('utf8');
 
         response.on("data", function(chunk) {
             bodyString += chunk;
         });
-
         response.on('end', function() {
             defer.fulfill({
-                statusCode: response.statusCode,
-                bodyString: bodyString
+                "status": response.statusCode,
+                "body": bodyString
             });
         });
-
     }).on('error', function(e) {
         defer.reject("Got http.get error: " + e.message);
     });
-
     return defer.promise;
 }
 
 
-describe('pgp connection e2e testing', () => {
+describe('POST /login, POST /user : pgp connection e2e testing', () => {
   let page: ConnexionPage;
 
   beforeEach(() => {
@@ -46,41 +41,46 @@ describe('pgp connection e2e testing', () => {
     expect(page.getParagraphText()).toEqual('Bienvenue sur GesDePro');
   });
 
-  it('should GET /user data with login = ??? and passwd = ??? ', () => {
-    page.fillAndSendFormConnection("slooby@gmail.com","loobys");
-    httpGet(browser.baseUrl + "/slooby").then(function(result) {
-      expect(result.bodyString).toBe(200);
+  it('should connect with login = slooby and passwd = loobys ', () => {
+    page.fillAndSendFormConnection("slooby","loobys");
+    httpGet(browser.baseUrl + "/user").then(function(result) {
+      expect(result["status"]).toBe(200);
     });
-    expect(page.url()).toEqual(browser.baseUrl + "/slooby");
-    fail('Not ready yet');
+    expect(page.url()).toEqual(browser.baseUrl + "/user");
   });
 
-  it('should not jump to /project with a wrong login and passwd', () => {
+  it('should not not be able to connect with a wrong login and passwd', () => {
     page.fillAndSendFormConnection("","");
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
+		httpGet(browser.baseUrl + "/user").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
   });
-  it('should not jump to /project with a wrong login', () => {
-    page.fillAndSendFormConnection("","loobys");
+  it('should not be able to connect with a wrong login', () => {
+		page.fillAndSendFormConnection("","loobys");
+		httpGet(browser.baseUrl + "/user").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
     //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
   });
-  it('should not jump to /project with a wrong passwd', () => {
-    page.fillAndSendFormConnection("slooby@gmail.com","");
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
+  it('should not be able to connect with a wrong passwd', () => {
+    page.fillAndSendFormConnection("slooby","");
+		httpGet(browser.baseUrl + "/user").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
   });
-  it('should display error message when connexion failed because of wrong parameter', () => {
+  /*it('should display error message when connexion failed because of wrong parameter', () => {
     page.fillAndSendFormConnection("","");
     //expect(page.url()).toEqual(browser.baseUrl + "/");
     expect(page.errorMessageExist());
-    fail('Not ready yet');
-  });
+  });*/
 });
 
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
-describe('pgp create profile e2e testing', () => {
+describe('POST /register : pgp create profile e2e testing', () => {
   let page: ConnexionPage;
 
   beforeEach(() => {
@@ -88,32 +88,76 @@ describe('pgp create profile e2e testing', () => {
     page.navigateTo('/');
   });
 
-  it('should create profile with login = ??? and passwd = ??? and redirect to /project', () => {
-    page.fillAndSendFormCreateProfile("slooby@gmail.com","loobys");
-    //expect(page.url()).toEqual(browser.baseUrl + "/project");
-    fail('Not ready yet');
+  it('should create profile with login = karom and passwd = kamor', () => {
+    page.fillAndSendFormCreateProfile("karom","kamor","kamor");
+		httpGet(browser.baseUrl + "/user").then(function(result) {
+			expect(result["status"]).toBe(200);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/user");
   });
 
-  it('should not create profile if login does not match format foo@myMail.xx', () => {
-    page.fillAndSendFormCreateProfile("","");
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
-  });
+	it('should not create profile if pasword and confirmation are not the same', () => {
+		page.fillAndSendFormCreateProfile("karom","kamor","trolls");
+		httpGet(browser.baseUrl + "/user").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
+	});
+
   it('should not create profile if login already exist', () => {
-    page.fillAndSendFormCreateProfile("","loobys");
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
+    page.fillAndSendFormCreateProfile("slooby","kamor", "kamor");
+		httpGet(browser.baseUrl + "/user").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
   });
-  it('should not create profile if password is too small (< 6)', () => {
-    page.fillAndSendFormCreateProfile("slooby","");
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
+  it('should not create profile if password is not good enough', () => {
+    page.fillAndSendFormCreateProfile("karom","b", "b");
+		httpGet(browser.baseUrl + "/user").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
   });
 });
 
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
-describe('pgp create project e2e testing', () => {
+describe('POST /project : pgp create a project e2e testing', () => {
+  let page: ProjectPage;
+
+  beforeEach(() => {
+    page = new ProjectPage();
+    page.navigateTo('/projects');
+  });
+
+  it('should create project with name = helloW', () => {
+		page.fillAndSendFormProject("helloW","Projet initial","01/01/01", "02/02/02");
+		httpGet(browser.baseUrl + "/project/1").then(function(result) {
+			expect(result["status"]).toBe(200);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/project/1");
+  });
+
+  it('should not create project if fields are missing', () => {
+		page.fillAndSendFormProject("","Projet initial","01/01/01", "02/02/02");
+		httpGet(browser.baseUrl + "/project/1").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/user");
+  });
+
+  it('should display project information just after creating it', () => {
+		page.fillAndSendFormProject("helloW","Projet initial","01/01/01", "02/02/02");
+		httpGet(browser.baseUrl + "/project/1").then(function(result) {
+			expect(result["status"]).toBe(404);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/project/1");
+  });
+
+});
+/*--------------------------------------------------------------------
+----------------------------------------------------------------------*/
+describe('GET /userstories/:id : pgp UserStories listing e2e testing', () => {
   let page: ProjectPage;
 
   beforeEach(() => {
@@ -121,24 +165,18 @@ describe('pgp create project e2e testing', () => {
     page.navigateTo('/');
   });
 
-  it('should create project with name = ???', () => {
+  it('should display 3 UserStories ', () => {
+
+		let nbProject = page.getNumberOfProject();
+
     //expect(page.url()).toEqual(browser.baseUrl + "/project");
     fail('Not ready yet');
   });
 
-  it('should not create project with already existing name = ??? associated to user ???', () => {
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
-  });
-  it('should redirect to project page just after creating it', () => {
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
-  });
-
 });
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
-describe('pgp User Stories listing e2e testing', () => {
+describe('PATCH, DELETE /userstories/:id : pgp édition de us e2e testing', () => {
   let page: ProjectPage;
 
   beforeEach(() => {
@@ -146,23 +184,7 @@ describe('pgp User Stories listing e2e testing', () => {
     page.navigateTo('/');
   });
 
-  it('should display 3 User Storie ', () => {
-    //expect(page.url()).toEqual(browser.baseUrl + "/project");
-    fail('Not ready yet');
-  });
-
-});
-/*--------------------------------------------------------------------
-----------------------------------------------------------------------*/
-describe('pgp backlog edition e2e testing', () => {
-  let page: ProjectPage;
-
-  beforeEach(() => {
-    page = new ProjectPage();
-    page.navigateTo('/');
-  });
-
-  it('should add US  "User Storie test add" ', () => {
+  /*it('should add US  "User Storie test add" ', () => {
     //expect(page.url()).toEqual(browser.baseUrl + "/project");
     fail('Not ready yet');
   });
@@ -174,12 +196,12 @@ describe('pgp backlog edition e2e testing', () => {
   it('should delete US "User Storie test modify"', () => {
     //expect(page.url()).toEqual(browser.baseUrl + "/");
     fail('Not ready yet');
-  });
+  });*/
 
 });
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
-describe('pgp project member addition e2e testing', () => {
+/*describe('pgp project member addition e2e testing', () => {
   let page: ProjectPage;
 
   beforeEach(() => {
@@ -200,4 +222,4 @@ describe('pgp project member addition e2e testing', () => {
     //expect(page.url()).toEqual(browser.baseUrl + "/");
     fail('Not ready yet');
   });
-});
+});*/
