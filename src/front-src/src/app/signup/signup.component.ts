@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../services/auth.service';
 
 const url = 'http://localhost:3000/api/register';
 
 @Component({
 	selector: 'app-signup',
 	templateUrl: './signup.component.html',
-	styleUrls: ['./signup.component.css'],
+	styleUrls: ['../signin/signin.component.css'],
 })
 export class SignupComponent implements OnInit {
 	private loading = false;
@@ -39,15 +39,18 @@ export class SignupComponent implements OnInit {
 							this.loading = false;
 						} else {
 							// si l'utilisateur à été créé, le connecter et le rediriger
-							this.auth.login(request).subscribe((result: any) => {
+							/*this.auth.login(request).subscribe((result: any) => {
 								if (result) {
-									this.router.navigate(['projects'])
+									this.router.navigate(['/projects'])
 										.catch(reason => console.log('redirect: ', reason));
 								} else {
 									console.log('Error : username or password incorrect');
 									this.loading = false;
 								}
-							});
+							});*/
+							// si l'utilisateur à été créé, le rediriger vers la page d'accueil
+							this.router.navigate(['/home'])
+								.catch(reason => console.log('redirect: ', reason));
 						}
 					},
 					err => {
