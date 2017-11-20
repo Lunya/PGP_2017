@@ -15,4 +15,15 @@ Date de fin :
 
 | Id | US | Description | Statut |
 |---:|:---:|:---|:---:|
-| 24 | **-** | Créer les routes `/sprints/:id, /sprint/:idProject/:idSprint` | TODO |
+| 1 | **-** | Créer les routes `/sprints/:id, /sprint/:idProject/:idSprint` | TODO |
+| 2 | **-** | Ajouter l'affectation du status propriétaire pour un membre du projet qui doit lui permettre exclusivement d'éditer les priorités des US (ajout d'une colonne status dans la table d'association Project_User) | TODO |
+| 3 | **-** | Créer la vue d'un sprint séléctionné (liste des US associé  -> mini backlog, liste des tâches, dates, durée) | TODO |
+| 4 | **-** | Rendre éditable le tableau des tâches d'un sprint | TODO |
+| 5 | **-** | Rendre séléctionnable les US du backlog pour créer un sprint à partir d'une séléction | TODO |
+| 6 | **-** | Rédaction des tests e2e pour chacune des US | TODO |
+| 7 | **-** | Tester l'édition des priorités des US | TODO |
+| 8 | **-** | Tester la création de sprint | TODO |
+| 9 | **-** | Tester la création de tâche dans un sprint | TODO |
+| 10 | **-** | Tester la modification de tâche d'un sprint | TODO |
+| 11 | **-** | Créer les route `/tasks/:idSprint, /task/:idSprint/:idTask` | TODO |
+| 12 | **-** | Rajouter une table task dans la base de données pgp | TODO |
