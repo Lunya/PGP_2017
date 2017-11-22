@@ -109,6 +109,14 @@ Route de base : `/api`
 * `/sprint/:idProject/:idSprint` :
 	* *idProject* : id du projet auquel appartiennent les sprints
 	* *idSprint* : id du sprint dans le projet
+	* **POST** : Créer une tâche dans le sprint
+		* Données :
+			* id : int
+			* us : int[]
+			* description : string
+			* statut : booléen
+		* Résultats : JSON
+			* error : bool
 	* **GET** : Récupère le détail du sprint
 		* Données :
 		* Résultats :
@@ -116,5 +124,18 @@ Route de base : `/api`
 		* Données :
 		* Résultats :
 	* **DELETE** : Supprimer un sprint
+		* Données :
+		* Résultats :
+* `/sprint/:idProject/:idSprint/:idTache` :
+	* *idProject* : id du projet auquel appartiennent les sprints
+	* *idSprint* : id du sprint dans le projet
+	* *idTache* : id de la tâche du sprint
+	* **GET** : Récupère le détail d'une tâche d'un sprint
+		* Données :
+		* Résultats :
+	* **PATCH** : Modifier les détails d'une tâche
+		* Données :
+		* Résultats :
+	* **DELETE** : Supprimer une tâche
 		* Données :
 		* Résultats :
