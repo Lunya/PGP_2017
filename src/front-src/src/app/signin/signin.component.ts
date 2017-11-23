@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
 	selector: 'app-signin',
@@ -8,21 +10,28 @@ import { AuthService } from '../services/auth.service';
 	styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-	loading = false;
-	model = {username: '', password: ''};
+	private loading = false;
+	private signinForm: FormGroup;
 
 	constructor(
 		private router: Router,
-		private authService: AuthService
-	) {}
+		private authService: AuthService,
+		private fb: FormBuilder
+	) {
+		const password = new FormControl(null, [Validators.required, Validators.minLength(8)]);
+		this.signinForm = this.fb.group({
+			email: [null, [Validators.required, CustomValidators.email]],
+			password: password
+		});
+	}
+
 	ngOnInit() {
 		this.authService.logout();
 	}
+
 	login() {
 		this.loading = true;
-		this.authService.login({
-			username: this.model.username,
-			password: this.model.password})
+		this.authService.login(this.signinForm.value)
 			.subscribe(result => {
 				console.log(result);
 				if (result) {
