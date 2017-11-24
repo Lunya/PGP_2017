@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit {
 				password: this.form.password,
 				mail: this.form.mail};
 			this.http.post(url, request)
-				.subscribe((result: any) => {
+					.subscribe((result: any) => {
 						if (result.error) {
 							this.loading = false;
 						} else {

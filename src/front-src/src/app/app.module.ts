@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { ContenteditableDirective } from 'ng-contenteditable';
 
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
@@ -25,7 +25,8 @@ import { SignupComponent } from './signup/signup.component';
 		HomeComponent,
 		HeaderComponent,
 		ProjectsComponent,
-		SignupComponent
+		SignupComponent,
+		ContenteditableDirective
 	],
 	imports: [
 		BrowserModule,

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +9,16 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+	private connected = this.auth.token !== null;
+	user = 'USERNAME';
+
+  constructor(private auth: AuthService) {
+	}
 
   ngOnInit() {
+		if(this.auth.token)
+		this.connected = true;
+		else this.connected = false;
   }
 
 }
