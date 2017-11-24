@@ -1,3 +1,4 @@
+"use strict";
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
@@ -33,35 +34,34 @@ debugAddUser('a', 'a');
 
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
-	bcrypt.genSalt(saltRounds, (err, salt) => {
-		if (err)
-			res.send({error: err});
-		else
-			bcrypt.hash(req.body.password, salt, (err, password) => {
-				users.push({
-					username: req.body.username,
-					password: password,
-					salt: salt,
-					id: _userId++
-				});
-				res.send({error: false, users:users});
+	bcrypt.hash(req.body.password, saltRounds, (err, password) => {
+		if (!err) {
+			users.push({
+				email: req.body.email,
+				name: req.body.name,
+				password: password,
+				id: _userId++
 			});
+			res.send({ error: false });
+		} else
+			res.send({ error: err });
 	});
 });
 
 router.post('/login', (req, res) => {
-	let resObj = {};
-	let user = users.find(u => u.username == req.body.username && bcrypt.compareSync(req.body.password, u.password));
-	if (user !== undefined) {
-		let token = jwt.sign(
-			{ id: user.id },
-			secret,
-			{ expiresIn: '1h' });
-		resObj.token = token;
-	} else
-		resObj.error = 'Error';
 	res.contentType('application/json');
-	res.send(resObj);
+	let user = users.find(u => u.email === req.body.email);
+	bcrypt.compare(req.body.password, user.password)
+		.then(match => {
+			if (match) {
+				let token = jwt.sign(
+					{ id: user.id, email: user.email },
+					secret,
+					{ expiresIn: '1h' });
+				res.send({ error: false, token: token });
+			} else
+				res.send({ error: true });
+		});
 });
 
 function tokenVerifier(req, res, next) {

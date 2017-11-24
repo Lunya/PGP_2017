@@ -1,26 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { AppComponent } from './app.component';
-import { AuthComponent } from './auth/auth.component';
+import { SigninComponent } from './signin/signin.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
+import { AuthService } from './services/auth.service';
+import { AuthGuard } from './guards/auth.guard';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { SignupComponent } from './signup/signup.component';
+import { CustomFormsModule } from 'ng2-validation';
 
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		AuthComponent,
+		SigninComponent,
 		ProjectViewComponent,
 		HomeComponent,
 		HeaderComponent,
@@ -32,7 +33,9 @@ import { SignupComponent } from './signup/signup.component';
 		NgbModule.forRoot(),
 		AppRoutingModule,
 		HttpClientModule,
-		FormsModule
+		FormsModule,
+		ReactiveFormsModule,
+		CustomFormsModule
 	],
 	providers: [
 		AuthService,
