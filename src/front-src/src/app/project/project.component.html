@@ -58,11 +58,11 @@
 			<tbody>
         <ng-container *ngFor="let lignetabus of list_US">
           <tr>
-						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.id" #id="ngModel">{{lignetabus.id}}</th>
+						<!--<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.id" #id="ngModel">{{lignetabus.id}}</th>
 						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.desc" #desc="ngModel">{{lignetabus.desc}}</th>
 						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.dif" #dif="ngModel">{{lignetabus.dif}}</th>
 						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.prio" #prio="ngModel">{{lignetabus.prio}}</th>
-						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.done" #done="ngModel">{{lignetabus.done}}</th>
+						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.done" #done="ngModel">{{lignetabus.done}}</th>-->
 						<th><button class="btn" (click)="onModify(lignetabus)">Edit</button><button class="btn btn-warning">Delete</button></th>
 					</tr>
 				</ng-container>

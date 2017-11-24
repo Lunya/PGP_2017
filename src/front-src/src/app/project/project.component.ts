@@ -1,16 +1,14 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LigneTabUS } from './lignetabus';
 import { LigneTabSprint } from './lignetabsprint'
 
 @Component({
-	selector: 'app-project-view',
-	templateUrl: './project-view.component.html',
-	styleUrls: ['./project-view.component.css'],
-	encapsulation: ViewEncapsulation.None
+	selector: 'app-project',
+	templateUrl: './project.component.html'
 })
 
 
-export class ProjectViewComponent implements OnInit {
+export class ProjectComponent implements OnInit {
 	nom_du_projet : string = "example_project";
 	edit : boolean = false;
 

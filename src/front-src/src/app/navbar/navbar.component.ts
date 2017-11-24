@@ -2,12 +2,12 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {AuthService} from '../services/auth.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderComponent implements OnInit {
+export class NavbarComponent implements OnInit {
 
 	private connected = this.auth.token !== null;
 	user = 'USERNAME';
