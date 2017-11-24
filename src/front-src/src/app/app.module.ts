@@ -3,30 +3,45 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { ContenteditableDirective } from 'ng-contenteditable';
 
 import { AppComponent } from './app.component';
 import { SigninComponent } from './signin/signin.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
-import { ProjectViewComponent } from './project-view/project-view.component';
+import { ProjectComponent } from './project/project.component';
 import { HomeComponent } from './home/home.component';
-import { HeaderComponent } from './header/header.component';
-import { ProjectsComponent } from './projects/projects.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { WorkspaceComponent } from './workspace/workspace.component';
 import { SignupComponent } from './signup/signup.component';
 import { CustomFormsModule } from 'ng2-validation';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { HomeProjectComponent } from './home-project/home-project.component';
+import { SprintComponent } from './sprint/sprint.component';
+import { AccountComponent } from './account/account.component';
+import { EditSprintComponent } from './popups/edit-sprint/edit-sprint.component';
+import { EditProjectComponent } from './popups/edit-project/edit-project.component';
+import { AddUserComponent } from './popups/add-user/add-user.component';
 
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		SigninComponent,
-		ProjectViewComponent,
+		ProjectComponent,
 		HomeComponent,
-		HeaderComponent,
-		ProjectsComponent,
-		SignupComponent
+		NavbarComponent,
+		WorkspaceComponent,
+		SignupComponent,
+		ContenteditableDirective,
+		SidebarComponent,
+		HomeProjectComponent,
+		SprintComponent,
+		AccountComponent,
+		EditSprintComponent,
+		EditProjectComponent,
+		AddUserComponent
 	],
 	imports: [
 		BrowserModule,

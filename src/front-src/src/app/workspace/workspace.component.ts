@@ -2,11 +2,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Project } from '../project';
 
 @Component({
-	selector: 'app-projects',
-	templateUrl: './projects.component.html',
-	styleUrls: ['./projects.component.css']
+	selector: 'app-workspace',
+	templateUrl: './workspace.component.html'
 })
-export class ProjectsComponent implements OnInit {
+export class WorkspaceComponent implements OnInit {
 	private user = 'user';
 	private projects: Project[];
 

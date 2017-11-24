@@ -1,16 +1,15 @@
-"use strict";
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-
+let bd = require('./databaseConnect');
 let router = express.Router();
 
 const secret = 'someSecretString';
 const saltRounds = 8;
-let _userId = 0;
-let users = [];
+//let _userId = 0;
+//let users = [];
 
-function debugAddUser(username, password) {
+/*function debugAddUser(username, password) {
 	"use strict";
 	bcrypt.genSalt(saltRounds, (err, salt) => {
 		if (!err)
@@ -30,38 +29,63 @@ function debugAddUser(username, password) {
 }
 debugAddUser('john', 'doe');
 debugAddUser('nyan', 'cat');
-debugAddUser('a', 'a');
+debugAddUser('a', 'a');*/
 
+/*bd.connect(err => {
+	if (err) throw err;
+	else {
+		console.log('Connected to the database');
+
+	}
+});*/
+
+/*bd.connect(err => {
+	if (err) throw err;
+	else {
+		console.log('Connected to the database');
+*/
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
 	bcrypt.hash(req.body.password, saltRounds, (err, password) => {
 		if (!err) {
-			users.push({
-				email: req.body.email,
-				name: req.body.name,
-				password: password,
-				id: _userId++
-			});
-			res.send({ error: false });
+				bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)",[req.body.name,password,req.body.email], (error, result) => {
+						if(err) throw err;
+				});
+				res.send({ error: false });
 		} else
-			res.send({ error: err });
+				res.send({ error: err });
 	});
 });
 
+
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	let user = users.find(u => u.email === req.body.email);
-	bcrypt.compare(req.body.password, user.password)
-		.then(match => {
+	bd.query("SELECT * FROM User WHERE mail = ?",[req.body.email], (err, result, fields) => {
+			if(err) throw err;
+			bcrypt.compare(req.body.password, result[0]['password'])
+			.then(match => {
 			if (match) {
 				let token = jwt.sign(
-					{ id: user.id, email: user.email },
+					{ id: result[0]['id'], email: result[0]['mail']},
 					secret,
 					{ expiresIn: '1h' });
 				res.send({ error: false, token: token });
 			} else
 				res.send({ error: true });
-		});
+});
+
+
+		/*	if (user !== undefined) {
+				let token = jwt.sign(
+					{ id: user.id },
+					secret,
+					{ expiresIn: '1h' });
+				resObj.token = token;
+			} else
+				resObj.error = 'Error';
+				console.log(resObj);
+				res.send(resObj);*/
+	});
 });
 
 function tokenVerifier(req, res, next) {
