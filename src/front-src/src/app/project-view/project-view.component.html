@@ -52,11 +52,19 @@
           <th>Difficulté</th>
           <th>Priorité</th>
           <th>Fait</th>
+					<th>Action</th>
         </tr>
 			</thead>
 			<tbody>
         <ng-container *ngFor="let lignetabus of list_US">
-          <tr><th>{{lignetabus.id}}</th><th>{{lignetabus.desc}}</th><th>{{lignetabus.dif}}</th><th>{{lignetabus.prio}}</th><th>{{lignetabus.done}}</th></tr>
+          <tr>
+						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.id" #id="ngModel">{{lignetabus.id}}</th>
+						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.desc" #desc="ngModel">{{lignetabus.desc}}</th>
+						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.dif" #dif="ngModel">{{lignetabus.dif}}</th>
+						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.prio" #prio="ngModel">{{lignetabus.prio}}</th>
+						<th [ngValue]="lignetabus.onEdit ? contenteditable : ''" [(ngModel)] = "lignetabus.done" #done="ngModel">{{lignetabus.done}}</th>
+						<th><button class="btn" (click)="onModify(lignetabus)">Edit</button><button class="btn btn-warning">Delete</button></th>
+					</tr>
 				</ng-container>
 				<tr *ngIf='edit' class="info">
 					<th contenteditable='true' [(ngModel)] = "model_US.id" #id="ngModel"></th>

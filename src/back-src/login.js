@@ -46,38 +46,36 @@ debugAddUser('a', 'a');*/
 */
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
-	bcrypt.genSalt(saltRounds, (err, salt) => {
-		if (err)	res.send({error: err});
-		else
-			bcrypt.hash(req.body.password, salt, (err, password) => {
-					if(err) throw err;
-				bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)",[req.body.username,password,req.body.mail], (error, result) => {
+	bcrypt.hash(req.body.password, saltRounds, (err, password) => {
+		if (!err) {
+				bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)",[req.body.name,password,req.body.email], (error, result) => {
 						if(err) throw err;
-						console.log(result);
-						/*
-						ResultSetHeader {
-backend_1   | app-0      |   fieldCount: 0,
-backend_1   | app-0      |   affectedRows: 1,
-backend_1   | app-0      |   insertId: 10,
-backend_1   | app-0      |   info: '',
-backend_1   | app-0      |   serverStatus: 2,
-backend_1   | app-0      |   warningStatus: 0 }
-
-						*/
-						res.send({error: false, response:result})
 				});
-			});
+				res.send({ error: false });
+		} else
+				res.send({ error: err });
 	});
 });
 
 
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	let resObj = {};
-	bd.query("SELECT * FROM User WHERE name = ?",[req.body.username], (err, result, fields) => {
+	bd.query("SELECT * FROM User WHERE mail = ?",[req.body.email], (err, result, fields) => {
 			if(err) throw err;
-			let user = bcrypt.compareSync(req.body.password, result[0]['password']);
-			if (user !== undefined) {
+			bcrypt.compare(req.body.password, result[0]['password'])
+			.then(match => {
+			if (match) {
+				let token = jwt.sign(
+					{ id: result[0]['id'], email: result[0]['mail']},
+					secret,
+					{ expiresIn: '1h' });
+				res.send({ error: false, token: token });
+			} else
+				res.send({ error: true });
+});
+
+
+		/*	if (user !== undefined) {
 				let token = jwt.sign(
 					{ id: user.id },
 					secret,
@@ -86,7 +84,7 @@ router.post('/login', (req, res) => {
 			} else
 				resObj.error = 'Error';
 				console.log(resObj);
-				res.send(resObj);
+				res.send(resObj);*/
 	});
 });
 

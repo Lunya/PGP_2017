@@ -1,38 +1,30 @@
-<div class="container" >
-	<div class="jumbotron" >
+<div class="jumbotron" >
+	<div class="container" >
 		<h1 align="center">Bienvenue sur GesDePro</h1>
 	</div>
 </div>
 
 <div class="container">
-	<div class="col-md-6">
-		<div class="well">
-			<h2>GesDePro</h2>
-			<p>
-				<b>GesDePro</b> est un site de gestion de projets ...
-			</p>
-			<p>
-				<i>Créé par l'équipe HCGL</i>
-			</p>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="card-body">
+				<h2>GesDePro</h2>
+				<p>
+					<b>GesDePro</b> est un site de gestion de projets ...
+				</p>
+				<p>
+					<i>Créé par l'équipe HCGL</i>
+				</p>
+			</div>
 		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="well">
 
-
-
-			<app-signup></app-signup>
-
-
-
-
-
-
-
-
-
-
-
+		<div class="col-md-6">
+			<div class="card-body">
+				<app-signin></app-signin>
+				<div class="text-center">
+					<a routerLink="/signup">Create account</a> or <a routerLink="/resetPassword">reset password</a>
+				</div>
+			</div>
 
 		</div>
 	</div>

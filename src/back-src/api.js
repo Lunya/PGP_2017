@@ -13,8 +13,19 @@ router.use(cors());
 router.get('/', (req, res) => {
 	res.setHeader('Content-Type', 'text/plain');
 	res.send('API Works');
+	/*bd.query("INSERT INTO User (name,password,mail) VALUES('toto','toto','toto@toto')", (err,result) => {
+		if (err) throw err;
+		console.log(result);
+		bd.query("SELECT * FROM User",(err,result,fields) => {
+			if (err) throw err;
+			console.log(result);
+		})
+
+	})*/
+
 	//res.sendfile(__dirname + '/index.html');
 });
+
 
 router.get('/secured', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
