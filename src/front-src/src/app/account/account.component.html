@@ -31,12 +31,12 @@
 				'is-valid': signupForm.controls['password'].touched}">
 	</div>
 	<div class="col mb-3">
-		<label for="verifPassword">New password</label>
-		<input type="password" id="verifPassword" class="form-control"
-			   formControlName="verifPassword" placeholder="Password" required
+		<label for="newPassword">New password</label>
+		<input type="password" id="Password" class="form-control"
+			   formControlName="newPassword" placeholder="Password" required
 			   [ngClass]="{
-				'is-invalid': (signupForm.controls['verifPassword'].invalid && signupForm.controls['verifPassword'].touched),
-				'is-valid': signupForm.controls['verifPassword'].touched}">
+				'is-invalid': (signupForm.controls['newPassword'].invalid && signupForm.controls['newPassword'].touched),
+				'is-valid': signupForm.controls['newPassword'].touched}">
 	</div>
 
 <div class="col mb-3">

@@ -21,12 +21,12 @@ export class AccountComponent implements OnInit {
     private fb: FormBuilder
   ) {
     const password = new FormControl(null, [Validators.required, Validators.minLength(8)]);
-    const verifPassword = new FormControl(null, [Validators.required, CustomValidators.equalTo(password)]);
+    const newPassword = new FormControl(null, [Validators.required, Validators.minLength(8)]);
     this.signupForm = this.fb.group({
       email: [null, [Validators.required, CustomValidators.email]],
       name: [null, [Validators.required, Validators.minLength(2)]],
       password: password,
-      verifPassword: verifPassword
+      newPassword: newPassword
     });
   }
 
