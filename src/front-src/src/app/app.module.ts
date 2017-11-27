@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContenteditableDirective } from 'ng-contenteditable';
 
 import { AppComponent } from './app.component';
@@ -50,12 +50,19 @@ import { AddUserComponent } from './popups/add-user/add-user.component';
 		HttpClientModule,
 		FormsModule,
 		ReactiveFormsModule,
-		CustomFormsModule
+		CustomFormsModule,
+		NgbAccordionModule.forRoot()
 	],
 	providers: [
 		AuthService,
 		AuthGuard
 	],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	entryComponents: [
+		SprintComponent,
+		AddUserComponent,
+		EditProjectComponent,
+		EditSprintComponent
+	]
 })
 export class AppModule { }

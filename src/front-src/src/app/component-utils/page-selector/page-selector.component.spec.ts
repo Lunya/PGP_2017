@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SidebarComponent } from './sidebar.component';
+import { PageSelectorComponent } from './page-selector.component';
 
-describe('SidebarComponent', () => {
-	let component: SidebarComponent;
-	let fixture: ComponentFixture<SidebarComponent>;
+describe('PageSelectorComponent', () => {
+	let component: PageSelectorComponent;
+	let fixture: ComponentFixture<PageSelectorComponent>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ SidebarComponent ]
+			declarations: [ PageSelectorComponent ]
 		})
 			.compileComponents();
 	}));
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(SidebarComponent);
+		fixture = TestBed.createComponent(PageSelectorComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

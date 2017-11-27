@@ -6,9 +6,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/project.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
-import {SignupComponent} from './signup/signup.component';
-import {AuthService } from './services/auth.service';
-import {AccountComponent} from './account/account.component';
+import { SignupComponent } from './signup/signup.component';
+import { AccountComponent } from './account/account.component';
+import { HomeProjectComponent } from './home-project/home-project.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,8 +17,8 @@ const routes: Routes = [
 	{ path: 'projects', component: ProjectComponent},
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'projects', component: WorkspaceComponent, canActivate: [AuthGuard] },
-	{ path: 'project/:id', component: ProjectComponent },
-	{ path: 'resetPassword', component: AccountComponent }
+	{ path: 'resetPassword', component: AccountComponent },
+	{ path: 'project/:id', component: HomeProjectComponent }
 ];
 
 @NgModule({

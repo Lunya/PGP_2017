@@ -1,5 +1,5 @@
 let express = require('express');
-let db = require('./databaseConnect');
+let db = require('../databaseConnect');
 
 let router = express.Router();
 
