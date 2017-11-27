@@ -11,6 +11,7 @@ export class SidebarComponent implements OnInit {
 		users: Array<{ id: number, name: string, email: string }>};
 
 	@Output() onSelectSprint = new EventEmitter<number>();
+	@Output() onNewSprint = new EventEmitter<void>();
 	@Output() onSelectUser = new EventEmitter<number>();
 	@Output() onAddUser = new EventEmitter<void>();
 
@@ -46,7 +47,7 @@ export class SidebarComponent implements OnInit {
 
 	onUserSelected(event: MouseEvent, userId: number): void {
 		this.onSelectUser.emit(userId);
-		let target: any = event.target || event.srcElement || event.currentTarget;
+		let target: any = event.currentTarget;
 		this.unselectAllItemsAndSelectOne(target);
 	}
 

@@ -59,7 +59,10 @@ import { AddUserComponent } from './popups/add-user/add-user.component';
 	],
 	bootstrap: [AppComponent],
 	entryComponents: [
-		SprintComponent
+		SprintComponent,
+		AddUserComponent,
+		EditProjectComponent,
+		EditSprintComponent
 	]
 })
 export class AppModule { }

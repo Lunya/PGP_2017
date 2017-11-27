@@ -2,6 +2,9 @@ import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, View
 import { ActivatedRoute } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { SprintComponent } from '../sprint/sprint.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AddUserComponent } from '../popups/add-user/add-user.component';
+import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
 
 @Component({
 	selector: 'app-home-project',
@@ -22,7 +25,8 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private route: ActivatedRoute,
-		private cfr: ComponentFactoryResolver
+		private cfr: ComponentFactoryResolver,
+		private modalService: NgbModal
 	) { }
 
 	ngOnInit() {
@@ -43,6 +47,14 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 		this.sidebar.onSelectSprint.subscribe(sprintId => {
 			console.log(sprintId);
+		});
+
+		this.sidebar.onNewSprint.subscribe(() => {
+			const modalRef = this.modalService.open(EditSprintComponent);
+		});
+
+		this.sidebar.onAddUser.subscribe(() => {
+			const modalRef = this.modalService.open(AddUserComponent);
 		});
 	}
 
