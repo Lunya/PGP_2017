@@ -1,33 +1,11 @@
-
-<!--<nav class="navbar navbar-default">
-  <div class="container-fluid">
-
-      <a class="navbar-brand" href="#">GesDePro</a>
-
-    <ul class="nav navbar-nav mr-auto">
-      <li class="active"><a routerLink="/home" routerLinkActive="active">Home</a></li>
-      <li><a routerLink="/workspace" routerLinkActive="active">Workspace</a></li>
-      <li><a routerLink="/projects" routerLinkActive="active">Projects</a></li>
-    </ul>
-		<ul class="nav navbar-nav navbar-right">
-	<li *ngIf='connected'><a href="#" (click)='auth.logout()'><span class="glyphicon glyphicon-log-out"></span> Sign out</a></li>
-	<li *ngIf='!connected'><a routerLink="/login" routerLinkActive="active"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-</ul>
-<p class="navbar-text navbar-right" *ngIf='connected'>Welcome {{user}} !</p>
-</div>
-
-</nav>-->
-
-
-
-
 <nav class="navbar navbar-expand-md navbar-dark">
-	<a class="navbar-brand" href="#">GesDePro</a>
+	<a class="navbar-brand" routerLink="#">GesDePro</a>
 	<div class="collapse navbar-collapse">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item"><a class="nav-link" routerLink="#">Home</a></li>
 			<li class="nav-item"><a class="nav-link" routerLink="/workspace">Workspace</a></li>
-			<li class="nav-item"><a class="nav-link" routerLink="/projects">Projects</a></li>
+			<li class="nav-item"><a class="nav-link" routerLink="/project">Project</a></li>
+			<li class="nav-item"><a class="nav-link" routerLink="/sprint">Sprint</a></li>
+			<li class="nav-item"><a class="nav-link" routerLink="/account">Account</a></li>
 		</ul>
 
 		<ul class="navbar-nav navbar-right">

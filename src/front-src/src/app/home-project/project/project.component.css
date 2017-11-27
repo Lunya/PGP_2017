@@ -1,0 +1,51 @@
+.jumbotron {
+	padding: 3em 2em;
+}
+
+.jumbotron p {
+	font-style: italic;
+}
+
+table {
+    table-layout:fixed;
+		box-shadow: 10px 10px 5px #888888;
+}
+
+tbody {
+    display:block;
+    height:450px;
+    overflow-y:scroll;
+		width: calc(100% + 2em);
+}
+
+thead, tbody tr{
+  display:table;
+  width:100%;
+  table-layout:fixed;
+}
+
+tbody tr {
+    width:calc(100% - 17px);
+}
+
+table th.description, table td.description {
+	width: 380px;
+}
+
+table td {
+	word-wrap: break-word;
+}
+
+table button.btn {
+	padding: 2px 5px;
+}
+
+table td select {
+	max-width:130px;
+}
+
+#newLine {
+	border-style: solid;
+	border-color: black;
+	background-color: white;
+}
