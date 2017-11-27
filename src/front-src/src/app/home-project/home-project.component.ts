@@ -1,7 +1,7 @@
 import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SidebarComponent } from '../sidebar/sidebar.component';
-import { SprintComponent } from '../sprint/sprint.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SprintComponent } from './sprint/sprint.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
