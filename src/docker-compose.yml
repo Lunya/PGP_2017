@@ -7,10 +7,10 @@ services:
     volumes:
       - ./initdb:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_USER: "karom"
-      MYSQL_PASSWORD: "root"
-      MYSQL_DATABASE: "pgp"
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: pgp
     ports:
       - "3316:3306"
   backend:

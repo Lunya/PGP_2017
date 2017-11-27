@@ -1,9 +1,9 @@
 let express = require('express');
 let bd = require('./databaseConnect');
-let login = require('./login');
-let project = require('./project');
-let user = require('./user');
-let userstory = require('./userstory');
+let login = require('./routes/login');
+let project = require('./routes/project');
+let user = require('./routes/user');
+let userstory = require('./routes/userstory');
 let cors = require('cors');
 
 let router = express.Router();
