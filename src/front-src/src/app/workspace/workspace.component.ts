@@ -1,18 +1,42 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Project } from '../project';
+import { Project } from '../objects/Project';
 
 @Component({
 	selector: 'app-workspace',
-	templateUrl: './workspace.component.html'
+	templateUrl: './workspace.component.html',
+	styleUrls: ['./workspace.component.css']
 })
 export class WorkspaceComponent implements OnInit {
 	private user = 'user';
-	private projects: Project[];
+	private myProjects: Project[];
+	private otherProjects: Project[];
+
+	public id: number;
+	public name: string;
+	public creator: string;
+	public description: string;
+	public url: string;
+	public begin: Date;
+	public end: Date;
+	public participant: String[];
+
+	private projectModel= {
+ 	 id: 0 ,
+	 name: '',
+	 creator: '',
+ 	 description: '',
+ 	 url: 0,
+	 begin: '',
+ 	 end: '',
+ 	 participant: [],
+  };
+
 
 	constructor() {}
 	ngOnInit() {
-		this.projects = new Array<Project>();
-		this.projects.push(new Project(1, 'aa'));
-		this.projects.push(new Project(2, 'bb'));
+	}
+
+	newProject() {
+
 	}
 }

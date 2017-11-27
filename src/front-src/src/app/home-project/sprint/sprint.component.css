@@ -1,0 +1,50 @@
+button#editSprint {
+	font-size: 20px;
+	padding: 8px 40px;
+}
+
+p.date {
+	font-size: 20px;
+	padding: 8px 40px;
+}
+
+table {
+    table-layout:fixed;
+		box-shadow: 10px 10px 5px #888888;
+}
+
+tbody {
+    display:block;
+    height:360px;
+    overflow-y:scroll;
+		width: calc(100% + 2em);
+}
+
+thead, tbody tr{
+  display:table;
+  width:100%;
+  table-layout:fixed;
+}
+
+tbody tr {
+    width:calc(100% - 17px);
+}
+
+table th.description, table td.description {
+	width: 400px;
+}
+
+table td {
+	word-wrap: break-word;
+}
+
+table button.btn {
+	padding: 2px 10px;
+}
+
+
+#newLine {
+	border-style: solid;
+	border-color: black;
+	background-color: white;
+}
