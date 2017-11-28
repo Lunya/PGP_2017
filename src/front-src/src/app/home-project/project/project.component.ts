@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { UserStory } from '../../objects/UserStory';
-import { Directive, ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
 @Component({
@@ -17,14 +17,17 @@ export class ProjectComponent implements OnInit {
 	private haveURL : boolean = false;
 
 	private usList = [];
-	private usModel= {
+	/* TODO: refactorer le code pour utiliser la nouvelle méthode d'entrée
+	sur les formulaires permettant d'avoir un retour interactif.
+	 */
+	/*private usModel= {
 		id: 0 ,
 		description: '',
 		difficulty: 0,
 		priority:0,
 		status: '',
 		onEdit: false
-	};
+	};*/
 
 	private project = {
 		id:1,
@@ -32,7 +35,7 @@ export class ProjectComponent implements OnInit {
 		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
 		begin: '01/01/01',
 		end:'12/12/21'
-	}
+	};
 
 	private idUS: number = 1;
 
@@ -48,12 +51,12 @@ export class ProjectComponent implements OnInit {
 	}
 
 	resetModel() {
-		this.usModel.id=0;
+		/*this.usModel.id=0;
 		this.usModel.description='';
 		this.usModel.difficulty=0;
 		this.usModel.priority=0;
 		this.usModel.status='';
-		this.usModel.onEdit = false;
+		this.usModel.onEdit = false;*/
 	}
 
 	onEditRow(ligne) {
@@ -101,13 +104,13 @@ export class ProjectComponent implements OnInit {
 
 	onConfirm() {
 		this.addUsMode = false;
-		this.usList.push(new UserStory(
+		/*this.usList.push(new UserStory(
 			this.idUS,
 			this.usModel.description,
 			this.usModel.difficulty,
 			this.usModel.priority,
 			this.usModel.status
-		));
+		));*/
 		this.idUS++;
 		this.resetModel();
 

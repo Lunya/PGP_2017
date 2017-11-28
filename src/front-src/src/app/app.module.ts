@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgbModule, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbAccordionModule, NgbTabsetModule, NgbTab } from '@ng-bootstrap/ng-bootstrap';
 import { ContenteditableDirective } from 'ng-contenteditable';
 
 
@@ -25,9 +25,8 @@ import { EditSprintComponent } from './popups/edit-sprint/edit-sprint.component'
 import { EditProjectComponent } from './popups/edit-project/edit-project.component';
 import { AddUserComponent } from './popups/add-user/add-user.component';
 import { UserInfoComponent } from './home-project/user-info/user-info.component';
-
-
-
+import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdrop';
+import { Ng2BootstrapModule } from 'ng2-bootstrap';
 
 
 @NgModule({
@@ -52,12 +51,16 @@ import { UserInfoComponent } from './home-project/user-info/user-info.component'
 	imports: [
 		BrowserModule,
 		NgbModule.forRoot(),
+		Ng2BootstrapModule.forRoot(),
 		AppRoutingModule,
 		HttpClientModule,
 		FormsModule,
 		ReactiveFormsModule,
 		CustomFormsModule,
-		NgbAccordionModule.forRoot()
+		NgbAccordionModule.forRoot(),
+		NgbModule.forRoot(),
+		NgModule,
+		NgbTabsetModule
 	],
 	providers: [
 		AuthService,
@@ -69,7 +72,8 @@ import { UserInfoComponent } from './home-project/user-info/user-info.component'
 		AddUserComponent,
 		EditProjectComponent,
 		EditSprintComponent,
-		UserInfoComponent
+		UserInfoComponent,
+		NgbModalBackdrop
 	]
 })
 export class AppModule { }

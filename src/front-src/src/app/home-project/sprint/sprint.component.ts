@@ -4,7 +4,7 @@ import { Task } from '../../objects/Task';
 @Component({
 	selector: 'app-sprint',
 	templateUrl: './sprint.component.html',
-	styleUrls: ['./sprint.component.css']
+	styleUrls: ['./sprint.component.css'],
 })
 export class SprintComponent implements OnInit {
 

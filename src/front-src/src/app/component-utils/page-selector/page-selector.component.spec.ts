@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PageSelectorComponent } from './page-selector.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PageSelectorComponent', () => {
 	let component: PageSelectorComponent;
@@ -8,7 +9,8 @@ describe('PageSelectorComponent', () => {
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ PageSelectorComponent ]
+			declarations: [ PageSelectorComponent ],
+			imports: [ RouterTestingModule ]
 		})
 			.compileComponents();
 	}));

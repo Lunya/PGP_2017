@@ -19,7 +19,7 @@
 
 		<div class="col-md-6">
 
-			<form *ngIf="!haveURL" class="form-repository" [formGroup]="repositoryForm" (ngSubmit)="submitURL()" novalidate>
+			<form *ngIf="!haveURL" class="form-repository" (ngSubmit)="submitURL()" novalidate>
 				<div class="form-group form-inline"><label for="url"><button type="button" class="btn btn-success" type="submit" [disabled]="repositoryForm.invalid">Add URL repository</button>
 						<div class="col-md-1"></div>
 					<input type="url" id="url" class="form-control" formControlName="url" placeholder="URL Repository"
@@ -30,7 +30,7 @@
 				</div>
 			</form>
 
-			<form *ngIf="haveURL" class="form-repository" [formGroup]="repositoryForm" (ngSubmit)="submitURL()" novalidate>
+			<form *ngIf="haveURL" class="form-repository" (ngSubmit)="submitURL()" novalidate>
 				<div class="form-group form-inline"><label for="url">
 					<button type="button" class="btn btn-primary" (click)="editURL()" >Edit URL repository</button>
 					<div class="col-md-1"></div>
@@ -60,24 +60,24 @@
 			<tbody>
 
 				<tr *ngIf='addUsMode' id="newLine">
-					<td class="table-secondary" contenteditable='true' [(ngModel)]="usModel.id" #id="ngModel"></td>
-					<td class="table-primary description" contenteditable='true' [(ngModel)]="usModel.description" #description="ngModel"></td>
-					<td class="table-primary" contenteditable='true' [(ngModel)]="usModel.difficulty" #difficulty="ngModel"></td>
-					<td class="table-primary" contenteditable='true' [(ngModel)]="usModel.priority" #priority="ngModel"></td>
-					<td class="table-primary" contenteditable='true' [(ngModel)]="usModel.status" #status="ngModel"></td>
+					<td class="table-secondary" contenteditable='true'></td>
+					<td class="table-primary description" contenteditable='true' ></td>
+					<td class="table-primary" contenteditable='true' ></td>
+					<td class="table-primary" contenteditable='true' ></td>
+					<td class="table-primary" contenteditable='true' ></td>
 					<td>
 						<button class="btn" disabled>Edit</button>
 						<button class="btn btn-danger" disabled>Delete</button>
 					</td>
 				</tr>
-				
+
 				<ng-container *ngFor="let us of usList">
 					<tr id="{{ 'US' + us.id  }}">
-						<td class="table-secondary" contenteditable='false' [(ngModel)]="us.id" #id="ngModel">{{us.id}}</td>
-						<td class="editable description" contenteditable='false' [(ngModel)]="us.description" #description="ngModel">{{us.description}}</td>
-						<td class="editable" contenteditable='false' [(ngModel)]="us.difficulty" #difficulty="ngModel">{{us.difficulty}}</td>
-						<td class="editable" contenteditable='false' [(ngModel)]="us.priority" #priority="ngModel">{{us.priority}}</td>
-						<td class="editable" contenteditable='false' [(ngModel)]="us.status" #status="ngModel">{{us.status}}</td>
+						<td class="table-secondary" contenteditable='false' >{{us.id}}</td>
+						<td class="editable description" contenteditable='false' >{{us.description}}</td>
+						<td class="editable" contenteditable='false' >{{us.difficulty}}</td>
+						<td class="editable" contenteditable='false' >{{us.priority}}</td>
+						<td class="editable" contenteditable='false' >{{us.status}}</td>
 						<td>
 							<button *ngIf='!us.onEdit' class="btn btn-default" (click)="onEditRow(us)">Edit</button>
 							<button *ngIf='!us.onEdit' class="btn btn-danger" (click)="onDeleteRow(us)">Delete</button>

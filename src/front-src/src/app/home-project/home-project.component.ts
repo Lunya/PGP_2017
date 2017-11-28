@@ -7,11 +7,18 @@ import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
 import { ProjectComponent } from './project/project.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdrop';
 
 @Component({
 	selector: 'app-home-project',
 	templateUrl: './home-project.component.html',
-	styleUrls: ['./home-project.component.css']
+	styleUrls: ['./home-project.component.css'],
+	entryComponents: [
+		NgbModalBackdrop,
+		ProjectComponent,
+		SprintComponent,
+		UserInfoComponent
+	]
 })
 export class HomeProjectComponent implements OnInit, OnDestroy {
 	private subPar: any;
@@ -19,7 +26,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	private projectId: number;
 
 	@ViewChild(SidebarComponent)
-	private sidebar: SidebarComponent;
+	public sidebar: SidebarComponent;
 
 	@ViewChild('dynamicContent', { read: ViewContainerRef })
 	private pageContent: ViewContainerRef;

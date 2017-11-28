@@ -22,7 +22,7 @@
 			</div>
 		</div>
 
-		<ngb-tabset #t="ngbTabset" justify="end">
+		<ngb-tabset justify="end">
 			<ngb-tab id="tab-selectbyid2">
 				<ng-template ngbTabTitle>Tasks</ng-template>
 				<ng-template ngbTabContent>
@@ -42,14 +42,14 @@
 
 							<tbody data-spy="scroll">
 								<tr *ngIf='addTaskMode' id="newLine">
-									<td class="table-secondary number" contenteditable='false' [(ngModel)]="taskModel.id" #id="ngModel"></td>
-									<td class="table-primary description" contenteditable='true' [(ngModel)]="taskModel.description" #description="ngModel"></td>
+									<td class="table-secondary number" contenteditable='false' ></td>
+									<td class="table-primary description" contenteditable='true' ></td>
 									<td class="table-primary" contenteditable='false'>
-										<select [(ngModel)]="taskModel.developer" #developer="ngModel">
+										<select >
 									<option *ngFor="let user of developers">{{user}}</option>
 							</select>
 									</td>
-									<td class="table-primary status" contenteditable='true' [(ngModel)]="taskModel.status" #status="ngModel"></td>
+									<td class="table-primary status" contenteditable='true' ></td>
 									<td class="columnAction">
 										<button class="btn" disabled>Edit</button>
 										<button class="btn btn-danger" disabled>Delete</button>
@@ -58,15 +58,15 @@
 
 								<ng-container *ngFor="let task of taskList">
 									<tr id="{{ 'TASK' + task.id  }}">
-										<td class="table-secondary number" contenteditable='false' [(ngModel)]="task.id" #id="ngModel">{{task.id}}</td>
-										<td class="editable description" contenteditable='false' [(ngModel)]="task.description" #description="ngModel">{{task.description}}</td>
-										<td *ngIf='!task.onEdit' class="editable" contenteditable='false' [(ngModel)]="task.developer" #difficulty="ngModel">{{task.developer}}</td>
+										<td class="table-secondary number" contenteditable='false' >{{task.id}}</td>
+										<td class="editable description" contenteditable='false' >{{task.description}}</td>
+										<td *ngIf='!task.onEdit' class="editable" contenteditable='false' >{{task.developer}}</td>
 										<td *ngIf='task.onEdit' class="table-primary" contenteditable='false'>
-											<select [(ngModel)]="task.developer" #developer="ngModel">
+											<select >
 											<option *ngFor="let user of developers">{{user}}</option>
 									</select>
 										</td>
-										<td class="editable status" contenteditable='false' [(ngModel)]="task.status" #priority="ngModel">{{task.status}}</td>
+										<td class="editable status" contenteditable='false' >{{task.status}}</td>
 										<td class="columnAction">
 											<button *ngIf='!task.onEdit' class="btn btn-default" (click)="onEditRow(task)">Edit</button>
 											<button *ngIf='!task.onEdit' class="btn btn-danger" (click)="onDeleteRow(task)">Delete</button>
