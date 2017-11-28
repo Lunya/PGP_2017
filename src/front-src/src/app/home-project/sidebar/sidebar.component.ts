@@ -10,6 +10,7 @@ export class SidebarComponent implements OnInit {
 		sprints: Array<{ id: number, name: string }>,
 		users: Array<{ id: number, name: string, email: string }>};
 
+	@Output() onSelectProject = new EventEmitter<void>();
 	@Output() onSelectSprint = new EventEmitter<number>();
 	@Output() onNewSprint = new EventEmitter<void>();
 	@Output() onSelectUser = new EventEmitter<number>();
@@ -22,6 +23,7 @@ export class SidebarComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+		this.onProjectSelected();
 	}
 
 	setContent(content): void {
@@ -36,6 +38,7 @@ export class SidebarComponent implements OnInit {
 	}
 
 	onProjectSelected(): void {
+		this.onSelectProject.emit();
 		this.unselectAllItemsAndSelectOne(this.projectElement.nativeElement);
 	}
 

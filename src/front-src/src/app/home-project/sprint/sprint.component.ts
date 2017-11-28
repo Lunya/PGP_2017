@@ -1,50 +1,51 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Task } from '../../objects/Task';
 
-import { Subject } from 'rxjs/Subject';
-
 @Component({
-  selector: 'app-sprint',
-  templateUrl: './sprint.component.html',
-  styleUrls: ['./sprint.component.css'],
-  //encapsulation: ViewEncapsulation.None
+	selector: 'app-sprint',
+	templateUrl: './sprint.component.html',
+	styleUrls: ['./sprint.component.css']
 })
 export class SprintComponent implements OnInit {
 
-	private addTaskMode : boolean = false;
+	private addTaskMode = false;
 	private taskList = [];
 	private taskModel= {
 		id: 0 ,
 		description: '',
 		developer: '',
-		status:'',
+		status: '',
 		onEdit: false
 	};
 
 	private sprint = {
-		id:1,
-		idProject:1,
+		id: 1,
+		idProject: 1,
 		begin: '01/01/01',
-		end:'12/12/12'
+		end: '12/12/12'
 	}
 
-	private idTask: number = 1;
+	private idTask = 1;
 	private developers = [];
 
-  constructor(private el: ElementRef) {
+	constructor(private el: ElementRef) {
 	}
 
-  ngOnInit() {
-				this.developers.push(new String("jean"));
-				this.developers.push(new String("jean-philipe"));
-				this.developers.push(new String("hydroxilpropilmetylcelullose"));
-  }
+	public setSprintId(id: number): void {
+		this.sprint.id = id;
+	}
+
+	ngOnInit() {
+		this.developers.push(new String("jean"));
+		this.developers.push(new String("jean-philipe"));
+		this.developers.push(new String("hydroxilpropilmetylcelullose"));
+	}
 
 	resetModel() {
-		this.taskModel.id=0;
-		this.taskModel.description='';
-		this.taskModel.developer='';
-		this.taskModel.status='';
+		this.taskModel.id = 0;
+		this.taskModel.description = '';
+		this.taskModel.developer = '';
+		this.taskModel.status = '';
 		this.taskModel.onEdit = false;
 	}
 
@@ -54,7 +55,7 @@ export class SprintComponent implements OnInit {
 		let tab = this.el.nativeElement.querySelectorAll(tr_id+" .editable");
 		for (let i = 0; i < tab.length; ++i) {
 			tab[i].classList.add("table-info");
-  		tab[i].setAttribute('contenteditable','true');
+			tab[i].setAttribute('contenteditable','true');
 		}
 	}
 
