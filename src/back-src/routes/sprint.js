@@ -71,5 +71,14 @@ router.post('/sprints/:idProject/:idSprint', (req,res) => {
     res.send(200, JSON.stringify(values));
   }
 });
+/* Définir ce qui est patchable dans une tache*/
+router.patch('/sprints/:idProject/:idSprint', (req, res) => {
+	let id_project = req.params.idProject;
+	let id_sprint = req.params.idSprint;
+	bd.query('UPDATE Sprint SET end =? WHERE id_project=? AND i=?',[req.body.end,id_project,id_sprint],(err,result) => {#
+		let values = [];
+		treatment(err,res,values,"success")
+	});
+});
 
 module.exports  = router;
