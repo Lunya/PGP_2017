@@ -42,6 +42,9 @@ bd.connect(err => {
 			res.setHeader('Content-Type', 'application/json');
 			bd.query('SHOW TABLES', (error, tables, fields) => {
 				let result = {};
+				console.log(tables);
+				if (tables.length === 0)
+					res.end(JSON.stringify(result));
 				for (let i = 0; i < tables.length; i++) {
 					let table = tables[i][fields[i].name];
 					let content = [];
