@@ -33,7 +33,7 @@ router.post('/sprints/:id', (req,res) => {
     });
   }
   else {
-    values.push({'result' : 'error' : 'msg' : 'Missing field'});
+    values.push({'result' : 'error', 'msg' : 'Missing field'});
     res.setHeader('Content-Type', 'application/json');
     res.send(200, JSON.stringify(values));
   }
@@ -66,7 +66,7 @@ router.post('/sprints/:idProject/:idSprint', (req,res) => {
     });
   }
   else {
-    values.push({'result' : 'error' : 'msg' : 'Missing field'});
+    values.push({'result' : 'error', 'msg' : 'Missing field'});
     res.setHeader('Content-Type', 'application/json');
     res.send(200, JSON.stringify(values));
   }
@@ -75,7 +75,7 @@ router.post('/sprints/:idProject/:idSprint', (req,res) => {
 router.patch('/sprints/:idProject/:idSprint', (req, res) => {
 	let id_project = req.params.idProject;
 	let id_sprint = req.params.idSprint;
-	bd.query('UPDATE Sprint SET end =? WHERE id_project=? AND i=?',[req.body.end,id_project,id_sprint],(err,result) => {#
+	bd.query('UPDATE Sprint SET end =? WHERE id_project=? AND i=?',[req.body.end,id_project,id_sprint],(err,result) => {
 		let values = [];
 		treatment(err,res,values,"success")
 	});
