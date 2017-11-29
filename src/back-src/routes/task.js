@@ -16,16 +16,16 @@ function treatment(errorStatus, response, values,  rows) {
 	}
 };
 
-router.get('/tasks/:idsprint', (req, res) => {
-  let idSprint = req.params.idsprint;
-  bd.query('SELECT * FROM tasks WHERE id_sprint = ?',[idSprint], (err,cols) => {
+router.get('/tasks/:idSprint', (req, res) => {
+  let idSprint = req.params.idSprint;
+  bd.query('SELECT * FROM Task WHERE id_sprint = ?',[idSprint], (err,cols) => {
     let values = [];
     treatment(err,res,values,cols)
   })
 });
 
-router.post('/tasks/:idsprint', (req, res) => {
-  let id_sprint = req.params.idsprint;
+router.post('/tasks/:idSprint', (req, res) => {
+  let id_sprint = req.params.idSprint;
   let values = [];
   if (typeof req.body.description !== 'undefined'){
     bd.query('INSERT INTO Task VALUES(?,?)',[id_sprint,req.body.description],(err,result) => {
@@ -37,6 +37,28 @@ router.post('/tasks/:idsprint', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(200, JSON.stringify(values));
   }
+});
+
+router.patch('/tasks/:idSprint/:idTask', (req,res) => {
+  let id_sprint = req.params.idSprint;
+  let id = req.params.idTask;
+  bd.query('UPDATE Task SET description = ? state = ? WHERE id = ? AND id_sprint = ? ',
+            [req.body.description, req.body.state,id,id_sprint], (err, cols) => {
+      let values = [];
+      treatment(err,res,values,"success");
+  });
+});
+
+router.delete('/tasks/:idSprint/:idTask', (req,res) => {
+  let id_sprint = req.params.idSprint;
+  let id = req.params.idTask;
+  bd.query('DELETE FROM Task WHERE id_sprint = ? AND id = ?', [id_sprint,id], (err,count) => {
+    if(err) throw err;
+    else{
+      let values = [];
+      treatment(err,res,values,"success");
+    }
+  });
 });
 
 module.exports  = router;

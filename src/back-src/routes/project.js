@@ -66,7 +66,7 @@ bd.query("DELETE FROM Project WHERE id=?",[id], (err,count) => {
 	let values = [];
 	treatment(err, res, values, "success");
 
-})
+});
 });
 
 module.exports = router;

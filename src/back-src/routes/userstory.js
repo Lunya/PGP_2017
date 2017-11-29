@@ -62,7 +62,7 @@ router.delete('/userstory/:idproject/:id', (req, res) => {
 			let values = [];
 			treatment(err, res, values, "success");
 		}
-	})
+	});
 });
 
 module.exports = router;
