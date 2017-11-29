@@ -17,5 +17,5 @@ install:
   - npm install --prefix ./src/front-src/
   - src/front-src/node_modules/protractor/bin/webdriver-manager update
 script:
-  - ng test --watch=false
+  - ng test --watch=false -sm=false
   - ng e2e
