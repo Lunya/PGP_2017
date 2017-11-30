@@ -1,6 +1,7 @@
 sudo: required
 dist: trusty
 addons:
+  mariadb: '10.2'
   apt:
     sources:
       - google-chrome
@@ -11,6 +12,11 @@ services:
 language: node_js
 node_js:
   - "stable"
+
+before_install:
+  - mysql -e 'create database pgp_test; use pgp_test;'
+  - mysql -u root --password="" - < initdb/init.sql
+  - mysql -u root --password="" < initdb/peuplement.sql
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
@@ -22,3 +28,12 @@ install:
 script:
   - npm start --prefix ../back-src/ &
   - ng e2e
+
+env:
+  - MYSQL_TYPE=mysql MYSQL_HOST=localhost MYSQL_DATABASE=pgp_test MYSQL_USER=root MYSQL_PASSWORD=
+
+mysql:
+  adapter: mysql2
+  username: root
+  encoding: utf8
+  database: pgp_test
