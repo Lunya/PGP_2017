@@ -4,6 +4,8 @@ let login = require('./routes/login');
 let project = require('./routes/project');
 let user = require('./routes/user');
 let userstory = require('./routes/userstory');
+let sprint = require('./routes/sprint');
+let task = require('./routes/task');
 let cors = require('cors');
 
 let router = express.Router();
@@ -67,6 +69,8 @@ bd.connect(err => {
 		router.use(project);
 		router.use(user);
 		router.use(userstory);
+		router.use(sprint);
+		router.use(task);
 	}
 });
 
