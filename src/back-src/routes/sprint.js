@@ -3,8 +3,8 @@ let bd = require('../databaseConnect')
 
 let router = express.Router();
 
-function treatment(errorStatus, response, values,  rows) {
-	if(errorStatus) response.status(400).send(err);
+function treatment(err, response, values,  rows) {
+	if(err) response.status(400).send(values);
 	else {
 		if (rows.length != 0) {
 			values.push({'result' : 'success', 'data' : rows});
@@ -12,7 +12,7 @@ function treatment(errorStatus, response, values,  rows) {
 			values.push({'result' : 'error', 'msg' : 'No Results Found'});
 		}
 		response.setHeader('Content-Type', 'application/json');
-		response.status(200).send(JSON.stringify(value));
+		response.status(200).send(JSON.stringify(values));
 	}
 };
 
