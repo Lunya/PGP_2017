@@ -2,6 +2,7 @@ import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, View
 import { ActivatedRoute } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SprintComponent } from './sprint/sprint.component';
+import { ProjectComponent } from './project/project.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
@@ -41,6 +42,9 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 				{ id: 1, name: 'user 1', email: 'email1@aa.aa' },
 				{ id: 2, name: 'user 2', email: 'email2@aa.aa' }
 			]});
+
+			/*let projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
+			let projectComponent = this.pageContent.createComponent(projectComponentFactory);*/
 
 		let sprintComponentFactory = this.cfr.resolveComponentFactory(SprintComponent);
 		let sprintComponent = this.pageContent.createComponent(sprintComponentFactory);

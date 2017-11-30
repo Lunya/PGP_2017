@@ -1,100 +1,29 @@
 import { ConnexionPage } from './connection.page';
 import { ProfilePage } from './profile.page';
 import { ProjectPage } from './project.page';
-import { browser, by, element,protractor } from 'protractor';
-
+import { RegisterPage } from './register.page';
+import { browser, by, element, protractor } from 'protractor';
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
-function httpGet(siteUrl) {
-    var http = require('http');
-    var defer = protractor.promise.defer();
-
-    http.get(siteUrl, function(response) {
-        var bodyString = '';
-        response.setEncoding('utf8');
-
-        response.on("data", function(chunk) {
-            bodyString += chunk;
-        });
-        response.on('end', function() {
-            defer.fulfill({
-                "status": response.statusCode,
-                "body": bodyString
-            });
-        });
-    }).on('error', function(e) {
-        defer.reject("Got http.get error: " + e.message);
-    });
-    return defer.promise;
-}
+const serverURL = "http://localhost:3000";
 
 
-describe('POST /login, POST /user : pgp connection e2e testing', () => {
-  let page: ConnexionPage;
+describe('POST /register : pgp register e2e testing', () => {
+	let page: RegisterPage;
 
-  beforeEach(() => {
-    page = new ConnexionPage();
-    page.navigateTo('/');
-  });
+	beforeEach(() => {
+		page = new RegisterPage();
+		page.navigateTo('/signup');
+	})
 
-  it('should display welcome message when / is accessed', () => {
-    expect(page.getParagraphText()).toEqual('Bienvenue sur GesDePro');
-  });
 
-  it('should connect with login = slooby and passwd = loobys ', () => {
-    page.fillAndSendFormConnection("slooby","loobys");
-    httpGet(browser.baseUrl + "/user").then(function(result) {
-      expect(result["status"]).toBe(200);
-    });
-    expect(page.url()).toEqual(browser.baseUrl + "/user");
-  });
-
-  it('should not not be able to connect with a wrong login and passwd', () => {
-    page.fillAndSendFormConnection("","");
-		httpGet(browser.baseUrl + "/user").then(function(result) {
-			expect(result["status"]).toBe(404);
-		});
-		expect(page.url()).toEqual(browser.baseUrl + "/home");
-  });
-  it('should not be able to connect with a wrong login', () => {
-		page.fillAndSendFormConnection("","loobys");
-		httpGet(browser.baseUrl + "/user").then(function(result) {
-			expect(result["status"]).toBe(404);
-		});
-		expect(page.url()).toEqual(browser.baseUrl + "/home");
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-  });
-  it('should not be able to connect with a wrong passwd', () => {
-    page.fillAndSendFormConnection("slooby","");
-		httpGet(browser.baseUrl + "/user").then(function(result) {
-			expect(result["status"]).toBe(404);
-		});
-		expect(page.url()).toEqual(browser.baseUrl + "/home");
-  });
-  /*it('should display error message when connexion failed because of wrong parameter', () => {
-    page.fillAndSendFormConnection("","");
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    expect(page.errorMessageExist());
-  });*/
-});
-
-/*--------------------------------------------------------------------
-----------------------------------------------------------------------*/
-describe('POST /register : pgp create profile e2e testing', () => {
-  let page: ConnexionPage;
-
-  beforeEach(() => {
-    page = new ConnexionPage();
-    page.navigateTo('/');
-  });
-
-  it('should create profile with login = karom and passwd = kamor', () => {
-    page.fillAndSendFormCreateProfile("karom","kamor","kamor");
+	it('should create profile with login = karom and passwd = kamor', () => {
+		page.fillAndSendFormCreateProfile("karom","kamor","kamor");
 		httpGet(browser.baseUrl + "/user").then(function(result) {
 			expect(result["status"]).toBe(200);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/user");
-  });
+	});
 
 	it('should not create profile if pasword and confirmation are not the same', () => {
 		page.fillAndSendFormCreateProfile("karom","kamor","trolls");
@@ -104,25 +33,79 @@ describe('POST /register : pgp create profile e2e testing', () => {
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
 	});
 
-  it('should not create profile if login already exist', () => {
-    page.fillAndSendFormCreateProfile("slooby","kamor", "kamor");
+	it('should not create profile if login already exist', () => {
+		page.fillAndSendFormCreateProfile("slooby","kamor", "kamor");
 		httpGet(browser.baseUrl + "/user").then(function(result) {
 			expect(result["status"]).toBe(404);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
-  });
-  it('should not create profile if password is not good enough', () => {
-    page.fillAndSendFormCreateProfile("karom","b", "b");
+	});
+	it('should not create profile if password is not good enough', () => {
+		page.fillAndSendFormCreateProfile("karom","b", "b");
 		httpGet(browser.baseUrl + "/user").then(function(result) {
 			expect(result["status"]).toBe(404);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
-  });
-});
+	});
+
+})
 
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
-describe('POST /project : pgp create a project e2e testing', () => {
+
+describe('POST /login : pgp connection e2e testing', () => {
+	let page: ConnexionPage;
+
+	beforeEach(() => {
+		page = new ConnexionPage();
+		page.navigateTo('/');
+	});
+
+	it('should display welcome message when / is accessed', () => {
+		expect(page.getParagraphText()).toEqual('Bienvenue sur GesDePro');
+	});
+
+	it('should connect with login = test@gmail.com and passwd = 123456789 -> code 200 and redirection to /workspace -> code 200', () => {
+		page.fillAndSendFormConnection("test@gmail.com", "123456789");
+		let data = { email: 'test@gmail.com', password: '123456789' };
+		postRequest(serverURL + "/api/login", data).then(function(result) {
+			expect(result["status"]).toBe(200);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/workspace");
+	});
+
+	it('should not not be able to connect with a wrong login and passwd -> code 400', () => {
+		page.fillAndSendFormConnection("test@gmail.m", "123456");
+		let data = { email: 'test@gmail.m', password: '123456' };
+		postRequest(serverURL + "/api/login", data).then(function(result) {
+			expect(result["status"]).toBe(400);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
+	});
+
+	it('should not be able to connect with a wrong login -> code 400', () => {
+		page.fillAndSendFormConnection("test@gmail.m", "123456789");
+		let data = { email: 'test@gmail.m', password: '123456789' };
+		postRequest(serverURL + "/api/login", data).then(function(result) {
+			expect(result["status"]).toBe(400);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
+	});
+
+	it('should not be able to connect with a wrong passwd -> code 400', () => {
+		page.fillAndSendFormConnection("test@gmail.com", "");
+		let data = { email: 'test@gmail.com', password: '123456780' };
+		postRequest(serverURL + "/api/login", data).then(function(result) {
+			expect(result["status"]).toBe(400);
+		});
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
+	});
+});
+
+
+/*--------------------------------------------------------------------
+----------------------------------------------------------------------*/
+/*describe('POST /project : pgp create a project e2e testing', () => {
   let page: ProjectPage;
 
   beforeEach(() => {
@@ -157,7 +140,7 @@ describe('POST /project : pgp create a project e2e testing', () => {
 });
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
-describe('GET /userstories/:id : pgp UserStories listing e2e testing', () => {
+/*describe('GET /userstories/:id : pgp UserStories listing e2e testing', () => {
   let page: ProjectPage;
 
   beforeEach(() => {
@@ -177,26 +160,26 @@ describe('GET /userstories/:id : pgp UserStories listing e2e testing', () => {
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
 describe('PATCH, DELETE /userstories/:id : pgp édition de us e2e testing', () => {
-  let page: ProjectPage;
+	let page: ProjectPage;
 
-  beforeEach(() => {
-    page = new ProjectPage();
-    page.navigateTo('/');
-  });
+	beforeEach(() => {
+		page = new ProjectPage();
+		page.navigateTo('/');
+	});
 
-  /*it('should add US  "User Storie test add" ', () => {
-    //expect(page.url()).toEqual(browser.baseUrl + "/project");
-    fail('Not ready yet');
-  });
+	/*it('should add US  "User Storie test add" ', () => {
+	  //expect(page.url()).toEqual(browser.baseUrl + "/project");
+	  fail('Not ready yet');
+	});
 
-  it('should modify US "User Storie test add" to "User Storie test modify"', () => {
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
-  });
-  it('should delete US "User Storie test modify"', () => {
-    //expect(page.url()).toEqual(browser.baseUrl + "/");
-    fail('Not ready yet');
-  });*/
+	it('should modify US "User Storie test add" to "User Storie test modify"', () => {
+	  //expect(page.url()).toEqual(browser.baseUrl + "/");
+	  fail('Not ready yet');
+	});
+	it('should delete US "User Storie test modify"', () => {
+	  //expect(page.url()).toEqual(browser.baseUrl + "/");
+	  fail('Not ready yet');
+	});*/
 
 });
 /*--------------------------------------------------------------------
@@ -223,3 +206,38 @@ describe('PATCH, DELETE /userstories/:id : pgp édition de us e2e testing', () =
     fail('Not ready yet');
   });
 });*/
+
+
+function httpGet(siteUrl) {
+	var http = require('http');
+	var defer = protractor.promise.defer();
+
+	http.get(siteUrl, function(response) {
+		var bodyString = '';
+		response.setEncoding('utf8');
+
+		response.on("data", function(chunk) {
+			bodyString += chunk;
+		});
+		response.on('end', function() {
+			defer.fulfill({
+				"status": response.statusCode,
+				"body": bodyString
+			});
+		});
+	}).on('error', function(e) {
+		defer.reject("http.get error: " + e.message);
+	});
+	return defer.promise;
+}
+
+function postRequest(siteUrl, data) {
+	var request = require('request');
+	var defer = protractor.promise.defer();
+	request({ uri: siteUrl, method: 'POST', json: true, body: data }, function(error, response) {
+		defer.fulfill({
+			"status": response.statusCode,
+		});
+	});
+	return defer.promise;
+}

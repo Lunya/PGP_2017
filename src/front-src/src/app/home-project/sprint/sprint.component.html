@@ -1,120 +1,97 @@
-<div class="jumbotron">
-	<div class="row">
-		<div class="container">
-			<h1 align="center"> Sprint {{sprint.id}} </h1>
-		</div>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+	<ul class="navbar-nav">
+		<li><a class="navbar-brand" (click)="taskView(false)">Backlog</a></li>
+		<li><a class="navbar-brand" (click)="taskView(true)">Task</a></li>
+	</ul>
+	<div class="collapse navbar-collapse">
+		<ul class="navbar-nav mr-auto">
+			<li class="date"><p>Begin - {{sprint.begin}} </p></li>
+			<li></li>
+			<li></li>
+			<li *ngIf='!addTaskMode'><button type="button" class="btn btn-secondary" (click)="onEdit()"><i class="fa fa-plus-circle"></i> Add task</button></li>
+			<li *ngIf='addTaskMode'><button type="button" class="btn btn-primary" (click)="onConfirm()"><i class="fa fa-check-square"></i> Confirm</button></li>
+			<li *ngIf='addTaskMode'><button type="button" class="btn " (click)="onBack()"><i class="fa fa-reply" aria-hidden="true"></i> Back</button></li>
+			<li></li>
+			<li></li>
+			<li class="date"><p> End - {{sprint.end}} </p></li>
+		</ul>
+		<ul class="navbar-nav navbar-right">
+			<li><button class="btn btn-default" (click)="newProject()"><i class="fa fa-edit"></i> Edit sprint</button></li>
+		</ul>
 	</div>
-</div>
+</nav>
 
-<div class="row col-md-12">
-	<div class="col-md-1"></div>
-	<div class="col-md-10">
 
-		<div class="row">
-			<div class="col-md-4">
-				<p class="date" align="right">Begin - {{sprint.begin}} </p>
-			</div>
-			<div class="col-md-4" align="center">
-				<button id="editSprint" class="btn btn-warning" (click)="newProject()">Edit sprint</button>
-			</div>
-			<div class="col-md-4">
-				<p class="date" align="left"> End - {{sprint.end}} </p>
-			</div>
-		</div>
-
-		<ngb-tabset #t="ngbTabset" justify="end">
-			<ngb-tab id="tab-selectbyid2">
-				<ng-template ngbTabTitle>Tasks</ng-template>
-				<ng-template ngbTabContent>
-
-					<div class="container">
-						<h2>Tasks </h2>
-						<table class="table table-bordered ">
-							<thead class="table-secondary">
-								<tr>
-									<th class='number'>ID <i class="fa fa-plus-circle"></i> </th>
-									<th class='description'>Description</th>
-									<th>Developer</th>
-									<th class='status'>Status</th>
-									<th class="columnAction">Action</th>
-								</tr>
-							</thead>
-
-							<tbody data-spy="scroll">
-								<tr *ngIf='addTaskMode' id="newLine">
-									<td class="table-secondary number" contenteditable='false' [(ngModel)]="taskModel.id" #id="ngModel"></td>
-									<td class="table-primary description" contenteditable='true' [(ngModel)]="taskModel.description" #description="ngModel"></td>
-									<td class="table-primary" contenteditable='false'>
-										<select [(ngModel)]="taskModel.developer" #developer="ngModel">
-									<option *ngFor="let user of developers">{{user}}</option>
-							</select>
-									</td>
-									<td class="table-primary status" contenteditable='true' [(ngModel)]="taskModel.status" #status="ngModel"></td>
-									<td class="columnAction">
-										<button class="btn" disabled>Edit</button>
-										<button class="btn btn-danger" disabled>Delete</button>
-									</td>
-								</tr>
-
-								<ng-container *ngFor="let task of taskList">
-									<tr id="{{ 'TASK' + task.id  }}">
-										<td class="table-secondary number" contenteditable='false' [(ngModel)]="task.id" #id="ngModel">{{task.id}}</td>
-										<td class="editable description" contenteditable='false' [(ngModel)]="task.description" #description="ngModel">{{task.description}}</td>
-										<td *ngIf='!task.onEdit' class="editable" contenteditable='false' [(ngModel)]="task.developer" #difficulty="ngModel">{{task.developer}}</td>
-										<td *ngIf='task.onEdit' class="table-primary" contenteditable='false'>
-											<select [(ngModel)]="task.developer" #developer="ngModel">
+<div *ngIf='taskTableView' class="col-md-12">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID </th>
+				<th>Description</th>
+				<th>Developer</th>
+				<th>Status</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngIf='addTaskMode' class="table-primary">
+				<td></td>
+				<td contenteditable='true' [(ngModel)]="taskModel.description" #description="ngModel"></td>
+				<td contenteditable='false' class="developers">
+					<select [(ngModel)]="taskModel.developer" #developer="ngModel">
+									<option *ngFor="let user of developers">{{user}}</option></select>
+				</td>
+				<td contenteditable='true' [(ngModel)]="taskModel.status" #status="ngModel"></td>
+				<td>
+					<button class="btn" disabled><i class="fa fa-edit"></i> Edit</button>
+					<button class="btn btn-danger" disabled><i class="fa fa-times"></i></button>
+				</td>
+			</tr>
+			<ng-container *ngFor="let task of taskList">
+				<tr id="{{ 'TASK' + task.id  }}">
+					<td>{{task.id}}</td>
+					<td contenteditable='false' class="editable" [(ngModel)]="task.description" #description="ngModel">{{task.description}}</td>
+					<td contenteditable='false' class="editable" *ngIf='!task.onEdit' [(ngModel)]="task.developer" #difficulty="ngModel">{{task.developer}}</td>
+					<td contenteditable='false' class="developers" *ngIf='task.onEdit'>
+						<select [(ngModel)]="task.developer" #developer="ngModel">
 											<option *ngFor="let user of developers">{{user}}</option>
 									</select>
-										</td>
-										<td class="editable status" contenteditable='false' [(ngModel)]="task.status" #priority="ngModel">{{task.status}}</td>
-										<td class="columnAction">
-											<button *ngIf='!task.onEdit' class="btn btn-default" (click)="onEditRow(task)">Edit</button>
-											<button *ngIf='!task.onEdit' class="btn btn-danger" (click)="onDeleteRow(task)">Delete</button>
-											<button *ngIf='task.onEdit' class="btn" (click)="onBackRow(task)">Back</button>
-											<button *ngIf='task.onEdit' class="btn btn-primary" (click)="onConfirmRow(task)">Confirm</button>
-										</td>
-									</tr>
-								</ng-container>
-							</tbody>
-						</table>
+					</td>
+					<td contenteditable='false' [(ngModel)]="task.status" #priority="ngModel">{{task.status}}</td>
+					<td>
+						<button *ngIf='!task.onEdit' class="btn btn-default" (click)="onEditRow(task)"><i class="fa fa-edit"></i> Edit</button>
+						<button *ngIf='!task.onEdit' class="btn btn-danger" (click)="onDeleteRow(task)"><i class="fa fa-times"></i></button>
+						<button *ngIf='task.onEdit' class="btn" (click)="onBackRow(task)"><i class="fa fa-reply"></i> Back</button>
+						<button *ngIf='task.onEdit' class="btn btn-primary" (click)="onConfirmRow(task)"><i class="fa fa-check-square"></i> Confirm</button>
+					</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</table>
+</div>
 
-						<button *ngIf='!addTaskMode' type="button" class="btn btn-success" (click)="onEdit()">Add task</button>
-						<div *ngIf='addTaskMode'>
-							<button type="button" class="btn btn-primary" (click)="onConfirm()">Confirm</button>
-							<button type="button" class="btn" (click)="onBack()">Back</button>
-						</div>
-					</div>
-				</ng-template>
-			</ngb-tab>
 
-			<ngb-tab id="tab-selectbyid1" title="Backlog">
-				<ng-template ngbTabContent>
-					<div class="container">
-						<h2>Backlog </h2>
-						<table class="table table-bordered">
-							<thead class="thead-dark">
-								<tr>
-									<th class='number'>ID</th>
-									<th class='description'>Description</th>
-									<th class='number'>Difficulty</th>
-									<th class='number'>Priority</th>
-									<th class='status'>Status</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let project of myProjects" [routerLink]="['/project', project.id]">
-									<td>{{ project.name }}</td>
-									<td>{{ project.git }}</td>
-									<td>{{ project.begin }}</td>
-									<td></td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</ng-template>
-			</ngb-tab>
-		</ngb-tabset>
-
-	</div>
+<div *ngIf='!taskTableView' class="col-md-12">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Description</th>
+				<th>Difficulty</th>
+				<th>Priority</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-container *ngFor="let us of sprintUS">
+				<tr>
+					<td>{{ us.id }}</td>
+					<td>{{ us.description }}</td>
+					<td>{{ us.difficulty }}</td>
+					<td>{{ us.priority }}</td>
+					<td>{{ us.status }}</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</table>
 </div>

@@ -1,50 +1,63 @@
-button#editSprint {
-	font-size: 20px;
-	padding: 8px 40px;
+
+nav {
+	box-shadow: 0px 5px 3px 0px #BBBBBB;
 }
 
-p.date {
-	font-size: 20px;
-	padding: 8px 40px;
+nav div ul {
+	margin-left:150px;
 }
+
+nav div  {
+		border-left:1px solid #BBBBBB;
+}
+
+nav ul li {
+	margin-right:30px;
+}
+
+nav ul li.date {
+	font-weight: bold;
+}
+
+
 
 table {
+	margin-top: 20px;
+	table-layout: fixed;
+}
+
+table thead {
+	background-color: #f9f9f9;
+	width: calc(100% - 1em );
+}
+
+table tbody {
     table-layout:fixed;
-		box-shadow: 10px 10px 5px #888888;
-}
-
-tbody {
-    display:block;
-    height:360px;
+		display:block;
+    height:700px;
     overflow-y:scroll;
-		width: calc(100% + 2em);
+		width: calc(100% );
+		margin-top:10px;
 }
 
-thead, tbody tr{
+thead , tbody tr{
   display:table;
   width:100%;
-  table-layout:fixed;
+  table-layout: fixed;
+
 }
 
-tbody tr {
-    width:calc(100% - 17px);
-}
-
-table th.description, table td.description {
-	width: 400px;
+table td, table th {
+    border-left: 1px solid #dddddd;
+		border-right: 1px solid #dddddd;
 }
 
 table td {
 	word-wrap: break-word;
+	width:150px;
+	max-width: 150px;
 }
 
-table button.btn {
-	padding: 2px 10px;
-}
-
-
-#newLine {
-	border-style: solid;
-	border-color: black;
-	background-color: white;
+table td.developers select {
+	max-width: 270px;
 }

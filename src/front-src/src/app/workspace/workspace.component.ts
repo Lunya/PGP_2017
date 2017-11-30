@@ -31,7 +31,7 @@ export class WorkspaceComponent implements OnInit {
  	 participant: [],
   };
 
-
+	private projectsTableView : boolean = true;
 	constructor() {}
 	ngOnInit() {
 	}
@@ -39,4 +39,8 @@ export class WorkspaceComponent implements OnInit {
 	newProject() {
 
 	}
+
+projectsView(value) {
+			this.projectsTableView = value;
+		}
 }

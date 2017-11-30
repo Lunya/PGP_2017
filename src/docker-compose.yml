@@ -8,7 +8,7 @@ services:
       - ./initdb:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: root
+      MYSQL_USER: karom
       MYSQL_PASSWORD: root
       MYSQL_DATABASE: pgp
     ports:
@@ -28,7 +28,7 @@ services:
       - "3000:3000"
     depends_on:
       - mariadb
-    #command: ["./wait-for-it.sh", "mariadb:3306", "-t", "40"]
+    #command: ["./wait-for-it.sh", "mariadb:3306", "-t", "30"]
     init: true
   frontend:
     build: ./front-src

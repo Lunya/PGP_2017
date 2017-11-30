@@ -1,18 +1,18 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Task } from '../../objects/Task';
-
+import { UserStory } from '../../objects/UserStory';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-sprint',
   templateUrl: './sprint.component.html',
-  styleUrls: ['./sprint.component.css'],
-  //encapsulation: ViewEncapsulation.None
+  styleUrls: ['./sprint.component.css']
 })
 export class SprintComponent implements OnInit {
 
 	private addTaskMode : boolean = false;
 	private taskList = [];
+	private sprintUS = [];
 	private taskModel= {
 		id: 0 ,
 		description: '',
@@ -28,16 +28,19 @@ export class SprintComponent implements OnInit {
 		end:'12/12/12'
 	}
 
-	private idTask: number = 1;
+	private idTask : number = 1;
 	private developers = [];
+	private taskTableView : boolean = true;
 
   constructor(private el: ElementRef) {
 	}
 
   ngOnInit() {
-				this.developers.push(new String("jean"));
-				this.developers.push(new String("jean-philipe"));
-				this.developers.push(new String("hydroxilpropilmetylcelullose"));
+		this.developers.push(new String("jean"));
+		this.developers.push(new String("jean-philipe"));
+		this.developers.push(new String("quelleestladifférenceentreunepouleetunemaison"));
+
+		this.sprintUS.push(new UserStory(1,"Une us initiale", 0, 0,"TODO"));
   }
 
 	resetModel() {
@@ -50,31 +53,31 @@ export class SprintComponent implements OnInit {
 
 	onEditRow(ligne) {
 		ligne['onEdit'] = true;
-		let tr_id = "#TASK"+ligne['id'];
-		let tab = this.el.nativeElement.querySelectorAll(tr_id+" .editable");
+		let tr_id = "#TASK" + ligne['id'];
+		this.el.nativeElement.querySelector(tr_id).classList.add("table-info");
+		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
-			tab[i].classList.add("table-info");
-  		tab[i].setAttribute('contenteditable','true');
+			tab[i].setAttribute('contenteditable', 'true');
 		}
 	}
 
 	onBackRow(ligne) {
 		ligne['onEdit'] = false;
-		let tr_id = "#TASK"+ligne['id'];
-		let tab = this.el.nativeElement.querySelectorAll(tr_id+" .editable");
+		let tr_id = "#TASK" + ligne['id'];
+		this.el.nativeElement.querySelector(tr_id).classList.remove("table-info");
+		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
-			tab[i].classList.remove("table-info");
-			tab[i].setAttribute('contenteditable','false');
+			tab[i].setAttribute('contenteditable', 'false');
 		}
 	}
 
 	onConfirmRow(ligne) {
 		ligne['onEdit'] = false;
-		let tr_id = "#TASK"+ligne['id'];
-		let tab = this.el.nativeElement.querySelectorAll(tr_id+" .editable");
+		let tr_id = "#TASK" + ligne['id'];
+		this.el.nativeElement.querySelector(tr_id).classList.remove("table-info");
+		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
-			tab[i].classList.remove("table-info");
-			tab[i].setAttribute('contenteditable','false');
+			tab[i].setAttribute('contenteditable', 'false');
 		}
 	}
 
@@ -85,6 +88,7 @@ export class SprintComponent implements OnInit {
 
 	onEdit() {
 		this.addTaskMode = true;
+		this.taskTableView = true;
 	}
 
 	onBack() {
@@ -105,6 +109,10 @@ export class SprintComponent implements OnInit {
 
 
 	editSprint() {
+	}
+
+	taskView(value) {
+		this.taskTableView = value;
 	}
 
 }

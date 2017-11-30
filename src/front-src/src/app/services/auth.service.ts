@@ -14,9 +14,12 @@ export class AuthService {
 	}
 
 	login(credentials): Observable<boolean> {
+		console.log("credentials");
+		console.log(credentials);
 		return this.http.post(url, credentials)
 			// .map((response: Response) => response.json())
 			.map((response: any) => {
+				console.log("response.token");
 				console.log(response.token);
 				if (response.token) {
 					this.token = response.token;
