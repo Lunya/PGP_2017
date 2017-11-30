@@ -4,6 +4,7 @@
 	"license": "MIT",
 	"scripts": {
 		"ng": "ng",
+		"start": "node app",
 		"docker-dev": "pm2-dev start app.js",
 		"dev": "pm2 start app.js --watch"
 	},
