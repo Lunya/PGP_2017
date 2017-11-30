@@ -1,0 +1,43 @@
+version: "2.3"
+
+services:
+  mariadb: # by default, expose 3306 port
+    image: mariadb:10.2
+    restart: always
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pgp
+  backend:
+    build: ./back-src
+    image: pgp:back-dev
+    volumes:
+      - ./back-src:/home/node/app
+      - /home/node/app/node_modules
+    env_file:
+      - ./back-src/.env
+    environment:
+      - NODE_ENV=development
+      - DB_SERVER_HOST=mariadb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
+    init: true
+  frontend:
+    build:
+      context: ./front-src
+      dockerfile: Dockerfile-test
+    image: pgp:front-dev
+    env_file:
+      - ./back-src/.env
+    volumes:
+      - ./front-src:/home/node/app
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    init: true
+    command: ["./wait-for-it.sh", "backend:3000", "-t", "120", "--", "sh", "./entrypoint.sh"]
+

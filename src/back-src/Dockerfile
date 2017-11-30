@@ -18,4 +18,4 @@ COPY . /home/node/app
 
 EXPOSE 3000
 
-CMD ["./wait-for-it.sh", "mariadb:3306", "-t", "40", "--", "npm", "run", "docker-dev"]
+CMD ["./wait-for-it.sh", "mariadb:3306", "-t", "120", "--", "npm", "run", "docker-dev"]
