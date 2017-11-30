@@ -24,10 +24,9 @@ router.post('/register', (req, res) => {
 	});
 });
 
-
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?",[req.body.email], (err, result, fields) => {
+	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?",[req.body.email], (err, result) => {
 		if(err) throw err;
 		if (result.length === 0)
 			res.status(400).send({ error: true });
@@ -42,7 +41,7 @@ router.post('/login', (req, res) => {
 								});
 							});*/
 			let user = result[0];
-			bcrypt.compare(req.body.password, result[0]['password'])
+			bcrypt.compare(req.body.password, user.password)
 				.then(match => {
 					if (match) {
 						let infos = {
@@ -60,7 +59,10 @@ router.post('/login', (req, res) => {
 						res.status(401).send({ error: true });
 				});
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a0a548bb6ac4eb59cc8e660ada3a52b683e3292
 	});
 });
 

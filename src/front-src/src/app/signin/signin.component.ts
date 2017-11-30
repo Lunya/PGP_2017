@@ -35,7 +35,7 @@ export class SigninComponent implements OnInit {
 			.subscribe(result => {
 				console.log(result);
 				if (result) {
-					this.router.navigate(['workspace'])
+					this.router.navigate(['/workspace'])
 						.then(value => console.log('redirect: ', value))
 						.catch(reason => console.log('redirect: ', reason));
 				} else {
