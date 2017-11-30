@@ -17,7 +17,7 @@ describe('POST /register : pgp register e2e testing', () => {
 	})
 
 
-	it('should create profile with login = test0@gmail.com name=test0 and passwd = 123456789 -> code 204 and redirection to /home', () => {
+	it('should create profile with login = test0@gmail.com name=test0 and passwd = 123456789 -> code 200 and redirection to /home', () => {
 		page.fillAndSendFormCreateProfile("test0@gmail.com","test0","123456789","123456789");
 		let data = { email: 'test0@gmail.com', password: '123456789', name: 'test0' };
 		postRequest(serverURL + "/api/register", data).then(function(result) {
@@ -31,13 +31,14 @@ describe('POST /register : pgp register e2e testing', () => {
 		expect(page.url()).toEqual(browser.baseUrl + "/signup");
 	});
 
-	/*it('should not create profile if login already exist', () => {
-		page.fillAndSendFormCreateProfile("slooby","kamor", "kamor");
+	/*it('should not create profile if login = test0@gmail.com  already exist', () => {
+		page.fillAndSendFormCreateProfile("test0@gmail.com","test0","123456789","123456789");
 		httpGet(browser.baseUrl + "/user").then(function(result) {
 			expect(result["status"]).toBe(404);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
 	});*/
+
 	it('should not create profile if password is not long enough -> no redirection', () => {
 		page.fillAndSendFormCreateProfile("test1@gmail.com","test0","123456789","12345678");
 		expect(page.url()).toEqual(browser.baseUrl + "/signup");
@@ -203,7 +204,7 @@ describe('PATCH, DELETE /userstories/:id : pgp édition de us e2e testing', () =
 });*/
 
 
-function httpGet(siteUrl) {
+/*function httpGet(siteUrl) {
 	var http = require('http');
 	var defer = protractor.promise.defer();
 
@@ -224,7 +225,7 @@ function httpGet(siteUrl) {
 		defer.reject("http.get error: " + e.message);
 	});
 	return defer.promise;
-}
+}*/
 
 function postRequest(siteUrl, data) {
 	var request = require('request');

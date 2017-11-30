@@ -1,14 +1,19 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { UserStory } from '../../objects/UserStory';
 import { Directive, ElementRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+
+const url = 'http://localhost:3000/api/userstory/';
+const url2 = 'http://localhost:3000/api/userstories/';
 
 @Component({
 	selector: 'app-project',
 	templateUrl: './project.component.html',
 	styleUrls: ['./project.component.css'],
 })
+
 
 
 export class ProjectComponent implements OnInit {
@@ -40,7 +45,12 @@ export class ProjectComponent implements OnInit {
 	private repositoryForm : FormGroup;
 	private userStoryForm : FormGroup;
 
-	constructor(private el : ElementRef, private fb : FormBuilder, lc : NgZone) {
+	constructor(
+		private el : ElementRef,
+		private fb : FormBuilder,
+		private lc : NgZone,
+		private http : HttpClient
+	) {
 		this.repositoryForm = this.fb.group({
 			url: [null, [Validators.required, CustomValidators.url]]
 		});
@@ -51,9 +61,9 @@ export class ProjectComponent implements OnInit {
 			priority: [0,[Validators.required, CustomValidators.number]],
 			status: ["",[Validators.required, Validators.minLength(1)]],
 		})*/
-		this.userStoryForm = this.fb.group({
+		/*this.userStoryForm = this.fb.group({
       backlog: this.fb.array([])
-    })
+    })*/
 	}
 
 	get backlog():FormArray{
@@ -75,14 +85,14 @@ export class ProjectComponent implements OnInit {
 	}
 
 
-	/*resetModel() {
+	resetModel() {
 		this.usModel.id = 0;
 		this.usModel.description = '';
 		this.usModel.difficulty = 0;
 		this.usModel.priority = 0;
 		this.usModel.status = '';
 		this.usModel.onEdit = false;
-	}*/
+	}
 
 	onEditRow(ligne) {
 		ligne['onEdit'] = true;
@@ -107,6 +117,14 @@ export class ProjectComponent implements OnInit {
 	onConfirmRow(ligne) {
 		ligne['onEdit'] = false;
 		let tr_id = "#US" + ligne['id'];
+		let urlRequest = url+this.project.id+"/"+ligne['id'];
+		this.http.patch(urlRequest, ligne)
+		.subscribe((result: any) => {
+			if (result.error)
+					console.log(result);
+		}, err => {
+			console.log(err);
+		});
 		this.el.nativeElement.querySelector(tr_id).classList.remove("table-info");
 		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
@@ -117,6 +135,14 @@ export class ProjectComponent implements OnInit {
 	onDeleteRow(ligne) {
 		let i = this.usList.indexOf(ligne);
 		this.usList.splice(i, 1);
+		let urlRequest = url+this.project.id+"/"+ligne['id'];
+		this.http.delete(urlRequest, ligne)
+		.subscribe((result: any) => {
+		if (result.error)
+				console.log(result);
+			}, err => {
+		console.log(err);
+		});
 	}
 
 	onEdit() {
@@ -129,8 +155,17 @@ export class ProjectComponent implements OnInit {
 	}
 
 	onConfirm() {
-		console.log(this.userStoryForm.controls.backlog['controls']);
+	//	console.log(this.userStoryForm.controls.backlog['controls']);
 		this.addUsMode = false;
+		let urlRequest = url2+this.project.id;
+		this.http.post(urlRequest, this.userStoryForm.value)
+		.subscribe((result: any) => {
+			if (result.error)
+					console.log(result);
+		}, err => {
+			console.log(err);
+		});
+
 		this.usList.push(new UserStory(
 			this.idUS,
 			this.usModel.description,
@@ -139,7 +174,7 @@ export class ProjectComponent implements OnInit {
 			this.usModel.status
 		));
 		this.idUS++;
-		//this.resetModel();
+		this.resetModel();
 
 	}
 

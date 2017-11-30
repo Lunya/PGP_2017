@@ -2,6 +2,11 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Task } from '../../objects/Task';
 import { UserStory } from '../../objects/UserStory';
 import { Subject } from 'rxjs/Subject';
+import { HttpClient } from '@angular/common/http';
+
+const url = 'http://localhost:3000/api/task/';
+const url2 = 'http://localhost:3000/api/tasks/';
+
 
 @Component({
   selector: 'app-sprint',
@@ -32,7 +37,10 @@ export class SprintComponent implements OnInit {
 	private developers = [];
 	private taskTableView : boolean = true;
 
-  constructor(private el: ElementRef) {
+  constructor(
+		private el: ElementRef,
+		private http: HttpClient
+	) {
 	}
 
   ngOnInit() {
@@ -74,6 +82,14 @@ export class SprintComponent implements OnInit {
 	onConfirmRow(ligne) {
 		ligne['onEdit'] = false;
 		let tr_id = "#TASK" + ligne['id'];
+		let urlRequest = url+this.sprint.id+"/"+ligne['id'];
+		this.http.patch(urlRequest, ligne)
+		.subscribe((result: any) => {
+			if (result.error)
+					console.log(result);
+		}, err => {
+			console.log(err);
+		});
 		this.el.nativeElement.querySelector(tr_id).classList.remove("table-info");
 		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
@@ -97,6 +113,17 @@ export class SprintComponent implements OnInit {
 
 	onConfirm() {
 		this.addTaskMode = false;
+
+		let urlRequest = url2+this.sprint.id;
+		this.http.post(urlRequest, this.taskModel)
+		.subscribe((result: any) => {
+			if (result.error)
+					console.log(result);
+		}, err => {
+			console.log(err);
+		});
+
+
 		this.taskList.push(new Task(
 			this.idTask,
 			this.taskModel.description,

@@ -43,7 +43,7 @@
 			</tr>
 		</thead>
 		<tbody>
-		<!--	<tr *ngIf='addUsMode' class="table-primary">
+			<tr *ngIf='addUsMode' class="table-primary">
 				<td></td>
 				<td contenteditable='true' class="description" [(ngModel)]="usModel.description" #description="ngModel"></td>
 				<td contenteditable='true' [(ngModel)]="usModel.difficulty" #difficulty="ngModel"></td>
@@ -68,7 +68,7 @@
 						<button *ngIf='us.onEdit' class="btn btn-primary" (click)="onConfirmRow(us)"><i class="fa fa-check-square"></i> Confirm</button>
 					</td>
 				</tr>
-			</ng-container> -->
+			</ng-container>
 
 
 
@@ -99,7 +99,7 @@
 					</td>
 				</tr> -->
 
-				<tr *ngFor="let item of this.userStoryForm.controls.backlog['controls']; let i=index"
+			<!--	<tr *ngFor="let item of this.userStoryForm.controls.backlog['controls']; let i=index"
               [formGroupName]="i" >
 							<td><input type="text" class="form-control" formControlName="id"></td>
                 <td><textarea id="description" class="form-control" formControlName="description" placeholder="" [ngClass]="{
@@ -112,19 +112,7 @@
 									<button class="btn" disabled><i class="fa fa-edit"></i> Edit</button>
 									<button class="btn btn-danger" disabled><i class="fa fa-times"></i> </button>
 								</td>
-            </tr>
-
-
-
-
-
-
-
-
-
-
-
-
+            </tr> -->
 
 
 
