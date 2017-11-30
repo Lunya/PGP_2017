@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Project } from '../objects/Project';
+import { NgbDatepickerConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NewProjectComponent } from './new-project/new-project.component';
 
 @Component({
 	selector: 'app-workspace',
 	templateUrl: './workspace.component.html',
-	styleUrls: ['./workspace.component.css']
+	styleUrls: ['./workspace.component.css'],
+	providers: [NgbDatepickerConfig]
 })
 export class WorkspaceComponent implements OnInit {
 	private user = 'user';
@@ -32,11 +35,14 @@ export class WorkspaceComponent implements OnInit {
   };
 
 
-	constructor() {}
+	constructor(
+		private modalService: NgbModal
+	) {}
+
 	ngOnInit() {
 	}
 
 	newProject() {
-
+		const modalRef = this.modalService.open(NewProjectComponent);
 	}
 }

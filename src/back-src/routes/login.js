@@ -48,31 +48,42 @@ router.post('/register', (req, res) => {
 	res.contentType('application/json');
 	bcrypt.hash(req.body.password, saltRounds, (err, password) => {
 		if (!err) {
-				bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)",[req.body.name,password,req.body.email], (error, result) => {
-						if(err) throw err;
-				});
-				res.send({ error: false });
+			bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)",[req.body.name,password,req.body.email], (error, result) => {
+				if(err) throw err;
+			});
+			res.send({ error: false });
 		} else
-				res.send({ error: err });
+			res.send({ error: err });
 	});
 });
 
 
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	bd.query("SELECT * FROM User WHERE mail = ?",[req.body.email], (err, result, fields) => {
-			if(err) throw err;
+	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?",[req.body.email], (err, result, fields) => {
+		if(err) throw err;
+		if (result.length === 0)
+			res.status(400).send({ error: true });
+		else {
+			let user = result[0];
 			bcrypt.compare(req.body.password, result[0]['password'])
-			.then(match => {
-			if (match) {
-				let token = jwt.sign(
-					{ id: result[0]['id'], email: result[0]['mail']},
-					secret,
-					{ expiresIn: '1h' });
-				res.send({ error: false, token: token });
-			} else
-				res.send({ error: true });
-});
+				.then(match => {
+					if (match) {
+						let infos = {
+							id: user.id,
+							email: user.mail,
+							name: user.name
+						};
+						let token = jwt.sign(
+							infos,
+							secret,
+							{ expiresIn: '1h' });
+						infos.token = token;
+						res.status(200).send(infos);
+					} else
+						res.status(401).send({ error: true });
+				});
+		}
 
 
 		/*	if (user !== undefined) {

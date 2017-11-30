@@ -21,6 +21,9 @@ export class AuthService {
 				if (response.token) {
 					this.token = response.token;
 					localStorage.setItem('token', response.token);
+					localStorage.setItem('user.id', response.id);
+					localStorage.setItem('user.email', response.email);
+					localStorage.setItem('user.name', response.name);
 					return true;
 				}
 				return false;
@@ -29,5 +32,8 @@ export class AuthService {
 	logout(): void {
 		this.token = null;
 		localStorage.removeItem('token');
+		localStorage.removeItem('user.id');
+		localStorage.removeItem('user.email');
+		localStorage.removeItem('user.name');
 	}
 }
