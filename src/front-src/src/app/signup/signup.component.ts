@@ -33,36 +33,6 @@ export class SignupComponent implements OnInit {
 	ngOnInit() {}
 
 	ngOnSubmit() {
-
-	/*	if (this.form.password === this.form.passwordVerif) {
-			this.loading = true;
-			const request = {
-				username: this.form.username,
-				password: this.form.password,
-				mail: this.form.mail};
-			this.http.post(url, request)
-					.subscribe((result: any) => {
-						if (result.error) {
-							this.loading = false;
-						} else {
-							// si l'utilisateur à été créé, le connecter et le rediriger
-							this.auth.login(request).subscribe((result: any) => {
-								if (result) {
-									this.router.navigate(['projects'])
-										.catch(reason => console.log('redirect: ', reason));
-								} else {
-									console.log('Error : username or password incorrect');
-									this.loading = false;
-								}
-							});
-						}
-					},
-					err => {
-						console.log(err);
-						this.loading = false;
-					});
-		}*/
-
 		this.loading = true;
 		this.http.post(url, this.signupForm.value)
 			.subscribe((result: any) => {
@@ -76,6 +46,5 @@ export class SignupComponent implements OnInit {
 				console.log(err);
 				this.loading = false;
 			});
-
 	}
 }

@@ -41,26 +41,39 @@ bd.connect(err => {
 
 		// exemple d'utilisation pour lister toutes les tables de la base de donnée courante
 		router.get('/tables', (req, res) => {
-			res.setHeader('Content-Type', 'application/json');
+			res.contentType('application/json');
 			bd.query('SHOW TABLES', (error, tables, fields) => {
 				let result = {};
-				console.log(tables);
 				if (tables.length === 0)
 					res.end(JSON.stringify(result));
-				for (let i = 0; i < tables.length; i++) {
-					let table = tables[i][fields[i].name];
+				else {
+					let pendingRequests = tables.length;
 					let content = [];
-					bd.query(`DESCRIBE ${table}`, (err, cols, fields) => {
-						for (let j = 0; j < cols.length; j++) {
+					for (let i in tables) {
+						let table = tables[i]['Tables_in_pgp'];
+						bd.query(`DESCRIBE ${table}`, (err, cols, fields) => {
+							//pendingRequests += cols.length;
 							let column = {};
-							for (let k = 0; k < fields.length; k++)
-								column[fields[k].name] = cols[j][fields[k].name];
-							content.push(column);
-						}
-					}).on('end', () => {
-						res.end(JSON.stringify(result));
-					});
-					result[table] = content;
+							for (let j = 0; j < cols.length; j++) {
+								for (let k = 0; k < fields.length; k++)
+									column[fields[k].name] = cols[j][fields[k].name];
+							}
+							bd.query(`SELECT * FROM ${table}`, (e, c) => {
+								column.database_content = c;
+								content.push(column);
+							}).on('end', () => {
+								pendingRequests--;
+								console.log(pendingRequests);
+								if (pendingRequests === 0)
+									res.end(JSON.stringify(content));
+							});
+						}).on('end', () => {
+							/*pendingRequests--;
+							console.log(pendingRequests);
+							if (pendingRequests === 0)
+								res.end(JSON.stringify(content));*/
+						});
+					}
 				}
 			});
 		});

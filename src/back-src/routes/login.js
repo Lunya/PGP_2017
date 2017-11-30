@@ -25,16 +25,15 @@ router.post('/register', (req, res) => {
 	});
 });
 
-
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?",[req.body.email], (err, result, fields) => {
+	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?",[req.body.email], (err, result) => {
 		if(err) throw err;
 		if (result.length === 0)
 			res.status(400).send({ error: true });
 		else {
 			let user = result[0];
-			bcrypt.compare(req.body.password, result[0]['password'])
+			bcrypt.compare(req.body.password, user.password)
 				.then(match => {
 					if (match) {
 						let infos = {
@@ -51,25 +50,6 @@ router.post('/login', (req, res) => {
 					} else
 						res.status(401).send({ error: true });
 				});
-		}
-
-						bd.query("SELECT * FROM Project WHERE id IN (SELECT id_project FROM User_Project WHERE id_user= ?)", [result[0]['id']], (err, result, fields) => {
-							if (err) throw err;
-							res.status(200).json({
-								error: false,
-								token: token
-							});
-						});
-					} else
-						res.status(400).json({
-							error: true
-						});
-				});
-
-		} else {
-			res.status(400).json({
-				error: true
-			});
 		}
 	});
 });

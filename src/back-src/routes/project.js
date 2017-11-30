@@ -72,17 +72,6 @@ router.post('/project', (req, res) => {
 		);
 	} else
 		sendError(res, 'Error: required parameters not set');
-	/*if (typeof req.body.name !== 'undefined' && typeof req.body.begin !== 'undefined') {
-
-		db.query('BEGIN; INSERT INTO Project VALUES(?,?,?,?); INSERT INTO User_Project VALUES(?,LAST_INSERT_ID()); COMMIT;',[req.body.name, req.body.description, req.body.git, req.body.begin, req.body.end, id], (err, result) => {
-			treatment(err,res,response,"success");
-		});
-	}
-	else {
-		values.push({'result' : 'error', 'msg' : 'Missing field'});
-		res.setHeader('Content-Type', 'application/json');
-		res.send(200, JSON.stringify(values));
-	}*/
 });
 
 router.patch('/project/:id', (req, res) => {
