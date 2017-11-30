@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
-const url = 'http://localhost:3000/api/account';
+const url = 'http://localhost:3000/api/user';
 
 @Component({
   selector: 'app-account',
@@ -38,18 +38,30 @@ export class AccountComponent implements OnInit {
 
   ngOnSubmit() {
     this.loading = true;
-    this.http.post(url, this.signupForm.value)
-      .subscribe((result: any) => {
-        if (result.error)
-          this.loading = false;
-        else {
-          this.router.navigate(['/home'])
-            .catch(reason => console.log(reason));
-        }
-      }, err => {
-        console.log(err);
+    this.http.post(url, this.signupForm.value).subscribe((result : any) => {
+      if(result.error)
         this.loading = false;
-      });
+      else {
+          
+        console.log(result);
+      }
+    }, err => {
+      console.log(err);
+      this.loading = false;
+    }
 
-  }
+    // this.http.patch(url, this.signupForm.value)
+    //   .subscribe((result: any) => {
+    //     if (result.error)
+    //       this.loading = false;
+    //     else {
+    //       this.router.navigate(['/home'])
+    //         .catch(reason => console.log(reason));
+    //     }
+    //   }, err => {
+    //     console.log(err);
+    //     this.loading = false;
+    //   });
+
+  )}
  }
