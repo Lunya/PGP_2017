@@ -8,7 +8,7 @@ import { browser, by, element, protractor } from 'protractor';
 const serverURL = "http://localhost:3000";
 
 
-describe('POST /register : pgp register e2e testing', () => {
+/*describe('POST /register : pgp register e2e testing', () => {
 	let page: RegisterPage;
 
 	beforeEach(() => {
@@ -48,7 +48,7 @@ describe('POST /register : pgp register e2e testing', () => {
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
 	});
 
-})
+})*/
 
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
