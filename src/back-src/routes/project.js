@@ -100,7 +100,6 @@ router.delete('/project/:id', (req, res) => {
 	db.query("DELETE FROM Project WHERE id=?",[id], (err,count) => {
 		let values = [];
 		treatment(err, res, values, "success");
-
 	})
 });
 
