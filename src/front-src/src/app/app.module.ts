@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContenteditableDirective } from 'ng-contenteditable';
 
-
 import { AppComponent } from './app.component';
 import { SigninComponent } from './signin/signin.component';
 import { AppRoutingModule } from './app-routing.module';

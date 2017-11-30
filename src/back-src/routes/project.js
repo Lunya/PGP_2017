@@ -38,7 +38,6 @@ router.get('/projects/:userId', (req, res) => {
 		let values = [];
 		treatment(err,res,values,cols);
 	});
-
 });
 
 router.get('/project/:userId/:id', (req, res) => {

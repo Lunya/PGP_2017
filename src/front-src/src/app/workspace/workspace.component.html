@@ -1,75 +1,63 @@
-<div class="jumbotron">
-	<div class="row">
-		<div class="container">
-			<h1 align="center">Workspace of {{ user }}</h1>
+<div class="container">
+
+	<nav class="navbar navbar-expand-md navbar-light bg-light">
+		<ul class="navbar-nav">
+			<li><a class="navbar-brand" (click)="projectsView(true)">My projects</a></li>
+			<li><a class="navbar-brand" (click)="projectsView(false)">Contributing projects</a></li>
+		</ul>
+		<div class="collapse navbar-collapse">
+			<ul class="navbar-nav navbar-center">
+
+				<li *ngIf='!addTaskMode'><button type="button" class="btn btn-success" (click)="newProject()"><i class="fa fa-plus-circle"></i> New project</button></li>
+
+			</ul>
 		</div>
+	</nav>
+
+	<div *ngIf='projectsTableView' class="col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Participant</th>
+					<th>Begin</th>
+					<th>End</th>
+					<th>Repository</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let project of myProjects" [routerLink]="['/project', project.id]">
+					<td>{{ project.name }}</td>
+					<td>{{ project.participant }}</td>
+					<td>{{ project.begin }}</td>
+					<td>{{ project.end }}</td>
+					<td>{{ project.url }}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
-</div>
 
-<div class="row col-md-12">
-	<div class="col-md-1"></div>
-
-	<div class="col-md-10">
-
-		<div class="row">
-			<div class="col-md-12" align="center">
-				<button id="newProjectButton" class="btn btn-success" (click)="newProject()">New project</button>
-			</div>
-		</div>
-
-		<div class="row">
-
-			<div class="col-md-6">
-				<div class="container">
-					<h2>My projects </h2>
-					<table class="table table-bordered">
-						<thead class="table-success">
-						<tr>
-							<th>Name</th>
-							<th>Participant</th>
-							<th>Begin</th>
-							<th>End</th>
-							<th>Repository</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr *ngFor="let project of myProjects" [routerLink]="['/project', project.id]">
-							<td>{{ project.name }}</td>
-							<td>{{ project.participant }}</td>
-							<td>{{ project.begin }}</td>
-							<td></td>
-							<td></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-
-			<div class="col-md-6">
-				<div class="container">
-					<h2>Contributing projects </h2>
-					<table class="table table-bordered">
-						<thead class="table-success">
-						<tr>
-							<th>Name</th>
-							<th>Creator</th>
-							<th>Begin</th>
-							<th>End</th>
-							<th>Repository</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr *ngFor="let project of otherProjects" [routerLink]="['/project', project.id]">
-							<td>{{ project.name }}</td>
-							<td></td>
-							<td>{{ project.begin }}</td>
-							<td>{{ project.end }}</td>
-							<td></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+  <div *ngIf='!projectsTableView' class="col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Creator</th>
+					<th>Begin</th>
+					<th>End</th>
+					<th>Repository</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let project of otherProjects" [routerLink]="['/project', project.id]">
+					<td>{{ project.name }}</td>
+					<td>{{ project.creator }}</td>
+					<td>{{ project.begin }}</td>
+					<td>{{ project.end }}</td>
+					<td>{{ project.url }}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+
 </div>

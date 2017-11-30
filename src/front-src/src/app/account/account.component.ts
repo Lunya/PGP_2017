@@ -39,7 +39,7 @@ export class AccountComponent implements OnInit {
 
   ngOnSubmit() {
     this.loading = true;
-    rndUser = '6'; //IDUSER A RECUPERER VIA COMMANDE GET OU VIA UN ID LORS DE L'AUTHENTIFICATION
+    let rndUser = '6'; //IDUSER A RECUPERER VIA COMMANDE GET OU VIA UN ID LORS DE L'AUTHENTIFICATION
     this.http.patch(url + '/' + rndUser, this.signupForm.value).subscribe((result : any) => {
       if(result.error)
         this.loading = false;
