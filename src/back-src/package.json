@@ -4,11 +4,10 @@
 	"license": "MIT",
 	"scripts": {
 		"ng": "ng",
-		"start": "ng build & node app",
+		"start": "node app",
 		"docker-dev": "pm2-dev start app.js",
 		"dev": "pm2 start app.js --watch"
 	},
-
 	"private": true,
 	"dependencies": {
 		"@angular/animations": "^5.0.1",
