@@ -73,7 +73,7 @@ export class SignupComponent implements OnInit {
 						.catch(reason => console.log(reason));
 				}
 			}, err => {
-				console.log(err);
+				console.log("err");
 				this.loading = false;
 			});
 
