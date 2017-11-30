@@ -20,18 +20,7 @@ export class ConnexionPage {
     .then(function() {
       browser.element.all(by.css('input[type=password]')).first().sendKeys(passwd);
     }).then(function() {
-      browser.element.all(by.css('button')).first().click();
-    });
-  }
-  fillAndSendFormCreateProfile(login, passwd, conf) {
-		browser.element.all(by.css('input[type=text]')).last().sendKeys(login)
-    .then(function() {
-      browser.element.all(by.css('input[type=password]')).last().sendKeys(passwd);
-			})
-			.then(function() {
-				browser.element.all(by.css('input[type=confirm]')).last().sendKeys(conf);
-    }).then(function() {
-      browser.element.all(by.css('button')).first().click();
+      browser.element.all(by.css('button[type=submit]')).first().click();
     });
   }
 

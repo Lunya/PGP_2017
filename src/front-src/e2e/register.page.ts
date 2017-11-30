@@ -9,15 +9,19 @@ export class RegisterPage {
     return browser.getCurrentUrl();
   }
 
-	fillAndSendFormProject(nom,description, dateDebut, dateEnd) {
-		/*var form =  browser.element.all(by.css('form')).first();
-		browser.element.all(by.css('input[type=text]')).first().sendKeys(nom)
-		.then(function() {
-			browser.element.all(by.css('input[type=password]')).first().sendKeys(description);
-		}).then(function() {
-			browser.element.all(by.css('button')).first().click();
-		});*/
-	}
+	fillAndSendFormCreateProfile(email, name , passwd, verifpasswd) {
+		browser.element.all(by.css('input[type=email]')).last().sendKeys(email)
+    .then(function() {
+      browser.element.all(by.css('input[type=text]')).last().sendKeys(name);
+			})
+			.then(function() {
+				browser.element.all(by.id('password')).sendKeys(passwd);
+    }).then(function() {
+      browser.element.all(by.id('verifPassword')).sendKeys(verifpasswd);
+    }).then(function() {
+      browser.element.all(by.css('button[type=submit]')).first().click();
+    });
+  }
 
 	getNumberOfProject() {
 

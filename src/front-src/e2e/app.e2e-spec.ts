@@ -8,7 +8,7 @@ import { browser, by, element, protractor } from 'protractor';
 const serverURL = "http://localhost:3000";
 
 
-/*describe('POST /register : pgp register e2e testing', () => {
+describe('POST /register : pgp register e2e testing', () => {
 	let page: RegisterPage;
 
 	beforeEach(() => {
@@ -17,38 +17,33 @@ const serverURL = "http://localhost:3000";
 	})
 
 
-	it('should create profile with login = karom and passwd = kamor', () => {
-		page.fillAndSendFormCreateProfile("karom","kamor","kamor");
-		httpGet(browser.baseUrl + "/user").then(function(result) {
+	it('should create profile with login = test0@gmail.com name=test0 and passwd = 123456789 -> code 204 and redirection to /home', () => {
+		page.fillAndSendFormCreateProfile("test0@gmail.com","test0","123456789","123456789");
+		let data = { email: 'test0@gmail.com', password: '123456789', name: 'test0' };
+		postRequest(serverURL + "/api/register", data).then(function(result) {
 			expect(result["status"]).toBe(200);
-		});
-		expect(page.url()).toEqual(browser.baseUrl + "/user");
-	});
-
-	it('should not create profile if pasword and confirmation are not the same', () => {
-		page.fillAndSendFormCreateProfile("karom","kamor","trolls");
-		httpGet(browser.baseUrl + "/user").then(function(result) {
-			expect(result["status"]).toBe(404);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
 	});
 
-	it('should not create profile if login already exist', () => {
+	it('should not create profile if pasword and confirmation are not the same -> no redirection', () => {
+		page.fillAndSendFormCreateProfile("test1@gmail.com","test0","123456789","12345678");
+		expect(page.url()).toEqual(browser.baseUrl + "/signup");
+	});
+
+	/*it('should not create profile if login already exist', () => {
 		page.fillAndSendFormCreateProfile("slooby","kamor", "kamor");
 		httpGet(browser.baseUrl + "/user").then(function(result) {
 			expect(result["status"]).toBe(404);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
-	});
-	it('should not create profile if password is not good enough', () => {
-		page.fillAndSendFormCreateProfile("karom","b", "b");
-		httpGet(browser.baseUrl + "/user").then(function(result) {
-			expect(result["status"]).toBe(404);
-		});
-		expect(page.url()).toEqual(browser.baseUrl + "/home");
+	});*/
+	it('should not create profile if password is not long enough -> no redirection', () => {
+		page.fillAndSendFormCreateProfile("test1@gmail.com","test0","123456789","12345678");
+		expect(page.url()).toEqual(browser.baseUrl + "/signup");
 	});
 
-})*/
+})
 
 /*--------------------------------------------------------------------
 ----------------------------------------------------------------------*/
@@ -65,9 +60,9 @@ describe('POST /login : pgp connection e2e testing', () => {
 		expect(page.getParagraphText()).toEqual('Bienvenue sur GesDePro');
 	});
 
-	it('should connect with login = test@gmail.com and passwd = 123456789 -> code 200 and redirection to /workspace -> code 200', () => {
-		page.fillAndSendFormConnection("test@gmail.com", "123456789");
-		let data = { email: 'test@gmail.com', password: '123456789' };
+	it('should connect with login = test0@gmail.com and passwd = 123456789 -> code 200 and redirection to /workspace ', () => {
+		page.fillAndSendFormConnection("test0@gmail.com", "123456789");
+		let data = { email: 'test0@gmail.com', password: '123456789' };
 		postRequest(serverURL + "/api/login", data).then(function(result) {
 			expect(result["status"]).toBe(200);
 		});
@@ -75,8 +70,8 @@ describe('POST /login : pgp connection e2e testing', () => {
 	});
 
 	it('should not not be able to connect with a wrong login and passwd -> code 400', () => {
-		page.fillAndSendFormConnection("test@gmail.m", "123456");
-		let data = { email: 'test@gmail.m', password: '123456' };
+		page.fillAndSendFormConnection("test0@gmail.m", "123456");
+		let data = { email: 'test0@gmail.m', password: '123456' };
 		postRequest(serverURL + "/api/login", data).then(function(result) {
 			expect(result["status"]).toBe(400);
 		});
@@ -84,8 +79,8 @@ describe('POST /login : pgp connection e2e testing', () => {
 	});
 
 	it('should not be able to connect with a wrong login -> code 400', () => {
-		page.fillAndSendFormConnection("test@gmail.m", "123456789");
-		let data = { email: 'test@gmail.m', password: '123456789' };
+		page.fillAndSendFormConnection("test0@gmail.m", "123456789");
+		let data = { email: 'test0@gmail.m', password: '123456789' };
 		postRequest(serverURL + "/api/login", data).then(function(result) {
 			expect(result["status"]).toBe(400);
 		});
@@ -93,8 +88,8 @@ describe('POST /login : pgp connection e2e testing', () => {
 	});
 
 	it('should not be able to connect with a wrong passwd -> code 400', () => {
-		page.fillAndSendFormConnection("test@gmail.com", "");
-		let data = { email: 'test@gmail.com', password: '123456780' };
+		page.fillAndSendFormConnection("test0@gmail.com", "");
+		let data = { email: 'test0@gmail.com', password: '123456780' };
 		postRequest(serverURL + "/api/login", data).then(function(result) {
 			expect(result["status"]).toBe(400);
 		});

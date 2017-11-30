@@ -50,14 +50,15 @@ router.post('/register', (req, res) => {
 		if (!err) {
 			bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)", [req.body.name, password, req.body.email], (error, result) => {
 				if (err) throw err;
-			});
-			res.send({
-				error: false
+				console.log(result);
+				res.send({
+					error: false
+				});
 			});
 		} else
-			res.send({
-				error: err
-			});
+		res.send({
+			error: err
+		});
 	});
 });
 
