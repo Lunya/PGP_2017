@@ -1,12 +1,13 @@
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-let db = require('../databaseConnect');
+let bd = require('../databaseConnect');
 
 let router = express.Router();
+const saltRounds = 8;
 
 function treatment(errorStatus, response, values,  rows) {
-	if(errorStatus) response.status(400).send(err);
+	if(errorStatus) response.status(400).send(errorStatus);
 	else {
 		if (rows.length != 0) {
 			values.push({'result' : 'success', 'data' : rows});
@@ -14,11 +15,11 @@ function treatment(errorStatus, response, values,  rows) {
 			values.push({'result' : 'error', 'msg' : 'No Results Found'});
 		}
 		response.setHeader('Content-Type', 'application/json');
-		response.status(200).send(JSON.stringify(value));
+		response.status(200).send(JSON.stringify(values));
 	}
 };
 
-router.post('/user', (req, res) => {
+router.get('/user', (req, res) => {
 	if (typeof req.body.name !== 'undefined' && typeof req.body.password !== 'undefined') {
 		bd.query('SELECT * FROM User WHERE name = ? AND password=? ',[req.body.name, req.body.password], (err,result) => {
 			let value = [];
@@ -32,12 +33,21 @@ router.post('/user', (req, res) => {
 	}
 });
 
-router.patch('/:id', (req, res) => {
-	let iduser = req.params.id;
-	bd.query('UPDATE User SET name=?, password=?, mail=?, salt=? WHERE id=?',[req.body.name, req.body.password,req.body.mail, req.body.salt, iduser], (err, cols) => {
-		let values = [];
-		treatment(err,res,values, "success");
 
+router.patch('/user/:id', (req, res) => {
+	let iduser = req.params.id;
+	bcrypt.hash(req.body.password, saltRounds, (err, password) => {
+		if (!err) {
+				bd.query("UPDATE User SET name=?, password=?, mail=? WHERE id=? ",[req.body.name,password,req.body.email, iduser], (error, result) => {
+						if(error) throw error;
+						else{
+							let values = [];
+							treatment(err, res, values, "success");
+						}
+				});
+				res.send({ error: false });
+		} else
+				res.send({ error: err });
 	});
 });
 

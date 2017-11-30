@@ -7,7 +7,7 @@
 					<label for="url">
 						<button type="button" class="btn btn-success" type="submit" [disabled]="repositoryForm.invalid"><i class="fa fa-plus-circle"></i> Add URL repository</button>
 					</label>
-						<input type="url" id="url" class="form-control" formControlName="url" placeholder="URL Repository" [ngClass]="{
+					<input type="url" id="url" class="form-control" formControlName="url" placeholder="URL Repository" [ngClass]="{
 							'is-invalid': (repositoryForm.controls['url'].invalid && repositoryForm.controls['url'].touched),
 							'is-valid': repositoryForm.controls['url'].touched} ">
 				</form>
@@ -30,51 +30,52 @@
 </nav>
 
 <div class="col-md-12">
-	<form class="form-inline form-repository" [formGroup]="userStoryForm" (ngSubmit)="ngOnSubmit()" novalidate>
-	<table class="table" formArrayName="backlog">
-		<thead>
-			<tr>
-				<th class='id'>ID</th>
-				<th class='description'>Description</th>
-				<th>Difficulty</th>
-				<th>Priority</th>
-				<th>Status</th>
-				<th class='columnAction'>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngIf='addUsMode' class="table-primary">
-				<td></td>
-				<td contenteditable='true' class="description" [(ngModel)]="usModel.description" #description="ngModel"></td>
-				<td contenteditable='true' [(ngModel)]="usModel.difficulty" #difficulty="ngModel"></td>
-				<td contenteditable='true' [(ngModel)]="usModel.priority" #priority="ngModel"></td>
-				<td contenteditable='true' [(ngModel)]="usModel.status" #status="ngModel"></td>
-				<td>
-					<button class="btn" disabled><i class="fa fa-edit"></i> Edit</button>
-					<button class="btn btn-danger" disabled><i class="fa fa-times"></i> </button>
-				</td>
-			</tr>
-			<ng-container *ngFor="let us of usList">
-				<tr id="{{ 'US' + us.id  }}">
-					<td >{{us.id}}</td>
-					<td contenteditable='false' class="editable description" [(ngModel)]="us.description" #description="ngModel">{{us.description}}</td>
-					<td contenteditable='false' class="editable" [(ngModel)]="us.difficulty" #difficulty="ngModel">{{us.difficulty}}</td>
-					<td contenteditable='false' class="editable" [(ngModel)]="us.priority" #priority="ngModel">{{us.priority}}</td>
-					<td contenteditable='false' class="editable" [(ngModel)]="us.status" #status="ngModel">{{us.status}}</td>
+	<!-- <form class="form-inline form-repository" [formGroup]="userStoryForm" (ngSubmit)="ngOnSubmit()" novalidate> -->
+	<!-- <table class="table" formArrayName="backlog"> -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th class='id'>ID</th>
+					<th class='description'>Description</th>
+					<th>Difficulty</th>
+					<th>Priority</th>
+					<th>Status</th>
+					<th class='columnAction'>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngIf='addUsMode' class="table-primary">
+					<td></td>
+					<td contenteditable='true' class="description" [(ngModel)]="usModel.description" #description="ngModel"></td>
+					<td contenteditable='true' [(ngModel)]="usModel.difficulty" #difficulty="ngModel"></td>
+					<td contenteditable='true' [(ngModel)]="usModel.priority" #priority="ngModel"></td>
+					<td contenteditable='true' [(ngModel)]="usModel.status" #status="ngModel"></td>
 					<td>
-						<button *ngIf='!us.onEdit' class="btn btn-default" (click)="onEditRow(us)"><i class="fa fa-edit"></i> Edit</button>
-						<button *ngIf='!us.onEdit' class="btn btn-danger" (click)="onDeleteRow(us)"><i class="fa fa-times"></i> </button>
-						<button *ngIf='us.onEdit' class="btn" (click)="onBackRow(us)"><i class="fa fa-reply"></i> Back</button>
-						<button *ngIf='us.onEdit' class="btn btn-primary" (click)="onConfirmRow(us)"><i class="fa fa-check-square"></i> Confirm</button>
+						<button class="btn" disabled><i class="fa fa-edit"></i> Edit</button>
+						<button class="btn btn-danger" disabled><i class="fa fa-times"></i> </button>
 					</td>
 				</tr>
-			</ng-container>
+				<ng-container *ngFor="let us of usList">
+					<tr id="{{ 'US' + us.id  }}">
+						<td>{{us.id}}</td>
+						<td contenteditable='false' class="editable description" [(ngModel)]="us.description" #description="ngModel">{{us.description}}</td>
+						<td contenteditable='false' class="editable" [(ngModel)]="us.difficulty" #difficulty="ngModel">{{us.difficulty}}</td>
+						<td contenteditable='false' class="editable" [(ngModel)]="us.priority" #priority="ngModel">{{us.priority}}</td>
+						<td contenteditable='false' class="editable" [(ngModel)]="us.status" #status="ngModel">{{us.status}}</td>
+						<td>
+							<button *ngIf='!us.onEdit' class="btn btn-default" (click)="onEditRow(us)"><i class="fa fa-edit"></i> Edit</button>
+							<button *ngIf='!us.onEdit' class="btn btn-danger" (click)="onDeleteRow(us)"><i class="fa fa-times"></i> </button>
+							<button *ngIf='us.onEdit' class="btn" (click)="onBackRow(us)"><i class="fa fa-reply"></i> Back</button>
+							<button *ngIf='us.onEdit' class="btn btn-primary" (click)="onConfirmRow(us)"><i class="fa fa-check-square"></i> Confirm</button>
+						</td>
+					</tr>
+				</ng-container>
 
 
 
 
 
-		<!--	<tr *ngIf='addUsMode' class="table-primary">
+				<!--	<tr *ngIf='addUsMode' class="table-primary">
 					<td><input type="text" id="id" class="form-control" formControlName="id"></td>
 
 					<td><textarea id="description" class="form-control" formControlName="description" placeholder="" [ngClass]="{
@@ -99,7 +100,7 @@
 					</td>
 				</tr> -->
 
-			<!--	<tr *ngFor="let item of this.userStoryForm.controls.backlog['controls']; let i=index"
+				<!--	<tr *ngFor="let item of this.userStoryForm.controls.backlog['controls']; let i=index"
               [formGroupName]="i" >
 							<td><input type="text" class="form-control" formControlName="id"></td>
                 <td><textarea id="description" class="form-control" formControlName="description" placeholder="" [ngClass]="{
@@ -116,7 +117,7 @@
 
 
 
-		</tbody>
-	</table>
-</form>
+			</tbody>
+		</table>
+	<!-- </form> -->
 </div>

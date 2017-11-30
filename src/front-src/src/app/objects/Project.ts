@@ -1,6 +1,3 @@
-
-
-
 export class Project {
 	public id: number;
 	public name: string;
@@ -14,6 +11,7 @@ export class Project {
 	constructor(id, name, creator, description, url, begin, end, participant) {
 		this.id = id;
 		this.name = name;
+		this.creator = creator;
 		this.description = description;
 		this.url = url;
 		this.begin = begin;

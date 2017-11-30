@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { AuthService } from '../services/auth.service';
 
-const url = 'http://localhost:3000/api/account';
+const url = 'http://localhost:3000/api/user'
 
 @Component({
   selector: 'app-account',
@@ -38,18 +39,17 @@ export class AccountComponent implements OnInit {
 
   ngOnSubmit() {
     this.loading = true;
-    this.http.post(url, this.signupForm.value)
-      .subscribe((result: any) => {
-        if (result.error)
-          this.loading = false;
-        else {
-          this.router.navigate(['/home'])
-            .catch(reason => console.log(reason));
-        }
-      }, err => {
-        console.log(err);
+    let rndUser = '6'; //IDUSER A RECUPERER VIA COMMANDE GET OU VIA UN ID LORS DE L'AUTHENTIFICATION
+    this.http.patch(url + '/' + rndUser, this.signupForm.value).subscribe((result : any) => {
+      if(result.error)
         this.loading = false;
-      });
-
-  }
+      else {
+        console.log(result);
+        this.router.navigate(['home']);
+      }
+    }, err => {
+      console.log(err);
+      this.loading = false;
+    }
+  )}
  }

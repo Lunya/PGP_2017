@@ -13,7 +13,7 @@ function treatment(errorStatus, response, values,  rows) {
 			values.push({'result' : 'error', 'msg' : 'No Results Found'});
 		}
 		response.setHeader('Content-Type', 'application/json');
-	response.status(200).send(JSON.stringify(value));
+	response.status(200).send(JSON.stringify(values));
 }
 };
 
@@ -23,7 +23,6 @@ router.get('/projects/:userId', (req, res) => {
 		let values = [];
 		treatment(err,res,values,cols);
 	});
-
 });
 
 router.get('/project/:userId/:id', (req, res) => {
@@ -65,8 +64,7 @@ router.delete('/project/:id', (req, res) => {
 bd.query("DELETE FROM Project WHERE id=?",[id], (err,count) => {
 	let values = [];
 	treatment(err, res, values, "success");
-
-})
+});
 });
 
 module.exports = router;

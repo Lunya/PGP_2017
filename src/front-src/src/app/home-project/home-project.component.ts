@@ -6,6 +6,7 @@ import { ProjectComponent } from './project/project.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
+import { UserInfoComponent } from './user-info/user-info.component';
 
 @Component({
 	selector: 'app-home-project',
@@ -34,6 +35,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 		this.subPar = this.route.params.subscribe(params => {
 			this.projectId = params['id'];
 		});
+
 		this.sidebar.setContent({
 			sprints: [
 				{ id: 1, name: 'sprint 1'},
@@ -43,18 +45,31 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 				{ id: 2, name: 'user 2', email: 'email2@aa.aa' }
 			]});
 
-			/*let projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
-			let projectComponent = this.pageContent.createComponent(projectComponentFactory);*/
+
+		let projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
 
 		let sprintComponentFactory = this.cfr.resolveComponentFactory(SprintComponent);
-		let sprintComponent = this.pageContent.createComponent(sprintComponentFactory);
+		let userComponentFactory = this.cfr.resolveComponentFactory(UserInfoComponent);
+
+		this.sidebar.onSelectProject.subscribe(() => {
+			this.pageContent.remove();
+			const projectFactory = this.pageContent.createComponent(projectComponentFactory);
+		});
 
 		this.sidebar.onSelectSprint.subscribe(sprintId => {
-			console.log(sprintId);
+			this.pageContent.remove();
+			let sprintComponent = this.pageContent.createComponent(sprintComponentFactory);
+			sprintComponent.instance.setSprintId(sprintId);
 		});
 
 		this.sidebar.onNewSprint.subscribe(() => {
 			const modalRef = this.modalService.open(EditSprintComponent);
+		});
+
+		this.sidebar.onSelectUser.subscribe(userId => {
+			this.pageContent.remove();
+			let userComponent = this.pageContent.createComponent(userComponentFactory);
+			userComponent.instance.setId(userId);
 		});
 
 		this.sidebar.onAddUser.subscribe(() => {

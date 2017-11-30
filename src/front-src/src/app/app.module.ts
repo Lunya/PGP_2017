@@ -23,6 +23,7 @@ import { AccountComponent } from './account/account.component';
 import { EditSprintComponent } from './popups/edit-sprint/edit-sprint.component';
 import { EditProjectComponent } from './popups/edit-project/edit-project.component';
 import { AddUserComponent } from './popups/add-user/add-user.component';
+import { UserInfoComponent } from './home-project/user-info/user-info.component';
 
 
 
@@ -44,7 +45,8 @@ import { AddUserComponent } from './popups/add-user/add-user.component';
 		AccountComponent,
 		EditSprintComponent,
 		EditProjectComponent,
-		AddUserComponent
+		AddUserComponent,
+		UserInfoComponent
 	],
 	imports: [
 		BrowserModule,
@@ -65,7 +67,8 @@ import { AddUserComponent } from './popups/add-user/add-user.component';
 		SprintComponent,
 		AddUserComponent,
 		EditProjectComponent,
-		EditSprintComponent
+		EditSprintComponent,
+		UserInfoComponent
 	]
 })
 export class AppModule { }

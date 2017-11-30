@@ -1,64 +1,66 @@
 <div class="container">
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-	<ul class="navbar-nav">
-		<li><a class="navbar-brand" (click)="projectsView(true)">My projects</a></li>
-		<li><a class="navbar-brand" (click)="projectsView(false)">Contributing projects</a></li>
-	</ul>
-	<div class="collapse navbar-collapse">
-		<ul class="navbar-nav navbar-center">
-
-			<li *ngIf='!addTaskMode'><button type="button" class="btn btn-success" (click)="newProject()"><i class="fa fa-plus-circle"></i> New project</button></li>
-
+	<nav class="navbar navbar-expand-md navbar-light bg-light">
+		<ul class="navbar-nav">
+			<li><a class="navbar-brand" (click)="projectsView(true)">My projects</a></li>
+			<li><a class="navbar-brand" (click)="projectsView(false)">Contributing projects</a></li>
 		</ul>
+		<div class="collapse navbar-collapse">
+			<ul class="navbar-nav navbar-center">
+
+				<li *ngIf='!addTaskMode'><button type="button" class="btn btn-success" (click)="newProject()"><i class="fa fa-plus-circle"></i> New project</button></li>
+
+			</ul>
+		</div>
+	</nav>
+
+	<div *ngIf='projectsTableView' class="col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Participant</th>
+					<th>Begin</th>
+					<th>End</th>
+					<th>Repository</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let project of myProjects" [routerLink]="['/project', project.id]">
+					<td>{{ project.name }}</td>
+					<td>{{ project.participant }}</td>
+					<td>{{ project.begin }}</td>
+					<td>{{ project.end }}</td>
+					<td>{{ project.url }}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
-</nav>
-
-<div *ngIf='projectsTableView' class="col-md-12">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Creator</th>
-				<th>Begin</th>
-				<th>End</th>
-				<th>Repository</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let project of myProjects" [routerLink]="['/project', project.id]">
-				<td>{{ project.name }}</td>
-				<td>{{ project.participant }}</td>
-				<td>{{ project.begin }}</td>
-				<td></td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
 
 
-<div *ngIf='!projectsTableView' class="col-md-12">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Description</th>
-				<th>Difficulty</th>
-				<th>Priority</th>
-				<th>Status</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let project of otherProjects" [routerLink]="['/project', project.id]">
-				<td>{{ project.name }}</td>
-				<td></td>
-				<td>{{ project.begin }}</td>
-				<td>{{ project.end }}</td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+
+
+	<div *ngIf='!projectsTableView' class="col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Creator</th>
+					<th>Begin</th>
+					<th>End</th>
+					<th>Repository</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let project of otherProjects" [routerLink]="['/project', project.id]">
+					<td>{{ project.name }}</td>
+					<td>{{ project.creator }}</td>
+					<td>{{ project.begin }}</td>
+					<td>{{ project.end }}</td>
+					<td>{{ project.url }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 </div>

@@ -1,6 +1,3 @@
-
-
-
 export class UserStory {
   id : number;
   description : string;

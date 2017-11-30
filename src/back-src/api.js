@@ -4,6 +4,8 @@ let login = require('./routes/login');
 let project = require('./routes/project');
 let user = require('./routes/user');
 let userstory = require('./routes/userstory');
+let sprint = require('./routes/sprint');
+let task = require('./routes/task');
 let cors = require('cors');
 
 let router = express.Router();
@@ -42,6 +44,9 @@ bd.connect(err => {
 			res.setHeader('Content-Type', 'application/json');
 			bd.query('SHOW TABLES', (error, tables, fields) => {
 				let result = {};
+				console.log(tables);
+				if (tables.length === 0)
+					res.end(JSON.stringify(result));
 				for (let i = 0; i < tables.length; i++) {
 					let table = tables[i][fields[i].name];
 					let content = [];
@@ -64,6 +69,8 @@ bd.connect(err => {
 		router.use(project);
 		router.use(user);
 		router.use(userstory);
+		router.use(sprint);
+		router.use(task);
 	}
 });
 

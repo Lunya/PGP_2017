@@ -1,6 +1,3 @@
-
-
-
 export class Sprint {
   id : number;
   us : string;

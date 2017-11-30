@@ -15,41 +15,40 @@ const url2 = 'http://localhost:3000/api/userstories/';
 })
 
 
-
 export class ProjectComponent implements OnInit {
-	private projectName : string = "MyProject";
-	private addUsMode : boolean = false;
-	private haveURL : boolean = false;
+	private projectName = "MyProject";
+	private addUsMode = false;
+	private haveURL = false;
 
 	private usList = [];
 	private usModel = {
-		id : 0,
-		description : '',
-		difficulty : 0,
-		priority : 0,
-		status : '',
-		onEdit : false
+		id: 0,
+		description: '',
+		difficulty: 0,
+		priority: 0,
+		status: '',
+		onEdit: false
 	};
 
 	private project = {
-		id : 1,
-		name : 'MyProject',
-		description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-		begin : '01/01/01',
-		end : '12/12/21'
+		id: 1,
+		name: 'MyProject',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		begin: '01/01/01',
+		end: '12/12/21'
 	}
 
-	private idUS : number = 1;
-	private index : number = 10;
+	private idUS = 1;
+	private index = 10;
 
-	private repositoryForm : FormGroup;
-	private userStoryForm : FormGroup;
+	private repositoryForm: FormGroup;
+	//private userStoryForm: FormGroup;
 
 	constructor(
-		private el : ElementRef,
-		private fb : FormBuilder,
-		private lc : NgZone,
-		private http : HttpClient
+		private el: ElementRef,
+		private fb: FormBuilder,
+		private lc: NgZone,
+		private http: HttpClient
 	) {
 		this.repositoryForm = this.fb.group({
 			url: [null, [Validators.required, CustomValidators.url]]
@@ -66,9 +65,9 @@ export class ProjectComponent implements OnInit {
     })*/
 	}
 
-	get backlog():FormArray{
-	return <FormArray>this.userStoryForm.get('backlog')
-}
+	/*get backlog(): FormArray {
+		return <FormArray>this.userStoryForm.get('backlog')
+	}*/
 
 
 	ngOnInit() {
@@ -76,11 +75,11 @@ export class ProjectComponent implements OnInit {
 
 	initItems(): FormGroup {
 		return this.fb.group({
-			id: [{value: this.idUS, disabled: true}, []],
+			id: [{ value: this.idUS, disabled: true }, []],
 			description: ["", [Validators.required, Validators.minLength(10)]],
-			difficulty: [0,[Validators.required, CustomValidators.number]],
-			priority: [0,[Validators.required, CustomValidators.number]],
-			status: ["",[Validators.required, Validators.minLength(1)]],
+			difficulty: [0, [Validators.required, CustomValidators.number]],
+			priority: [0, [Validators.required, CustomValidators.number]],
+			status: ["", [Validators.required, Validators.minLength(1)]],
 		});
 	}
 
@@ -117,14 +116,14 @@ export class ProjectComponent implements OnInit {
 	onConfirmRow(ligne) {
 		ligne['onEdit'] = false;
 		let tr_id = "#US" + ligne['id'];
-		let urlRequest = url+this.project.id+"/"+ligne['id'];
+		/*let urlRequest = url + this.project.id + "/" + ligne['id'];
 		this.http.patch(urlRequest, ligne)
-		.subscribe((result: any) => {
-			if (result.error)
+			.subscribe((result: any) => {
+				if (result.error)
 					console.log(result);
-		}, err => {
-			console.log(err);
-		});
+			}, err => {
+				console.log(err);
+			});*/
 		this.el.nativeElement.querySelector(tr_id).classList.remove("table-info");
 		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
@@ -135,19 +134,19 @@ export class ProjectComponent implements OnInit {
 	onDeleteRow(ligne) {
 		let i = this.usList.indexOf(ligne);
 		this.usList.splice(i, 1);
-		let urlRequest = url+this.project.id+"/"+ligne['id'];
+		/*let urlRequest = url + this.project.id + "/" + ligne['id'];
 		this.http.delete(urlRequest, ligne)
-		.subscribe((result: any) => {
-		if (result.error)
-				console.log(result);
+			.subscribe((result: any) => {
+				if (result.error)
+					console.log(result);
 			}, err => {
-		console.log(err);
-		});
+				console.log(err);
+			});*/
 	}
 
 	onEdit() {
 		this.addUsMode = true;
-		this.backlog.push(this.initItems());
+		//this.backlog.push(this.initItems());
 	}
 
 	onBack() {
@@ -155,16 +154,15 @@ export class ProjectComponent implements OnInit {
 	}
 
 	onConfirm() {
-	//	console.log(this.userStoryForm.controls.backlog['controls']);
 		this.addUsMode = false;
-		let urlRequest = url2+this.project.id;
+		/*let urlRequest = url2 + this.project.id;
 		this.http.post(urlRequest, this.userStoryForm.value)
-		.subscribe((result: any) => {
-			if (result.error)
+			.subscribe((result: any) => {
+				if (result.error)
 					console.log(result);
-		}, err => {
-			console.log(err);
-		});
+			}, err => {
+				console.log(err);
+			});*/
 
 		this.usList.push(new UserStory(
 			this.idUS,

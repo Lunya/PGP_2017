@@ -1,5 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Task } from '../../objects/Task';
+
 import { UserStory } from '../../objects/UserStory';
 import { Subject } from 'rxjs/Subject';
 import { HttpClient } from '@angular/common/http';
@@ -9,53 +10,60 @@ const url2 = 'http://localhost:3000/api/tasks/';
 
 
 @Component({
-  selector: 'app-sprint',
-  templateUrl: './sprint.component.html',
-  styleUrls: ['./sprint.component.css']
+	selector: 'app-sprint',
+	templateUrl: './sprint.component.html',
+	styleUrls: ['./sprint.component.css']
 })
 export class SprintComponent implements OnInit {
 
-	private addTaskMode : boolean = false;
+	private addTaskMode = false;
 	private taskList = [];
 	private sprintUS = [];
-	private taskModel= {
-		id: 0 ,
+	private taskModel = {
+		id: 0,
 		description: '',
 		developer: '',
-		status:'',
+		status: '',
 		onEdit: false
 	};
 
 	private sprint = {
-		id:1,
-		idProject:1,
+		id: 1,
+		idProject: 1,
 		begin: '01/01/01',
-		end:'12/12/12'
+		end: '12/12/12'
 	}
 
-	private idTask : number = 1;
-	private developers = [];
-	private taskTableView : boolean = true;
 
-  constructor(
+	private idTask = 1;
+
+	private developers = [];
+	private taskTableView = true;
+
+	constructor(
 		private el: ElementRef,
 		private http: HttpClient
 	) {
 	}
 
-  ngOnInit() {
+	ngOnInit() {
 		this.developers.push(new String("jean"));
 		this.developers.push(new String("jean-philipe"));
 		this.developers.push(new String("quelleestladifférenceentreunepouleetunemaison"));
 
-		this.sprintUS.push(new UserStory(1,"Une us initiale", 0, 0,"TODO"));
-  }
+		this.sprintUS.push(new UserStory(1, "Une us initiale", 0, 0, "TODO"));
+	}
+
+	public setSprintId(id: number): void {
+		this.sprint.id = id;
+	}
+
 
 	resetModel() {
-		this.taskModel.id=0;
-		this.taskModel.description='';
-		this.taskModel.developer='';
-		this.taskModel.status='';
+		this.taskModel.id = 0;
+		this.taskModel.description = '';
+		this.taskModel.developer = '';
+		this.taskModel.status = '';
 		this.taskModel.onEdit = false;
 	}
 
@@ -65,6 +73,7 @@ export class SprintComponent implements OnInit {
 		this.el.nativeElement.querySelector(tr_id).classList.add("table-info");
 		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
+			tab[i].classList.add("table-info");
 			tab[i].setAttribute('contenteditable', 'true');
 		}
 	}
@@ -82,14 +91,14 @@ export class SprintComponent implements OnInit {
 	onConfirmRow(ligne) {
 		ligne['onEdit'] = false;
 		let tr_id = "#TASK" + ligne['id'];
-		let urlRequest = url+this.sprint.id+"/"+ligne['id'];
+		/*let urlRequest = url + this.sprint.id + "/" + ligne['id'];
 		this.http.patch(urlRequest, ligne)
-		.subscribe((result: any) => {
-			if (result.error)
+			.subscribe((result: any) => {
+				if (result.error)
 					console.log(result);
-		}, err => {
-			console.log(err);
-		});
+			}, err => {
+				console.log(err);
+			});*/
 		this.el.nativeElement.querySelector(tr_id).classList.remove("table-info");
 		let tab = this.el.nativeElement.querySelectorAll(tr_id + " .editable");
 		for (let i = 0; i < tab.length; ++i) {
@@ -99,7 +108,7 @@ export class SprintComponent implements OnInit {
 
 	onDeleteRow(ligne) {
 		let i = this.taskList.indexOf(ligne);
-		this.taskList.splice(i,1);
+		this.taskList.splice(i, 1);
 	}
 
 	onEdit() {
@@ -114,14 +123,14 @@ export class SprintComponent implements OnInit {
 	onConfirm() {
 		this.addTaskMode = false;
 
-		let urlRequest = url2+this.sprint.id;
-		this.http.post(urlRequest, this.taskModel)
-		.subscribe((result: any) => {
-			if (result.error)
+		let urlRequest = url2 + this.sprint.id;
+		/*this.http.post(urlRequest, this.taskModel)
+			.subscribe((result: any) => {
+				if (result.error)
 					console.log(result);
-		}, err => {
-			console.log(err);
-		});
+			}, err => {
+				console.log(err);
+			});*/
 
 
 		this.taskList.push(new Task(
