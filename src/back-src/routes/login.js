@@ -59,10 +59,6 @@ router.post('/login', (req, res) => {
 						res.status(401).send({ error: true });
 				});
 		}
-<<<<<<< HEAD
-
-=======
->>>>>>> 0a0a548bb6ac4eb59cc8e660ada3a52b683e3292
 	});
 });
 
