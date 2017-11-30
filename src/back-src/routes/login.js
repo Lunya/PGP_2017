@@ -28,19 +28,30 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	bd.query("SELECT * FROM User WHERE mail = ?", [req.body.email], (err, result, fields) => {
-		if (err) throw err;
-		if (result[0] != undefined) {
+	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?",[req.body.email], (err, result, fields) => {
+		if(err) throw err;
+		if (result.length === 0)
+			res.status(400).send({ error: true });
+		else {
+			let user = result[0];
 			bcrypt.compare(req.body.password, result[0]['password'])
 				.then(match => {
 					if (match) {
-						let token = jwt.sign({
-								id: result[0]['id'],
-								email: result[0]['mail']
-							},
-							secret, {
-								expiresIn: '1h'
-							});
+						let infos = {
+							id: user.id,
+							email: user.mail,
+							name: user.name
+						};
+						let token = jwt.sign(
+							infos,
+							secret,
+							{ expiresIn: '1h' });
+						infos.token = token;
+						res.status(200).send(infos);
+					} else
+						res.status(401).send({ error: true });
+				});
+		}
 
 						bd.query("SELECT * FROM Project WHERE id IN (SELECT id_project FROM User_Project WHERE id_user= ?)", [result[0]['id']], (err, result, fields) => {
 							if (err) throw err;

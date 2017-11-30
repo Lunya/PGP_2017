@@ -24,6 +24,7 @@ import { EditSprintComponent } from './popups/edit-sprint/edit-sprint.component'
 import { EditProjectComponent } from './popups/edit-project/edit-project.component';
 import { AddUserComponent } from './popups/add-user/add-user.component';
 import { UserInfoComponent } from './home-project/user-info/user-info.component';
+import { NewProjectComponent } from './workspace/new-project/new-project.component';
 
 
 
@@ -46,7 +47,8 @@ import { UserInfoComponent } from './home-project/user-info/user-info.component'
 		EditSprintComponent,
 		EditProjectComponent,
 		AddUserComponent,
-		UserInfoComponent
+		UserInfoComponent,
+		NewProjectComponent
 	],
 	imports: [
 		BrowserModule,
@@ -68,7 +70,8 @@ import { UserInfoComponent } from './home-project/user-info/user-info.component'
 		AddUserComponent,
 		EditProjectComponent,
 		EditSprintComponent,
-		UserInfoComponent
+		UserInfoComponent,
+		NewProjectComponent
 	]
 })
 export class AppModule { }
