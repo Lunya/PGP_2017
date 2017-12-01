@@ -32,11 +32,24 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.get('/projects/:userId', (req, res) => {
-	let id = req.params.userId;
-	db.query('SELECT * FROM User_Project WHERE id_user = ?',[id], (err, cols) => {
-		let values = [];
-		treatment(err,res,values,cols);
+router.get('/project/:id', (req, res) => {
+	res.contentType('application/json');
+	db.query('SELECT id, name, description, git, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let project = result[0];
+			if (project) {
+				res.send({
+					name: project.name,
+					description: project.description,
+					git: project.git,
+					begin: project.begin,
+					end: project.end
+				});
+			} else
+				sendError(res, 'No project selected');
+		}
 	});
 });
 
