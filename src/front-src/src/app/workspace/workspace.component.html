@@ -19,7 +19,7 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>Participant</th>
+					<th>Description</th>
 					<th>Begin</th>
 					<th>End</th>
 					<th>Repository</th>
@@ -28,10 +28,10 @@
 			<tbody>
 				<tr *ngFor="let project of myProjects" [routerLink]="['/project', project.id]">
 					<td>{{ project.name }}</td>
-					<td>{{ project.participant }}</td>
-					<td>{{ project.begin }}</td>
-					<td>{{ project.end }}</td>
-					<td>{{ project.url }}</td>
+					<td>{{ project.description }}</td>
+					<td>{{ project.begin | date: 'dd/MM/yyyy' }}</td>
+					<td>{{ project.end | date: 'dd/MM/yyyy' }}</td>
+					<td>{{ project.git }}</td>
 				</tr>
 			</tbody>
 		</table>

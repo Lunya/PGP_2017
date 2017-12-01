@@ -104,4 +104,24 @@ router.delete('/project/:id', (req, res) => {
 	})
 });
 
+router.get('/projects/:id', (req, res) => {
+	res.contentType('application/json');
+	db.query('SELECT id, name, description, git, begin, end, id_project, id_user FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let projects = [];
+			for (let i = 0; i < results.length; i++) {
+				projects.push({
+					id: results[i].id, name: results[i].name,
+					description: results[i].description,
+					git: results[i].git, begin: results[i].begin,
+					end: results[i].end
+				});
+			}
+			res.send(projects);
+		}
+	});
+});
+
 module.exports = router;
