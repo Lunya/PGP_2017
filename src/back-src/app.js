@@ -1,7 +1,7 @@
-if (process.env.NODE_ENV !== 'production')
+/*if (process.env.NODE_ENV !== 'production')
 	require('dotenv').load();
 
-let express = require('express');
+*/let express = require('express');
 let path = require('path');
 let http = require('http');
 let bodyParser = require('body-parser');

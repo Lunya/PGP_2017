@@ -9,10 +9,8 @@ const saltRounds = 8;
 
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
-	console.log(req);
 	bcrypt.hash(req.body.password, saltRounds, (err, password) => {
 		if (!err) {
-			console.log(err);
 			bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)", [req.body.name, password, req.body.email], (error, result) => {
 				if (err) throw err;
 				res.send({
