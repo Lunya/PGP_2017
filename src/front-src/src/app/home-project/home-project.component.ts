@@ -7,6 +7,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { HttpClient } from '@angular/common/http';
+import { Project } from '../objects/Project';
+
+const projectUrl = 'http://localhost:3000/api/project';
+const sprintUrl = 'http://localhost:3000/api/sprint';
+const userUrl = 'http://localhost:3000/api/user';
 
 @Component({
 	selector: 'app-home-project',
@@ -16,7 +22,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
 export class HomeProjectComponent implements OnInit, OnDestroy {
 	private subPar: any;
 
-	private projectId: number;
+	private project: Project;
 
 	@ViewChild(SidebarComponent)
 	private sidebar: SidebarComponent;
@@ -28,47 +34,63 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	constructor(
 		private route: ActivatedRoute,
 		private cfr: ComponentFactoryResolver,
-		private modalService: NgbModal
-	) { }
+		private modalService: NgbModal,
+		private http: HttpClient
+	) {}
+
+	private updateSidebar(): void {
+		this.http.get(sprintUrl + 's/' + this.project.id).subscribe((sprints: any) => {
+			this.http.get(userUrl + 's/' + this.project.id).subscribe( (users: any) => {
+				this.sidebar.setContent({
+					sprints: sprints,
+					users: users
+				});
+				console.log(users);
+			}, error => console.log(error));
+		}, error => console.log(error));
+	}
 
 	ngOnInit() {
 		this.subPar = this.route.params.subscribe(params => {
-			this.projectId = params['id'];
+			this.project = new Project();
+			this.project.id = params['id'];
+			this.http.get(projectUrl + '/' + this.project.id).subscribe((result: any) => {
+				this.project = result;
+				this.sidebar.onSelectProject.emit(); // update project on load
+				this.updateSidebar();
+			}, error => console.log(error));
 		});
 
-		this.sidebar.setContent({
-			sprints: [
-				{ id: 1, name: 'sprint 1'},
-				{ id: 2, name: 'sprint 2'}
-			], users: [
-				{ id: 1, name: 'user 1', email: 'email1@aa.aa' },
-				{ id: 2, name: 'user 2', email: 'email2@aa.aa' }
-			]});
+		const projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
 
-
-		let projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
-
-		let sprintComponentFactory = this.cfr.resolveComponentFactory(SprintComponent);
-		let userComponentFactory = this.cfr.resolveComponentFactory(UserInfoComponent);
+		const sprintComponentFactory = this.cfr.resolveComponentFactory(SprintComponent);
+		const userComponentFactory = this.cfr.resolveComponentFactory(UserInfoComponent);
 
 		this.sidebar.onSelectProject.subscribe(() => {
 			this.pageContent.remove();
 			const projectFactory = this.pageContent.createComponent(projectComponentFactory);
+			projectFactory.instance.project = this.project;
 		});
 
 		this.sidebar.onSelectSprint.subscribe(sprintId => {
 			this.pageContent.remove();
-			let sprintComponent = this.pageContent.createComponent(sprintComponentFactory);
+			const sprintComponent = this.pageContent.createComponent(sprintComponentFactory);
 			sprintComponent.instance.setSprintId(sprintId);
 		});
 
 		this.sidebar.onNewSprint.subscribe(() => {
 			const modalRef = this.modalService.open(EditSprintComponent);
+			modalRef.componentInstance.project = this.project;
+			modalRef.result
+				.then(value => {
+					this.updateSidebar();
+					console.log(value);
+				}).catch(reason => console.log(reason));
 		});
 
 		this.sidebar.onSelectUser.subscribe(userId => {
 			this.pageContent.remove();
-			let userComponent = this.pageContent.createComponent(userComponentFactory);
+			const userComponent = this.pageContent.createComponent(userComponentFactory);
 			userComponent.instance.setId(userId);
 		});
 

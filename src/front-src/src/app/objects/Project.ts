@@ -1,22 +1,23 @@
 export class Project {
 	public id: number;
 	public name: string;
-	public creator: string;
 	public description: string;
-	public url: string;
+	public git: string;
 	public begin: Date;
 	public end: Date;
-	public participant: String[];
 
-	constructor(id, name, creator, description, url, begin, end, participant) {
+	constructor(
+		id = -1,
+		name = '',
+		description = '',
+		git = '',
+		begin = new Date(),
+		end = new Date()) {
 		this.id = id;
 		this.name = name;
-		this.creator = creator;
 		this.description = description;
-		this.url = url;
+		this.git = git;
 		this.begin = begin;
 		this.end = end;
-		this.participant = participant;
 	}
-
 }

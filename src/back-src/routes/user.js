@@ -6,6 +6,11 @@ let bd = require('../databaseConnect');
 let router = express.Router();
 const saltRounds = 8;
 
+function sendError(res, reason) {
+	res.status(400).send({ error: true, reason: reason });
+	console.log(reason);
+}
+
 function treatment(errorStatus, response, values,  rows) {
 	if(errorStatus) response.status(400).send(errorStatus);
 	else {
@@ -58,6 +63,25 @@ router.delete('/user/:id', (req, res) => {
 		treatment(err, res, values, "success");
 
 	})
+});
+
+router.get('/users/:idProject', (req, res) => {
+	res.contentType('application/json');
+	bd.query('SELECT User_Project.id_project, User_Project.id_user, User.id, User.mail, User.name FROM User_Project INNER JOIN User ON User_Project.id_user = User.id AND User_Project.id_project = ?', [req.params.idProject], (error, result) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let users = [];
+			for (let i = 0; i < result.length; i++) {
+				users.push({
+					id: result[i]['id'],
+					name: result[i]['name'],
+					email: result[i]['mail']
+				});
+			}
+			res.status(200).send(users);
+		}
+	});
 });
 
 module.exports = router;

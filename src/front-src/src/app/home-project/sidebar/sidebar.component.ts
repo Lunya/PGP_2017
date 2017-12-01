@@ -7,7 +7,7 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 })
 export class SidebarComponent implements OnInit {
 	private content: {
-		sprints: Array<{ id: number, name: string }>,
+		sprints: Array<{ id: number, begin: Date, end: Date}>,
 		users: Array<{ id: number, name: string, email: string }>};
 
 	@Output() onSelectProject = new EventEmitter<void>();
@@ -23,6 +23,7 @@ export class SidebarComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+		this.content = { sprints: [], users: [] };
 		this.onProjectSelected();
 	}
 

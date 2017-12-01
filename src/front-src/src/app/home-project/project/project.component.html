@@ -1,39 +1,44 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-	<a class="navbar-brand" routerLink="#">Backlog</a>
-	<div class="collapse navbar-collapse">
-		<ul class="navbar-nav mr-auto">
-			<li *ngIf="!haveURL" class="nav-item">
-				<form class="form-inline form-repository" [formGroup]="repositoryForm" (ngSubmit)="submitURL()" novalidate>
-					<label for="url">
-						<button type="button" class="btn btn-success" type="submit" [disabled]="repositoryForm.invalid"><i class="fa fa-plus-circle"></i> Add URL repository</button>
-					</label>
-					<input type="url" id="url" class="form-control" formControlName="url" placeholder="URL Repository" [ngClass]="{
-							'is-invalid': (repositoryForm.controls['url'].invalid && repositoryForm.controls['url'].touched),
-							'is-valid': repositoryForm.controls['url'].touched} ">
-				</form>
-			</li>
-			<li *ngIf="haveURL"><button type="button" class="btn btn-primary" (click)="editURL()">Edit URL repository</button>
-				<a target="_blank" href="{{ repositoryForm.value['url'] }}">Project repository </a></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li *ngIf='!addUsMode'><button type="button" class="btn btn-secondary" (click)="onEdit()"><i class="fa fa-plus-circle"></i> Add userStory</button></li>
-			<li *ngIf='addUsMode'><button type="button" class="btn btn-primary" (click)="onConfirm()"><i class="fa fa-check-square"></i> Confirm</button></li>
-			<li *ngIf='addUsMode'><button type="button" class="btn" (click)="onBack()"><i class="fa fa-reply"></i> Back</button></li>
-		</ul>
-		<ul class="navbar-nav navbar-right">
-
-			<li><button type="button" class="btn btn-default" (click)="removeProject()"><i class="fa fa-edit"></i> Edit project</button></li>
-			<li><button type="button" class="btn btn-danger" (click)="removeProject()"><i class="fa fa-times"></i> Remove project</button></li>
-		</ul>
+<div class="container-fluid">
+	<div class="jumbotron py-2 mt-3 mb-1">
+		<h4 class="display-4">{{ project.name }}</h4>
+		<p class="lead">{{ project.description }}</p>
 	</div>
-</nav>
 
-<div class="col-md-12">
-	<!-- <form class="form-inline form-repository" [formGroup]="userStoryForm" (ngSubmit)="ngOnSubmit()" novalidate> -->
-	<!-- <table class="table" formArrayName="backlog"> -->
-		<table class="table">
-			<thead>
+	<div class="row">
+		<nav class="navbar mb-3">
+			<a class="navbar-brand">Backlog</a>
+			<form class="form-inline" [formGroup]="repositoryForm" (ngSubmit)="submitURL()" novalidate>
+				<input type="text" placeholder="Subversionnig repository URL" class="form-control mr-sm-2"
+					   formControlName="url" type="url" id="url"
+					   [ngClass]="{
+							'is-invalid': (repositoryForm.controls['url'].invalid && repositoryForm.controls['url'].touched),
+							'is-valid': repositoryForm.controls['url'].touched} "
+					   value="{{ project.git }}">
+
+				<button type="button" class="btn btn-secondary mr-sm-2"
+						*ngIf="!addUsMode" (click)="onEdit()">
+					<i class="fa fa-plus-circle"></i> Add user story</button>
+				<button type="button" class="btn btn-primary mr-sm-2"
+						*ngIf="addUsMode" (click)="onConfirm()">
+					<i class="fa fa-check"></i> Confirm</button>
+				<button type="button" class="btn btn-secondary mr-sm-2"
+						*ngIf="addUsMode" (click)=onBack()>
+					<i class="fa fa-reply"></i></button>
+
+				<button type="button" class="btn mr-sm-2"
+					   ><i class="fa fa-edit"></i>Edit project</button>
+				<button type="button" class="btn btn-danger"
+					   ><i class="fa fa-trash"></i> Delete project</button>
+			</form>
+		</nav>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- <form class="form-inline form-repository" [formGroup]="userStoryForm" (ngSubmit)="ngOnSubmit()" novalidate> -->
+			<!-- <table class="table" formArrayName="backlog"> -->
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
 				<tr>
 					<th class='id'>ID</th>
 					<th class='description'>Description</th>
@@ -42,8 +47,8 @@
 					<th>Status</th>
 					<th class='columnAction'>Action</th>
 				</tr>
-			</thead>
-			<tbody>
+				</thead>
+				<tbody>
 				<tr *ngIf='addUsMode' class="table-primary">
 					<td></td>
 					<td contenteditable='true' class="description" [(ngModel)]="usModel.description" #description="ngModel"></td>
@@ -70,54 +75,9 @@
 						</td>
 					</tr>
 				</ng-container>
-
-
-
-
-
-				<!--	<tr *ngIf='addUsMode' class="table-primary">
-					<td><input type="text" id="id" class="form-control" formControlName="id"></td>
-
-					<td><textarea id="description" class="form-control" formControlName="description" placeholder="" [ngClass]="{
-						'is-invalid': (userStoryForm.controls['description'].invalid && userStoryForm.controls['description'].touched),
-						'is-valid': userStoryForm.controls['description'].touched} "></textarea></td>
-
-					<td><input type="number" id="difficulty" class="form-control" formControlName="difficulty" [ngClass]="{
-						'is-invalid': (userStoryForm.controls['difficulty'].invalid && userStoryForm.controls['difficulty'].touched),
-						'is-valid': userStoryForm.controls['difficulty'].touched} "></td>
-
-					<td><input type="number" id="priority" class="form-control" formControlName="priority" [ngClass]="{
-						'is-invalid': (userStoryForm.controls['priority'].invalid && userStoryForm.controls['priority'].touched),
-						'is-valid': userStoryForm.controls['priority'].touched} "></td>
-
-					<td><input type="text" id="status" class="form-control" formControlName="status" [ngClass]="{
-						'is-invalid': (userStoryForm.controls['status'].invalid && userStoryForm.controls['status'].touched),
-						'is-valid': userStoryForm.controls['status'].touched} "></td>
-
-					<td>
-						<button class="btn" disabled><i class="fa fa-edit"></i> Edit</button>
-						<button class="btn btn-danger" disabled><i class="fa fa-times"></i> </button>
-					</td>
-				</tr> -->
-
-				<!--	<tr *ngFor="let item of this.userStoryForm.controls.backlog['controls']; let i=index"
-              [formGroupName]="i" >
-							<td><input type="text" class="form-control" formControlName="id"></td>
-                <td><textarea id="description" class="form-control" formControlName="description" placeholder="" [ngClass]="{
-									'is-invalid': (item[i]['controls']['description'].invalid && item[i]['controls']['description'].touched),
-									'is-valid': userStoryForm.controls['backlog']['controls'][i]['controls']['description'].touched} "></textarea></td>
-                <td></td>
-                <td><input type='number' formControlName="priority"></td>
-								<td><input type='text' formControlName="status"></td>
-								<td>
-									<button class="btn" disabled><i class="fa fa-edit"></i> Edit</button>
-									<button class="btn btn-danger" disabled><i class="fa fa-times"></i> </button>
-								</td>
-            </tr> -->
-
-
-
-			</tbody>
-		</table>
-	<!-- </form> -->
+				</tbody>
+			</table>
+			<!-- </form> -->
+		</div>
+	</div>
 </div>

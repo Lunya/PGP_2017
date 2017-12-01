@@ -32,17 +32,32 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.get('/projects/:userId', (req, res) => {
-	let id = req.params.userId;
-	db.query('SELECT * FROM User_Project WHERE id_user = ?',[id], (err, cols) => {
-		let values = [];
-		treatment(err,res,values,cols);
+router.get('/project/:id', (req, res) => {
+	res.contentType('application/json');
+	db.query('SELECT id, name, description, git, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let project = result[0];
+			if (project) {
+				res.send({
+					id: project.id,
+					name: project.name,
+					description: project.description,
+					git: project.git,
+					begin: project.begin,
+					end: project.end
+				});
+			} else
+				sendError(res, 'No project selected');
+		}
 	});
 });
 
 router.get('/project/:userId/:id', (req, res) => {
 	let id = req.params.id;
 	let userId = req.param.userId;
+
 	db.query('SELECT * FROM User_Project WHERE id_user = ? AND id_project = ?',[userId, id], (err, cols) => {
 		let response = [];
 		treatment(err,res,values,cols);
@@ -89,6 +104,26 @@ router.delete('/project/:id', (req, res) => {
 		let values = [];
 		treatment(err, res, values, "success");
 	})
+});
+
+router.get('/projects/:id', (req, res) => {
+	res.contentType('application/json');
+	db.query('SELECT id, name, description, git, begin, end, id_project, id_user FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let projects = [];
+			for (let i = 0; i < results.length; i++) {
+				projects.push({
+					id: results[i].id, name: results[i].name,
+					description: results[i].description,
+					git: results[i].git, begin: results[i].begin,
+					end: results[i].end
+				});
+			}
+			res.send(projects);
+		}
+	});
 });
 
 module.exports = router;

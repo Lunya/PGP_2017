@@ -11,7 +11,8 @@ let bd = mysql.createConnection({
 	port:		process.env.DB_SERVER_PORT,
 	user:		process.env.DB_SERVER_USER,
 	password:	process.env.DB_SERVER_PASSWORD,
-	database:	process.env.DB_NAME
+	database:	process.env.DB_NAME,
+	charset:	'utf8'
 });
 
 module.exports = bd;
