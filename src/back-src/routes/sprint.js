@@ -42,19 +42,17 @@ router.get('/sprints/:id', (req, res) => {
 	});
 });
 
-router.post('/sprints/:id', (req,res) => {
-	let id = req.params.id;
-	let values = [];
-	if (typeof req.body.id !== 'undefined' && req.body.begin !== 'undefined'){
-		bd.query('INSERT INTO Sprint VALUES(?,?,?)',[id,req.body.begin,req.body.end], (err,result) => {
-			treatment(err,res,response,"success");
-		});
-	}
-	else {
-		values.push({'result' : 'error', 'msg' : 'Missing field'});
-		res.setHeader('Content-Type', 'application/json');
-		res.send(200, JSON.stringify(values));
-	}
+router.post('/sprint', (req, res) => {
+	res.contentType('application/json');
+	bd.query('INSERT INTO Sprint(id_project, begin, end) VALUES (?, ?, ?)',
+		[req.body.idProject, new Date(req.body.begin), new Date(req.body.end)], (error, result) => {
+		console.log(error, req.body);
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			res.status(200).send({ id: result.insertId });
+		}
+	});
 });
 
 router.get('/sprint/:idProject/:idSprint', (req,res) => {

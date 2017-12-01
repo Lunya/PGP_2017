@@ -41,6 +41,7 @@ router.get('/project/:id', (req, res) => {
 			let project = result[0];
 			if (project) {
 				res.send({
+					id: project.id,
 					name: project.name,
 					description: project.description,
 					git: project.git,
@@ -56,6 +57,7 @@ router.get('/project/:id', (req, res) => {
 router.get('/project/:userId/:id', (req, res) => {
 	let id = req.params.id;
 	let userId = req.param.userId;
+
 	db.query('SELECT * FROM User_Project WHERE id_user = ? AND id_project = ?',[userId, id], (err, cols) => {
 		let response = [];
 		treatment(err,res,values,cols);
