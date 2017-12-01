@@ -7,6 +7,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { HttpClient } from '@angular/common/http';
+
+const projectUrl = 'http://localhost:3000/api/project';
+const sprintUrl = 'http://localhost:3000/api/sprint';
+const userUrl = 'http://localhost:3000/api/user';
 
 @Component({
 	selector: 'app-home-project',
@@ -16,7 +21,10 @@ import { UserInfoComponent } from './user-info/user-info.component';
 export class HomeProjectComponent implements OnInit, OnDestroy {
 	private subPar: any;
 
-	private projectId: number;
+	private project = {
+		id: -1, name: '',
+		description: '',
+		begin: new Date(), end: new Date()};
 
 	@ViewChild(SidebarComponent)
 	private sidebar: SidebarComponent;
@@ -28,12 +36,26 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	constructor(
 		private route: ActivatedRoute,
 		private cfr: ComponentFactoryResolver,
-		private modalService: NgbModal
+		private modalService: NgbModal,
+		private http: HttpClient
 	) { }
 
 	ngOnInit() {
 		this.subPar = this.route.params.subscribe(params => {
-			this.projectId = params['id'];
+			const projectId = params['id'];
+			this.http.get(projectUrl + '/' + projectId).subscribe((result: any) => {
+				this.project = result;
+				this.sidebar.onSelectProject.emit();
+				this.http.get(sprintUrl + 's/' + projectId).subscribe((sprints: any) => {
+					this.http.get(userUrl + 's/' + projectId).subscribe( (users: any) => {
+						this.sidebar.setContent({
+							sprints: sprints,
+							users: users
+						});
+						console.log(users);
+					}, error => console.log(error));
+				}, error => console.log(error));
+			}, error => console.log(error));
 		});
 
 		this.sidebar.setContent({
@@ -46,19 +68,20 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 			]});
 
 
-		let projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
+		const projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
 
-		let sprintComponentFactory = this.cfr.resolveComponentFactory(SprintComponent);
-		let userComponentFactory = this.cfr.resolveComponentFactory(UserInfoComponent);
+		const sprintComponentFactory = this.cfr.resolveComponentFactory(SprintComponent);
+		const userComponentFactory = this.cfr.resolveComponentFactory(UserInfoComponent);
 
 		this.sidebar.onSelectProject.subscribe(() => {
 			this.pageContent.remove();
 			const projectFactory = this.pageContent.createComponent(projectComponentFactory);
+			projectFactory.instance.project = this.project;
 		});
 
 		this.sidebar.onSelectSprint.subscribe(sprintId => {
 			this.pageContent.remove();
-			let sprintComponent = this.pageContent.createComponent(sprintComponentFactory);
+			const sprintComponent = this.pageContent.createComponent(sprintComponentFactory);
 			sprintComponent.instance.setSprintId(sprintId);
 		});
 
@@ -68,7 +91,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 		this.sidebar.onSelectUser.subscribe(userId => {
 			this.pageContent.remove();
-			let userComponent = this.pageContent.createComponent(userComponentFactory);
+			const userComponent = this.pageContent.createComponent(userComponentFactory);
 			userComponent.instance.setId(userId);
 		});
 

@@ -1,8 +1,8 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, Input } from '@angular/core';
 import { UserStory } from '../../objects/UserStory';
-import { Directive, ElementRef } from '@angular/core';
+import { ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
 const url = 'http://localhost:3000/api/userstory/';
@@ -30,13 +30,11 @@ export class ProjectComponent implements OnInit {
 		onEdit: false
 	};
 
-	private project = {
-		id: 1,
-		name: 'MyProject',
-		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-		begin: '01/01/01',
-		end: '12/12/21'
-	}
+	@Input('project')
+	public project: {
+		id: number, name: string,
+		description: string,
+		begin: Date, end: Date };
 
 	private idUS = 1;
 	private index = 10;
