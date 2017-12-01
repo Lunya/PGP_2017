@@ -8,6 +8,7 @@ import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { EditSprintComponent } from '../popups/edit-sprint/edit-sprint.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { HttpClient } from '@angular/common/http';
+import { Project } from '../objects/Project';
 
 const projectUrl = 'http://localhost:3000/api/project';
 const sprintUrl = 'http://localhost:3000/api/sprint';
@@ -21,10 +22,7 @@ const userUrl = 'http://localhost:3000/api/user';
 export class HomeProjectComponent implements OnInit, OnDestroy {
 	private subPar: any;
 
-	private project = {
-		id: -1, name: '',
-		description: '',
-		begin: new Date(), end: new Date()};
+	private project: Project;
 
 	@ViewChild(SidebarComponent)
 	private sidebar: SidebarComponent;
@@ -38,35 +36,30 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 		private cfr: ComponentFactoryResolver,
 		private modalService: NgbModal,
 		private http: HttpClient
-	) { }
+	) {}
+
+	private updateSidebar(): void {
+		this.http.get(sprintUrl + 's/' + this.project.id).subscribe((sprints: any) => {
+			this.http.get(userUrl + 's/' + this.project.id).subscribe( (users: any) => {
+				this.sidebar.setContent({
+					sprints: sprints,
+					users: users
+				});
+				console.log(users);
+			}, error => console.log(error));
+		}, error => console.log(error));
+	}
 
 	ngOnInit() {
 		this.subPar = this.route.params.subscribe(params => {
-			const projectId = params['id'];
-			this.http.get(projectUrl + '/' + projectId).subscribe((result: any) => {
+			this.project = new Project();
+			this.project.id = params['id'];
+			this.http.get(projectUrl + '/' + this.project.id).subscribe((result: any) => {
 				this.project = result;
-				this.sidebar.onSelectProject.emit();
-				this.http.get(sprintUrl + 's/' + projectId).subscribe((sprints: any) => {
-					this.http.get(userUrl + 's/' + projectId).subscribe( (users: any) => {
-						this.sidebar.setContent({
-							sprints: sprints,
-							users: users
-						});
-						console.log(users);
-					}, error => console.log(error));
-				}, error => console.log(error));
+				this.sidebar.onSelectProject.emit(); // update project on load
+				this.updateSidebar();
 			}, error => console.log(error));
 		});
-
-		this.sidebar.setContent({
-			sprints: [
-				{ id: 1, name: 'sprint 1'},
-				{ id: 2, name: 'sprint 2'}
-			], users: [
-				{ id: 1, name: 'user 1', email: 'email1@aa.aa' },
-				{ id: 2, name: 'user 2', email: 'email2@aa.aa' }
-			]});
-
 
 		const projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
 
@@ -87,6 +80,12 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 		this.sidebar.onNewSprint.subscribe(() => {
 			const modalRef = this.modalService.open(EditSprintComponent);
+			modalRef.componentInstance.project = this.project;
+			modalRef.result
+				.then(value => {
+					this.updateSidebar();
+					console.log(value);
+				}).catch(reason => console.log(reason));
 		});
 
 		this.sidebar.onSelectUser.subscribe(userId => {

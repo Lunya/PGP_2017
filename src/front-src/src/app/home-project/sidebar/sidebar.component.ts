@@ -23,6 +23,7 @@ export class SidebarComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+		this.content = { sprints: [], users: [] };
 		this.onProjectSelected();
 	}
 

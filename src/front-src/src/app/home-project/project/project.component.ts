@@ -4,6 +4,7 @@ import { ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { Project } from '../../objects/Project';
 
 const url = 'http://localhost:3000/api/userstory/';
 const url2 = 'http://localhost:3000/api/userstories/';
@@ -30,10 +31,7 @@ export class ProjectComponent implements OnInit {
 	};
 
 	@Input('project')
-	public project: {
-		id: number, name: string,
-		description: string, git: string,
-		begin: Date, end: Date };
+	public project: Project;
 
 	private idUS = 1;
 	private index = 10;

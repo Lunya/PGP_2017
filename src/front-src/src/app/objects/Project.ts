@@ -6,7 +6,13 @@ export class Project {
 	public begin: Date;
 	public end: Date;
 
-	constructor(id, name, description, git, begin, end) {
+	constructor(
+		id = -1,
+		name = '',
+		description = '',
+		git = '',
+		begin = new Date(),
+		end = new Date()) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
