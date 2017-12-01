@@ -18,8 +18,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - cd src/front-src
   - mysql -e 'create database pgp_test;'
-  - mysql -u root pgp_test < ../initdb/init.sql
-  - mysql -u root pgp_test < ../initdb/peuplement.sql
+  - mysql -u root pgp_test < ../initdb_test/init_test.sql
 install:
   - npm install --prefix ./src/front-src/
   - npm install --prefix ./src/back-src/
@@ -29,10 +28,10 @@ script:
   - ng e2e
 
 env:
-  - MYSQL_TYPE=mysql MYSQL_HOST=localhost MYSQL_DATABASE=pgp_test MYSQL_USER=root MYSQL_PASSWORD=
+  -  NODE_ENV=TEST NODE_PORT=3000 DB_SERVER_PORT=3306 MYSQL_TYPE=mysql MYSQL_HOST=localhost MYSQL_DATABASE=pgp_test MYSQL_USER=root MYSQL_PASSWORD=
 
 mysql:
   adapter: mysql2
-  username: root
+  username: root 
   encoding: utf8
   database: pgp_test

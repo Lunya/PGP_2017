@@ -13,15 +13,15 @@ router.post('/register', (req, res) => {
 		if (!err) {
 			bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)", [req.body.name, password, req.body.email], (error, result) => {
 				if (err) throw err;
-				console.log(result);
 				res.send({
 					error: false
 				});
 			});
-		} else
+		} else {
 			res.send({
 				error: err
 			});
+		}
 	});
 });
 
@@ -32,6 +32,15 @@ router.post('/login', (req, res) => {
 		if (result.length === 0)
 			res.status(400).send({ error: true });
 		else {
+			/*bd.query("SELECT * FROM Project WHERE id IN (SELECT id_project FROM User_Project WHERE id_user= ?)", [result[0]['id']], (err, result, fields) => {
+								if (err) throw err;
+								if (result.length === 0)
+									res.status(400).send({ error: true });
+								res.status(200).json({
+									error: false,
+									token: token
+								});
+							});*/
 			let user = result[0];
 			bcrypt.compare(req.body.password, user.password)
 				.then(match => {

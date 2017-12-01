@@ -1,7 +1,7 @@
 # PGP_2017
 Projet de Gestion de Projet
 
-[![Build Status](https://travis-ci.org/Lunya/PGP_2017.svg?branch=hassie)](https://travis-ci.org/Lunya/PGP_2017)
+[![Build Status](https://travis-ci.org/Lunya/PGP_2017.svg?branch=karom_dev)](https://travis-ci.org/Lunya/PGP_2017)
 
 ## user stories
 
