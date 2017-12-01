@@ -88,11 +88,11 @@ describe('POST /login : pgp connection e2e testing', () => {
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
 	});
 
-	it('should not be able to connect with a wrong passwd -> code 400', () => {
+	it('should not be able to connect with a wrong passwd -> code 401', () => {
 		page.fillAndSendFormConnection("test0@gmail.com", "");
 		let data = { email: 'test0@gmail.com', password: '123456780' };
 		postRequest(serverURL + "/api/login", data).then(function(result) {
-			expect(result["status"]).toBe(400);
+			expect(result["status"]).toBe(401);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/home");
 	});

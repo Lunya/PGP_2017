@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production')
+	require('dotenv').load();
+
 let express = require('express');
 let path = require('path');
 let http = require('http');
