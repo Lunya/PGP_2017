@@ -1,21 +1,17 @@
 <div class="container">
-
-	<nav class="navbar navbar-expand-md navbar-light bg-light">
-		<ul class="navbar-nav">
-			<li><a class="navbar-brand" (click)="projectsView(true)">My projects</a></li>
-			<li><a class="navbar-brand" (click)="projectsView(false)">Contributing projects</a></li>
-		</ul>
-		<div class="collapse navbar-collapse">
-			<ul class="navbar-nav navbar-center">
-
-				<li *ngIf='!addTaskMode'><button type="button" class="btn btn-success" (click)="newProject()"><i class="fa fa-plus-circle"></i> New project</button></li>
-
-			</ul>
-		</div>
+	<nav class="navbar mb-3">
+		<form class="form-inline">
+			<button type="button" class="btn btn-light"
+					(click)="projectsView(true)">My projects</button>
+			<button type="button" class="btn btn-light"
+					(click)="projectsView(false)">Contributing projects</button>
+			<button type="button" class="btn btn-success"
+					(click)="newProject()"><i class="fa fa-plus-circle"></i> New project</button>
+		</form>
 	</nav>
 
 	<div *ngIf='projectsTableView' class="col-md-12">
-		<table class="table">
+		<table class="table table-bordered table-striped table-hover">
 			<thead>
 				<tr>
 					<th>Name</th>

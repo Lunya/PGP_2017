@@ -1,3 +1,4 @@
+/*
 nav {
 	box-shadow: 0px 5px 3px 0px #BBBBBB;
 }
@@ -7,7 +8,7 @@ nav div ul {
 }
 
 nav div  {
-		border-left:1px solid #BBBBBB;
+	border-left:1px solid #BBBBBB;
 }
 
 nav ul li {
@@ -31,24 +32,24 @@ table thead {
 }
 
 table tbody {
-    table-layout:fixed;
-		display:block;
-    height:700px;
-    overflow-y:scroll;
-		width: calc(100% );
-		margin-top:10px;
+	table-layout:fixed;
+	display:block;
+	height:700px;
+	overflow-y:scroll;
+	width: calc(100% );
+	margin-top:10px;
 }
 
 thead , tbody tr{
-  display:table;
-  width:100%;
-  table-layout: fixed;
+	display:table;
+	width:100%;
+	table-layout: fixed;
 
 }
 
 table td, table th {
-    border-left: 1px solid #dddddd;
-		border-right: 1px solid #dddddd;
+	border-left: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
 }
 
 table td {
@@ -60,3 +61,4 @@ table td {
 table td.developers select {
 	max-width: 270px;
 }
+*/
