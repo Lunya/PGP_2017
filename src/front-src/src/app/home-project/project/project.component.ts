@@ -16,7 +16,6 @@ const url2 = 'http://localhost:3000/api/userstories/';
 
 
 export class ProjectComponent implements OnInit {
-	private projectName = "MyProject";
 	private addUsMode = false;
 	private haveURL = false;
 
@@ -33,7 +32,7 @@ export class ProjectComponent implements OnInit {
 	@Input('project')
 	public project: {
 		id: number, name: string,
-		description: string,
+		description: string, git: string,
 		begin: Date, end: Date };
 
 	private idUS = 1;
