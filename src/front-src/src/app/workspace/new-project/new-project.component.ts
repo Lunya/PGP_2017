@@ -39,10 +39,13 @@ export class NewProjectComponent implements OnInit {
 	ngOnSubmit(): void {
 		const body = this.projectForm.value;
 		body.begin = this.beginDateModel.year.toString() + '-' + this.beginDateModel.month.toString() + '-' + this.beginDateModel.day.toString();
-		if (body.end)
+		if (body.end) {
 			body.end = this.endDateModel.year.toString() + '-' + this.endDateModel.month.toString() + '-' + this.endDateModel.day.toString();
-		else body.end = null;
+		} else {
+			body.end = null;
+		}
 		body.userId = localStorage.getItem('user.id');
+		body.status = 'OWNER';
 		this.http.post(url, body).subscribe((res: any) => {
 			if (res.error) {
 				console.log(res.reason);

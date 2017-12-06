@@ -9,16 +9,15 @@ import {AuthService} from '../services/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-	private connected = this.auth.token !== null;
-	user = 'USERNAME';
-
 	constructor(private auth: AuthService) {
 	}
 
 	ngOnInit() {
-		if(this.auth.token)
-			this.connected = true;
-		else this.connected = false;
+
+	}
+
+	userName() {
+		return localStorage.getItem('user.name');
 	}
 
 }

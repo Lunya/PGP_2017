@@ -1,4 +1,6 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Sprint } from '../../objects/Sprint';
+import { User } from '../../objects/User';
 
 @Component({
 	selector: 'app-sidebar',
@@ -7,11 +9,11 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 })
 export class SidebarComponent implements OnInit {
 	private content: {
-		sprints: Array<{ id: number, begin: Date, end: Date}>,
-		users: Array<{ id: number, name: string, email: string }>};
+		sprints: Array<Sprint>,
+		users: Array<User>};
 
 	@Output() onSelectProject = new EventEmitter<void>();
-	@Output() onSelectSprint = new EventEmitter<number>();
+	@Output() onSelectSprint = new EventEmitter < { sprint: Sprint; developers: User[]; } > ();
 	@Output() onNewSprint = new EventEmitter<void>();
 	@Output() onSelectUser = new EventEmitter<number>();
 	@Output() onAddUser = new EventEmitter<void>();
@@ -26,6 +28,7 @@ export class SidebarComponent implements OnInit {
 		this.content = { sprints: [], users: [] };
 		this.onProjectSelected();
 	}
+
 
 	setContent(content): void {
 		this.content = content;
@@ -43,15 +46,15 @@ export class SidebarComponent implements OnInit {
 		this.unselectAllItemsAndSelectOne(this.projectElement.nativeElement);
 	}
 
-	onSprintSelected(event: MouseEvent, sprintId: number): void {
-		this.onSelectSprint.emit(sprintId);
-		let target: any = event.target || event.srcElement || event.currentTarget;
+	onSprintSelected(event: MouseEvent, sprint: Sprint): void {
+		this.onSelectSprint.emit({sprint: sprint, developers: this.content.users});
+		const target: any = event.target || event.srcElement || event.currentTarget;
 		this.unselectAllItemsAndSelectOne(target);
 	}
 
 	onUserSelected(event: MouseEvent, userId: number): void {
 		this.onSelectUser.emit(userId);
-		let target: any = event.currentTarget;
+		const target: any = event.currentTarget;
 		this.unselectAllItemsAndSelectOne(target);
 	}
 

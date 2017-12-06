@@ -4,7 +4,7 @@ INSERT INTO User (name,password,mail) VALUES ('Lea','mdp123','lea.gauthier@gmail
 
 INSERT INTO Project (name, description, git, begin, end) VALUES ('Test','Test de la base de donnée','www.github.com','2017-11-19','2018-01-01');
 
-INSERT INTO User_Project (id_project, id_user) VALUES (1,1);
+INSERT INTO User_Project (id_project, id_user, status) VALUES (1,1,'OWNER');
 INSERT INTO User_Project (id_project, id_user) VALUES (1,2);
 INSERT INTO User_Project (id_project, id_user) VALUES (1,3);
 

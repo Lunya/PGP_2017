@@ -1,66 +1,92 @@
 let express = require('express');
-let jwt = require('jsonwebtoken');
-let bcrypt = require('bcryptjs');
 let db = require('../databaseConnect');
 
 let router = express.Router();
 
-function treatment(errorStatus, response, values,  rows) {
-	if(errorStatus) response.status(400).send(err);
-	else {
-		if (rows.length != 0) {
-			values.push({'result' : 'success', 'data' : rows});
-		} else {
-			values.push({'result' : 'error', 'msg' : 'No Results Found'});
-		}
-		response.setHeader('Content-Type', 'application/json');
-		response.status(200).send(JSON.stringify(values));
+
+function checkUndefinedObject(object, fields) {
+	let ok = true;
+	for (let field in fields) {
+		if (object[fields[field]] === undefined)
+			ok = false;
 	}
-};
+	return ok;
+}
+
+function sendError(res, reason) {
+	res.status(400).send({ error: true, reason: reason });
+	console.log(reason);
+}
 
 
 router.get('/userstories/:id', (req, res) => {
-	let id = req.params.id;
-	bd.query('SELECT * FROM UserStory WHERE id_project = ?',[id], (err, cols) => {
-		let values = [];
-		treatment(err,res,values,cols);
+	db.query('SELECT * FROM UserStory WHERE id_project = ?', [req.params.id], (error, results) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let userstories = [];
+			for (let i = 0; i < results.length; i++) {
+				userstories.push({
+					id: results[i].id,
+					description: results[i].description,
+					difficulty: results[i].difficulty,
+					priority: results[i].priority,
+					state: results[i].state
+				});
+			}
+			res.send(userstories);
+		}
 	});
 });
+
+
 
 router.post('/userstories/:id', (req, res) => {
-	let id_project = req.params.id;
-	let values = [];
-	if (typeof req.body.idProject !== 'undefined' && req.body.description !== 'undefined') {
-
-		bd.query('INSERT INTO UserStory VALUES(?,?,?,?)',[id_project,req.body.description, req.body.diff, req.body.prio], (err, result) => {
-			treatment(err,res,response,"success");
+	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
+		db.query('INSERT INTO UserStory (id_project, description, difficulty, priority, state) VALUES (?,?,?,?,?)',
+		[req.params.id, req.body.description, req.body.difficulty, req.body.priority, req.body.state], (error, dbRes) => {
+			console.log(dbRes.insertId);
+			if (error)
+				sendError(res, 'Unable to query database');
+			else {
+				res.status(200).send({
+					insertId: dbRes.insertId
+				});
+			}
 		});
-	}
-	else {
-		values.push({'result' : 'error', 'msg' : 'Missing field'});
-		res.setHeader('Content-Type', 'application/json');
-		res.send(200, JSON.stringify(values));
-	}
+	} else
+		sendError(res, 'Error: required parameters not set');
 });
 
-router.patch('/userstory/:idproject/:idus', (req, res) => {
-	let idproject = req.params.idproject;
-	let idus = req.params.idus;
-	bd.query('UPDATE UserStory SET description=? WHERE id_project=? AND id=?',[req.body.description,idprojet,idus], (err, cols) => {
-		let values = [];
-		treatment(err,res,values, "success");
 
-	});
+
+
+router.patch('/userstory/:idproject/:id', (req, res) => {
+	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
+		db.query('UPDATE UserStory SET description=?, difficulty=?, priority=?, state=? WHERE id=? AND id_project=?',
+		[req.body.description, req.body.difficulty, req.body.priority, req.body.state, req.params.id, req.params.idproject], (error, dbRes) => {
+			console.log(dbRes);
+			if (error)
+				sendError(res, 'Unable to query database');
+			else {
+				res.status(200).send({
+					insertId: dbRes.insertId
+				});
+			}
+		});
+	} else
+		sendError(res, 'Error: required parameters not set');
 });
 
 router.delete('/userstory/:idproject/:id', (req, res) => {
-	let idproject = req.params.idprojet;
-	let id = req.params.id;
-	bd.query("DELETE FROM UserStory WHERE id_project=? AND id=?",[idproject,id], (err,count) => {
-		if(err) throw err;
+	db.query("DELETE FROM UserStory WHERE id_project=? AND id=?", [req.params.idproject, req.params.id], (error, dbRes) => {
+		console.log(dbRes);
+		if (error)
+			sendError(res, 'Unable to query database');
 		else {
-			let values = [];
-			treatment(err, res, values, "success");
+			res.status(200).send({
+				insertId: dbRes.insertId
+			});
 		}
 	});
 });

@@ -5,7 +5,7 @@
 		<i class="fa fa-close"></i>
 	</button>
 </div>
-<form [formGroup]="sprintForm" (submit)="ngOnSubmit($event)" novalidate>
+<form *ngIf="usSelection.length > 0" [formGroup]="sprintForm" (submit)="ngOnSubmit($event)" novalidate>
 	<div class="modal-body">
 		<div class="form-row">
 			<div class="form-group col-md-6">
@@ -38,3 +38,7 @@
 			[disabled]="sprintForm.invalid">{{ formAction }}</button>
 	</div>
 </form>
+
+<div *ngIf="usSelection.length === 0">
+	<p>Please select user stories first </p>
+</div>

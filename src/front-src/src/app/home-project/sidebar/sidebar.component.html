@@ -15,7 +15,7 @@
 				<li class="nav-item"><a href="" class="nav-link">Lien 4</a></li>
 			</ul>-->
 			<div class="list-group mb-3" #sprints>
-				<a *ngFor="let sprint of content.sprints; let i = index" class="list-group-item list-group-item-action" (click)="onSprintSelected($event, sprint.id)">Sprint {{ i }}</a>
+				<a *ngFor="let sprint of content.sprints; let i = index" class="list-group-item list-group-item-action" (click)="onSprintSelected($event, sprint)">Sprint {{ sprint.id }}</a>
 			</div>
 			<button type="button" class="btn btn-block btn-secondary" (click)="onNewSprint.emit()"><i class="fa fa-plus-circle"></i> New sprint</button>
 		</div>

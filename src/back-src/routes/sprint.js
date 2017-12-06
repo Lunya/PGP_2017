@@ -1,30 +1,29 @@
 let express = require('express');
-let bd = require('../databaseConnect')
+let db = require('../databaseConnect')
 
 let router = express.Router();
 
-function sendError(res, reason) {
-	res.status(400).send({ error: true, reason: reason });
-	console.log(reason);
+
+function checkUndefinedObject(object, fields) {
+	let ok = true;
+	for (let field in fields) {
+		if (object[fields[field]] === undefined)
+			ok = false;
+	}
+	return ok;
 }
 
-function treatment(errorStatus, response, values,  rows) {
-	if(errorStatus) response.status(400).send(err);
-	else {
-		if (rows.length != 0) {
-			values.push({'result' : 'success', 'data' : rows});
-		} else {
-			values.push({'result' : 'error', 'msg' : 'No Results Found'});
-		}
-		response.setHeader('Content-Type', 'application/json');
-		response.status(200).send(JSON.stringify(values));
-	}
+function sendError(res, reason) {
+	res.status(400).send({
+		error: true,
+		reason: reason
+	});
+	console.log(reason);
 }
 
 router.get('/sprints/:id', (req, res) => {
 	res.contentType('application/json');
-	bd.query('SELECT id, id_project, begin, end FROM Sprint WHERE id_project = ?',
-		[req.params.id], (error, result) => {
+	db.query('SELECT id, id_project, begin, end FROM Sprint WHERE id_project = ?', [req.params.id], (error, result) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
@@ -42,59 +41,80 @@ router.get('/sprints/:id', (req, res) => {
 	});
 });
 
+
 router.post('/sprint', (req, res) => {
 	res.contentType('application/json');
-	bd.query('INSERT INTO Sprint(id_project, begin, end) VALUES (?, ?, ?)',
-		[req.body.idProject, new Date(req.body.begin), new Date(req.body.end)], (error, result) => {
-		console.log(error, req.body);
+	if (checkUndefinedObject(req.body, ['idProject', 'end', 'begin'])) {
+		db.query('INSERT INTO Sprint(id_project, begin, end) VALUES (?, ?, ?)', [req.body.idProject, new Date(req.body.begin), new Date(req.body.end)], (error, result) => {
+			console.log(error, req.body);
+			if (error)
+				sendError(res, 'Database error');
+			else {
+				req.body.usSprint.forEach((us) => {
+					db.query('INSERT INTO UserStory_Sprint (id_us, id_sprint) VALUES (?,?)', [us.id, result.insertId], (err, dbRes) => {
+						console.log(dbRes.insertId);
+						if (err)
+							sendError(res, 'Unable to query database');
+					});
+				});
+				res.status(200).send({
+					id: result.insertId
+				});
+			}
+		});
+	} else
+		sendError(res, 'Error: required parameters not set');
+});
+
+router.get('/sprint/:idsprint', (req, res) => {
+	db.query('SELECT id, description, difficulty, priority, state FROM UserStory u INNER JOIN UserStory_Sprint u2 ON u.id=u2.id_us WHERE u2.id_sprint = ?', [req.params.idsprint], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			res.status(200).send({ id: result.insertId });
+			let userstories = [];
+			for (let i = 0; i < results.length; i++) {
+				userstories.push({
+					id: results[i].id,
+					description: results[i].description,
+					difficulty: results[i].difficulty,
+					priority: results[i].priority,
+					state: results[i].state
+				});
+			}
+			res.send(userstories);
 		}
 	});
 });
 
-router.get('/sprint/:idProject/:idSprint', (req,res) => {
-	let id_project = req.params.idProject;
-	let id = req.params.idSprint;
-	bd.query('SELECT * FROM Sprint WHERE id_project = ? AND id = ?',[id_project, id], (err, result) => {
-		let values = [];
-		treatment(err, res, values, cols);
+
+router.delete('/sprint/:idproject/:id', (req, res) => {
+	db.query('DELETE FROM Sprint WHERE id_project = ? AND id = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
+		console.log(dbRes);
+		if (error)
+			sendError(res, 'Unable to query database');
+		else {
+			res.status(200).send({
+				insertId: dbRes.insertId
+			});
+		}
 	});
 });
 
-router.delete('/sprint/:idProject/:idSprint', (req,res) => {
-	let id_project = req.params.idProject;
-	let id = req.params.idSprint;
-	bd.query('DELETE * FROM Sprint WHERE id_project = ? AND id = ?',[id_project, id], (err, result) => {
-		treatment(err, res, response, "success");
-	});
-});
 
-router.post('/sprints/:idProject/:idSprint', (req,res) => {
-	let id_project = req.params.idProject;
-	let id = req.params.idSprint;
-	let values = [];
-	if (typeof req.body.id !== 'undefined' && req.body.id_project !== 'undefined' && req.body.begin){
-		bd.query('INSERT INTO Sprint VALUES(?,?,?)',[id,req.body.begin,req.body.end], (err,result) => {
-			treatment(err,res,response,"success");
+router.patch('/sprints/:idproject/:id', (req, res) => {
+	if (checkUndefinedObject(req.body, ['end', 'begin'])) {
+		db.query('UPDATE Sprint SET begin=?, end =? WHERE id_project=? AND id=?', [req.body.begin, req.body.end, req.params.idproject, req.params.id], (err, dbRes) => {
+			console.log(dbRes);
+			if (error)
+				sendError(res, 'Unable to query database');
+			else {
+				res.status(200).send({
+					insertId: dbRes.insertId
+				});
+			}
 		});
-	}
-	else {
-		values.push({'result' : 'error', 'msg' : 'Missing field'});
-		res.setHeader('Content-Type', 'application/json');
-		res.send(200, JSON.stringify(values));
-	}
-});
-/* Définir ce qui est patchable dans une tache*/
-router.patch('/sprints/:idProject/:idSprint', (req, res) => {
-	let id_project = req.params.idProject;
-	let id_sprint = req.params.idSprint;
-	bd.query('UPDATE Sprint SET end =? WHERE id_project=? AND i=?',[req.body.end,id_project,id_sprint],(err,result) => {
-		let values = [];
-		treatment(err,res,values,"success")
-	});
+	} else
+		sendError(res, 'Error: required parameters not set');
 });
 
-module.exports  = router;
+module.exports = router;

@@ -1,4 +1,3 @@
-"use strict";
 let express = require('express');
 let db = require('../databaseConnect');
 
@@ -54,6 +53,8 @@ router.get('/project/:id', (req, res) => {
 	});
 });
 
+
+
 router.get('/project/:userId/:id', (req, res) => {
 	let id = req.params.id;
 	let userId = req.param.userId;
@@ -67,15 +68,14 @@ router.get('/project/:userId/:id', (req, res) => {
 router.post('/project', (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name', 'description', 'git', 'begin', 'end', 'userId'])) {
-
 		db.query('INSERT INTO Project(name, description, git, begin, end) VALUES (?,?,?,?,?)',
 			[req.body.name, req.body.description, req.body.git, req.body.begin, req.body.end],
 			(error, dbRes) => {
 				if (error)
 					sendError(res, 'Unable to query database');
 				else {
-					db.query('INSERT INTO User_Project(id_project, id_user) VALUES (?,?)',
-						[dbRes.insertId, req.body.userId], (error) => {
+					db.query('INSERT INTO User_Project(id_project, id_user, status) VALUES (?,?,?)',
+						[dbRes.insertId, req.body.userId, req.body.status], (error) => {
 						if (error)
 							sendError(res, 'Unable to complete insertion');
 						else
@@ -106,9 +106,9 @@ router.delete('/project/:id', (req, res) => {
 	})
 });
 
-router.get('/projects/:id', (req, res) => {
+router.get('/projects/:id/:role', (req, res) => {
 	res.contentType('application/json');
-	db.query('SELECT id, name, description, git, begin, end, id_project, id_user FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
+	db.query('SELECT id, name, description, git, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ? AND status = ?', [req.params.id, req.params.role], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {

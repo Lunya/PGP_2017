@@ -1,29 +1,38 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
+
+
+<nav class="navbar mb-3 navbar-expand-md navbar-light bg-light">
 	<ul class="navbar-nav">
 		<li><a class="navbar-brand" (click)="taskView(false)">Backlog</a></li>
 		<li><a class="navbar-brand" (click)="taskView(true)">Task</a></li>
 	</ul>
 	<div class="collapse navbar-collapse">
 		<ul class="navbar-nav mr-auto">
-			<li class="date"><p>Begin - {{sprint.begin}} </p></li>
+			<li class="date">
+				<button class="btn btn-link mr-sm-4" disabled>Begin - {{sprint.begin | date:'MM/dd/yyyy'}} </button>
+			</li>
 			<li></li>
 			<li></li>
-			<li *ngIf='!addTaskMode'><button type="button" class="btn btn-secondary" (click)="onEdit()"><i class="fa fa-plus-circle"></i> Add task</button></li>
-			<li *ngIf='addTaskMode'><button type="button" class="btn btn-primary" (click)="onConfirm()"><i class="fa fa-check-square"></i> Confirm</button></li>
-			<li *ngIf='addTaskMode'><button type="button" class="btn " (click)="onBack()"><i class="fa fa-reply" aria-hidden="true"></i> Back</button></li>
+			<li *ngIf='!addTaskMode'><button type="button" class="btn btn-secondary mr-sm-4" (click)="onEdit()"><i class="fa fa-plus-circle"></i> Add task</button></li>
+			<li *ngIf='addTaskMode'><button type="button" class="btn btn-primary mr-sm-2" (click)="onConfirm()"><i class="fa fa-check-square"></i> Confirm</button></li>
+			<li *ngIf='addTaskMode'><button type="button" class="btn mr-sm-4" (click)="onBack()"><i class="fa fa-reply" aria-hidden="true"></i> Back</button></li>
 			<li></li>
 			<li></li>
-			<li class="date"><p> End - {{sprint.end}} </p></li>
-		</ul>
-		<ul class="navbar-nav navbar-right">
-			<li><button class="btn btn-default" (click)="editSprint()"><i class="fa fa-edit"></i> Edit sprint</button></li>
-		</ul>
+			<li class="date">
+				<button class="btn btn-link mr-sm-4" disabled> End - {{sprint.end | date:'MM/dd/yyyy'}}</button>
+			</li>
+		<!--</ul>
+		 <ul class="navbar-nav navbar-right"> -->
+			<li><button type="button" class="btn btn-default mr-sm-2" (click)="editSprint()"><i class="fa fa-edit"></i> Edit sprint</button></li>
+			<li><button type="button" class="btn btn-danger mr-sm-2" (click)="deleteSprint()"><i class="fa fa-trash"></i> Delete sprint</button></li>
+		 </ul>
 	</div>
 </nav>
 
 
+
+
 <div *ngIf='taskTableView' class="col-md-12">
-	<table class="table">
+	<table class="table table-bordered">
 		<thead>
 			<tr>
 				<th>ID </th>
@@ -36,12 +45,14 @@
 		<tbody>
 			<tr *ngIf='addTaskMode' class="table-primary">
 				<td></td>
-				<td contenteditable='true' [(ngModel)]="taskModel.description" #description="ngModel"></td>
+				<td contenteditable='true' [(ngModel)]="currentTask.description" #description="ngModel"></td>
 				<td contenteditable='false' class="developers">
-					<select [(ngModel)]="taskModel.developer" #developer="ngModel">
-									<option *ngFor="let user of developers">{{user}}</option></select>
+					<select [(ngModel)]="currentTask.developer" #developer="ngModel">
+									<option></option>
+									<option *ngFor="let user of developers">{{user.name}}</option>
+				 </select>
 				</td>
-				<td contenteditable='true' [(ngModel)]="taskModel.status" #status="ngModel"></td>
+				<td contenteditable='true' [(ngModel)]="currentTask.state" #state="ngModel"></td>
 				<td>
 					<button class="btn" disabled><i class="fa fa-edit"></i> Edit</button>
 					<button class="btn btn-danger" disabled><i class="fa fa-times"></i></button>
@@ -54,10 +65,11 @@
 					<td contenteditable='false' class="editable" *ngIf='!task.onEdit' [(ngModel)]="task.developer" #difficulty="ngModel">{{task.developer}}</td>
 					<td contenteditable='false' class="developers" *ngIf='task.onEdit'>
 						<select [(ngModel)]="task.developer" #developer="ngModel">
-											<option *ngFor="let user of developers">{{user}}</option>
+											<option></option>
+											<option *ngFor="let user of developers">{{user.name}}</option>
 									</select>
 					</td>
-					<td contenteditable='false' [(ngModel)]="task.status" #priority="ngModel">{{task.status}}</td>
+					<td contenteditable='false' [(ngModel)]="task.state" #priority="ngModel">{{task.state}}</td>
 					<td>
 						<button *ngIf='!task.onEdit' class="btn btn-default" (click)="onEditRow(task)"><i class="fa fa-edit"></i> Edit</button>
 						<button *ngIf='!task.onEdit' class="btn btn-danger" (click)="onDeleteRow(task)"><i class="fa fa-times"></i></button>
@@ -83,13 +95,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			<ng-container *ngFor="let us of sprintUS">
+			<ng-container *ngFor="let us of sprintUSList">
 				<tr>
 					<td>{{ us.id }}</td>
 					<td>{{ us.description }}</td>
 					<td>{{ us.difficulty }}</td>
 					<td>{{ us.priority }}</td>
-					<td>{{ us.status }}</td>
+					<td>{{ us.state }}</td>
 				</tr>
 			</ng-container>
 		</tbody>

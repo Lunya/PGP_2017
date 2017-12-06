@@ -1,15 +1,20 @@
 export class Task {
-  id : number;
-  description : string;
-  developer : string;
-  status : string;
+	id: number;
+	description: string;
+	developer: string;
+	state: string;
 	onEdit: boolean;
 
-  constructor(id , description, developper, state) {
-    this.id = id;
-    this.description = description;
-    this.developer = developper;
-    this.status = state;
+	constructor(
+		id = 0,
+		description = '',
+		developer = '',
+		state = 'TODO',
+		onEdit = false) {
+		this.id = id;
+		this.description = description;
+		this.developer = developer;
+		this.state = state;
 		this.onEdit = false;
-  }
+	}
 }

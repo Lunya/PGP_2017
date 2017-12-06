@@ -14,7 +14,7 @@ const url = 'http://localhost:3000/api/user'
 })
 export class AccountComponent implements OnInit {
   private loading = false;
-  private signupForm: FormGroup;
+  private accountForm: FormGroup;
 
   constructor(
     private http: HttpClient,
@@ -23,7 +23,7 @@ export class AccountComponent implements OnInit {
   ) {
     const password = new FormControl(null, [Validators.required, Validators.minLength(8)]);
     const newPassword = new FormControl(null, [Validators.required, Validators.minLength(8)]);
-    this.signupForm = this.fb.group({
+    this.accountForm = this.fb.group({
       email: [null, [Validators.required, CustomValidators.email]],
       name: [null, [Validators.required, Validators.minLength(2)]],
       password: password,
@@ -40,7 +40,7 @@ export class AccountComponent implements OnInit {
   ngOnSubmit() {
     this.loading = true;
     let rndUser = '6'; //IDUSER A RECUPERER VIA COMMANDE GET OU VIA UN ID LORS DE L'AUTHENTIFICATION
-    this.http.patch(url + '/' + rndUser, this.signupForm.value).subscribe((result : any) => {
+    this.http.patch(url + '/' + rndUser, this.accountForm.value).subscribe((result : any) => {
       if(result.error)
         this.loading = false;
       else {

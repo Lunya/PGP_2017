@@ -20,8 +20,9 @@ CREATE TABLE User (
 CREATE TABLE User_Project (
 	id_project	BIGINT(20)		UNSIGNED,
 	id_user		BIGINT(20)		UNSIGNED,
-	FOREIGN KEY (id_project) REFERENCES Project(id),
-	FOREIGN KEY (id_user) REFERENCES User(id),
+	status	enum('OWNER', 'DEVELOPER')	NOT NULL	DEFAULT 'DEVELOPER',
+	FOREIGN KEY (id_project) REFERENCES Project(id) ON DELETE CASCADE,
+	FOREIGN KEY (id_user) REFERENCES User(id) ON DELETE CASCADE,
 	PRIMARY KEY (id_project, id_user)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
@@ -31,7 +32,8 @@ CREATE TABLE UserStory (
 	description	VARCHAR(512)	NOT NULL,
 	difficulty	INT(11)			UNSIGNED		NOT NULL,
 	priority	INT(11)			UNSIGNED		NOT NULL,
-	FOREIGN KEY (id_project) REFERENCES Project(id)
+	state		ENUM('TODO', 'DONE')	NOT NULL		DEFAULT 'TODO',
+	FOREIGN KEY (id_project) REFERENCES Project(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
 CREATE TABLE Sprint (
@@ -39,14 +41,14 @@ CREATE TABLE Sprint (
 	id_project	BIGINT(20)		UNSIGNED		NOT NULL,
 	begin		DATE			NOT NULL,
 	end			DATE,
-	FOREIGN KEY (id_project) REFERENCES Project(id)
+	FOREIGN KEY (id_project) REFERENCES Project(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
 CREATE TABLE UserStory_Sprint (
 	id_us		BIGINT(20)		UNSIGNED,
 	id_sprint	BIGINT(20)		UNSIGNED,
-	FOREIGN KEY (id_us) REFERENCES UserStory(id),
-	FOREIGN KEY (id_sprint) REFERENCES Sprint(id),
+	FOREIGN KEY (id_us) REFERENCES UserStory(id) ON DELETE CASCADE,
+	FOREIGN KEY (id_sprint) REFERENCES Sprint(id) ON DELETE CASCADE,
 	PRIMARY KEY (id_us, id_sprint)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
@@ -55,5 +57,5 @@ CREATE TABLE Task (
 	id_sprint	BIGINT(20)		UNSIGNED,
 	description	VARCHAR(512)	NOT NULL,
 	state		ENUM('TODO', 'DOING', 'DONE')	NOT NULL		DEFAULT 'TODO',
-	FOREIGN KEY (id_sprint) REFERENCES Sprint(id)
+	FOREIGN KEY (id_sprint) REFERENCES Sprint(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;

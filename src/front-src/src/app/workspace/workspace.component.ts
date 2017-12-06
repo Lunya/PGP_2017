@@ -14,30 +14,8 @@ const projectsUrl = 'http://localhost:3000/api/projects';
 	providers: [NgbDatepickerConfig]
 })
 export class WorkspaceComponent implements OnInit {
-	private user = 'user';
 	private myProjects = [];
 	private otherProjects = [];
-
-	public id: number;
-	public name: string;
-	public creator: string;
-	public description: string;
-	public url: string;
-	public begin: Date;
-	public end: Date;
-	public participant: String[];
-
-	private projectModel = {
-		id: 0,
-		name: '',
-		creator: '',
-		description: '',
-		url: 0,
-		begin: '',
-		end: '',
-		participant: [],
-	};
-
 	private projectsTableView = true;
 
 	constructor(
@@ -45,25 +23,28 @@ export class WorkspaceComponent implements OnInit {
 		private http: HttpClient
 	) {}
 
-	private loadData(): void {
-		this.http.get<Project[]>(projectsUrl + '/' + localStorage.getItem('user.id')).subscribe((result) => {
+	private loadProjects(status: string): void {
+		this.http.get<Project[]>(projectsUrl + '/' + localStorage.getItem('user.id') + '/' + status).subscribe((result) => {
 			for (let i = 0; i < result.length; i++) {
 				result[i].begin = new Date(result[i].begin);
 				result[i].end = new Date(result[i].end);
 			}
-			this.myProjects = result;
+			status === 'OWNER' ? this.myProjects = result : this.otherProjects = result;
+			console.log(this.myProjects);
 		}, error => console.log(error));
 	}
 
+
 	ngOnInit() {
-		this.loadData();
+		this.loadProjects('OWNER');
+		this.loadProjects('DEVELOPER');
 	}
 
 	newProject() {
 		const modalRef = this.modalService.open(NewProjectComponent);
 		modalRef.result
 			.then(res => {
-				this.loadData();
+				this.loadProjects('OWNER');
 			}).catch(reason => console.log(reason));
 	}
 

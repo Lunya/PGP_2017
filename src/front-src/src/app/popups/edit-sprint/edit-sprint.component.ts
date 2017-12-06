@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Project } from '../../objects/Project';
 
 const sprintUrl = 'http://localhost:3000/api/sprint';
+const usSprintUrl = 'http://localhost:3000/api/userstories';
+
 @Component({
 	selector: 'app-edit-sprint',
 	templateUrl: './edit-sprint.component.html',
@@ -19,6 +21,8 @@ export class EditSprintComponent implements OnInit, OnDestroy {
 
 	@Input('project')
 	public project: Project;
+
+	public usSelection = [];
 
 	constructor(
 		public activeModal: NgbActiveModal,
@@ -35,6 +39,7 @@ export class EditSprintComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		console.log('AddUserComponent initialized');
+		console.log(this.usSelection);
 	}
 
 	ngOnDestroy() {
@@ -48,12 +53,15 @@ export class EditSprintComponent implements OnInit, OnDestroy {
 		values.idProject = this.project.id;
 		values.begin = new Date(values.begin.year, values.begin.month, values.begin.day);
 		values.end = new Date(values.begin.getTime() + values.duration * 1000 * 60 * 60 * 24);
+		values['usSprint'] = this.usSelection;
 		console.log(values);
 		this.http.post(sprintUrl, values).subscribe((value: any) => {
-			if (value.error)
+			if (value.error) {
 				console.log(value);
-			else
+			} else {
+				console.log(value);
 				this.activeModal.close('Form validated');
+			}
 		}, error => console.log(error));
 	}
 }

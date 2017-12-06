@@ -34,4 +34,9 @@ export class AuthService {
 		localStorage.removeItem('user.email');
 		localStorage.removeItem('user.name');
 	}
+
+	isLoggedIn(): boolean {
+		return this.token !== null;
+	}
+
 }
