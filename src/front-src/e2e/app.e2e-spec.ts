@@ -20,15 +20,15 @@ describe('POST /register : pgp register e2e testing', () => {
 
 
 	it('should create profile with login = test0@gmail.com name=test0 and passwd = 123456789 -> code 200 and redirection to /home', () => {
-    page.fillAndSendFormCreateProfile("test0@gmail.com", "test0", "123456789", "123456789");
-    expect(page.url()).toEqual(browser.baseUrl + "/home").then(function(result) {
-      let data = { email: 'test0bis@gmail.com', password: '123456789', name: 'test0' };
-      postRequest(serverURL + "/api/register", data).then(function(result) {
-        deleteRequest(serverURL + "/api/user/2").then(function(result) {
-          expect(result["status"]).toBe(200);
-        })
-      });
-    })
+		page.fillAndSendFormCreateProfile("test0@gmail.com", "test0", "123456789", "123456789");
+		expect(page.url()).toEqual(browser.baseUrl + "/home").then(function(result) {
+			let data = { email: 'test0bis@gmail.com', password: '123456789', name: 'test0' };
+			postRequest(serverURL + "/api/register", data).then(function(result) {
+				deleteRequest(serverURL + "/api/user/2").then(function(result) {
+					expect(result["status"]).toBe(200);
+				})
+			});
+		})
 	});
 
 	it('should not create profile if pasword and confirmation are not the same -> no redirection', () => {
@@ -38,7 +38,7 @@ describe('POST /register : pgp register e2e testing', () => {
 
 	it('should not create profile if login = test0@gmail.com  already exist -> code 400', () => {
 		page.fillAndSendFormCreateProfile("test0@gmail.com", "test0", "123456789", "123456789");
-    let data = { email: 'test0@gmail.com', password: '123456789', name: 'test0' };
+		let data = { email: 'test0@gmail.com', password: '123456789', name: 'test0' };
 		postRequest(serverURL + "/api/register", data).then(function(result) {
 			expect(result["status"]).toBe(400);
 		});
@@ -50,10 +50,10 @@ describe('POST /register : pgp register e2e testing', () => {
 		expect(page.url()).toEqual(browser.baseUrl + "/signup");
 	});
 
-  it('should create profile test2', () => {
-    page.fillAndSendFormCreateProfile("test2@gmail.com", "test2", "123456789", "123456789");
-    expect(page.url()).toEqual(browser.baseUrl + "/home");
-  });
+	it('should create profile test2', () => {
+		page.fillAndSendFormCreateProfile("test2@gmail.com", "test2", "123456789", "123456789");
+		expect(page.url()).toEqual(browser.baseUrl + "/home");
+	});
 
 })
 
@@ -129,21 +129,21 @@ describe('POST /project : pgp create a project e2e testing', () => {
 
 	it('should add a project with name = helloWorld to database -> code 200', () => {
 		page.fillAndSendFormConnection("test0@gmail.com", "123456789");
-    page.fillAndSendFormProject("helloWorld", "Projet initial test", "http://www.github.com", '2017-12-8', '2017-12-18').then(function(result) {
-      let data = {
-        name: 'helloWorld',
-        description: 'Projet initial test',
-        url: 'http://www.github.com',
-        begin: '2017-12-8',
-        end: '2017-12-18',
-        userId: 1
-      };
-      postRequest(serverURL + "/api/project", data).then(function(result) {
-        deleteRequest(serverURL + "/api/project/2").then(function(result) {
-          expect(result["status"]).toBe(200);
-        })
-      });
-    })
+		page.fillAndSendFormProject("helloWorld", "Projet initial test", "http://www.github.com", '2017-12-8', '2017-12-18').then(function(result) {
+			let data = {
+				name: 'helloWorld',
+				description: 'Projet initial test',
+				url: 'http://www.github.com',
+				begin: '2017-12-8',
+				end: '2017-12-18',
+				userId: 1
+			};
+			postRequest(serverURL + "/api/project", data).then(function(result) {
+				deleteRequest(serverURL + "/api/project/2").then(function(result) {
+					expect(result["status"]).toBe(200);
+				})
+			});
+		})
 	});
 
 	it('should display the added project in the projects list -> ', () => {
@@ -185,19 +185,19 @@ describe('POST /userstories/:id : pgp create a user story e2e testing', () => {
 	});
 
 	it('should add a user story with description "Apprendre aux poules à voler" into the database -> code 200', () => {
-		page.createUserStory("Apprendre aux poules à voler", "13", "1");
-		let data = {
-			description: 'Apprendre aux poules à voler',
-			difficulty: 13,
-			priority: 1,
-			state: 'TODO'
-		};
-		postRequest(serverURL + "/api/userstories/1", data).then(function(result) {
-      deleteRequest(serverURL + "/api/userstory/1/2").then(function(result) {
-        expect(result["status"]).toBe(200);
-      });
-		});
-
+		page.createUserStory("Apprendre aux poules à voler", "13", "1").then(function() {
+			let data = {
+				description: 'Apprendre aux poules à voler',
+				difficulty: 13,
+				priority: 1,
+				state: 'TODO'
+			};
+			postRequest(serverURL + "/api/userstories/1", data).then(function(result) {
+				deleteRequest(serverURL + "/api/userstory/1/2").then(function(result) {
+					expect(result["status"]).toBe(200);
+				});
+			});
+		})
 	});
 
 	it('should display the added user story in the us list -> ', () => {
@@ -237,17 +237,17 @@ describe('PATCH, DELETE /userstory/:idproject/:id : pgp édition de user story e
 	});
 
 	it('should modify user story with description "Sortir la chèvre de la bergerie" into the database -> code 200', () => {
-		page.editUserStory("Sortir la chèvre de la bergerie", "8", "1");
-		let data = {
-			description: 'Sortir la chèvre de la bergerie',
-			difficulty: 8,
-			priority: 1,
-			state: 'TODO'
-		};
-		patchRequest(serverURL + "/api/userstory/1/1", data).then(function(result) {
-			expect(result["status"]).toBe(200);
-		});
-
+		page.editUserStory("Sortir la chèvre de la bergerie", "8", "1").then(function() {
+			let data = {
+				description: 'Sortir la chèvre de la bergerie',
+				difficulty: 8,
+				priority: 1,
+				state: 'TODO'
+			};
+			patchRequest(serverURL + "/api/userstory/1/1", data).then(function(result) {
+				expect(result["status"]).toBe(200);
+			});
+		})
 	});
 
 
@@ -280,26 +280,28 @@ describe('POST /sprint : pgp sprint creation e2e testing', () => {
 	});
 
 	it('should create a new sprint with begin date = 2018-1-1 -> code 200', () => {
-		page.selectUserStories();
-		page.clickOnNewSprint();
-		page.createSprint('2018-1-1', 2);
-		let data = {
-			begin: '2018-1-1',
-			end: '2018-1-3',
-			idProject: 1,
-			usSprint:
-			[{
-				id: 3,
-				description: 'Ouvrir une boite de brocolis',
-				difficulty: 8,
-				priority: 2,
-				state: 'TODO'
-			}]
-		}
-
-		postRequest(serverURL + "/api/sprint", data).then(function(result) {
-			expect(result["status"]).toBe(200);
-		});
+		page.selectUserStories().then(function() {
+			page.clickOnNewSprint().then(function() {
+				page.createSprint('2018-1-1', 2).then(function() {
+					let data = {
+						begin: '2018-1-1',
+						end: '2018-1-3',
+						idProject: 1,
+						usSprint:
+						[{
+							id: 3,
+							description: 'Ouvrir une boite de brocolis',
+							difficulty: 8,
+							priority: 2,
+							state: 'TODO'
+						}]
+					}
+					postRequest(serverURL + "/api/sprint", data).then(function(result) {
+						expect(result["status"]).toBe(200);
+					});
+				})
+			})
+		})
 	});
 });
 
@@ -387,35 +389,39 @@ describe('POST /users and /user/:idproject : pgp project member addition e2e tes
 	});
 
 	it('should find a user with name = test2', () => {
-		page.clickOnAddUser();
-		page.findUser('test2');
-		expect(page.getChangeButton()).toEqual('Change');
+		page.clickOnAddUser().then(function() {
+			page.findUser('test2').then(function() {
+				expect(page.getChangeButton()).toEqual('Change');
+			})
+		})
 	});
 
 	it('should add user "test2" in contributing users list -> code 200 ', () => {
-		page.clickOnAddUser();
-		page.addUser('test2');
-		let data = {
-			id: 3
-		}
-  //  deleteRequest(serverURL + "/api/user/1/2").then(function(result) {
-      postRequest(serverURL + "/api/user/1", data).then(function(result) {
-        expect(result["status"]).toBe(200);
-      });
-    //})
+		page.clickOnAddUser().then(function() {
+			page.addUser('test2').then(function() {
+				let data = {
+					id: 3
+				}
+				//  deleteRequest(serverURL + "/api/user/1/2").then(function(result) {
+				postRequest(serverURL + "/api/user/1", data).then(function(result) {
+					expect(result["status"]).toBe(200);
+				});
+			})
+		})
 	});
 
 	it('should not add already existing contributor user "test2" -> code 400 ', () => {
-		page.clickOnAddUser();
-		page.addUser('test2');
-		let data = {
-			id: 3
-		}
-		postRequest(serverURL + "/api/user/1", data).then(function(result) {
-			expect(result["status"]).toBe(400);
-		});
+		page.clickOnAddUser().then(function() {
+			page.addUser('test2').then(function() {
+				let data = {
+					id: 3
+				}
+				postRequest(serverURL + "/api/user/1", data).then(function(result) {
+					expect(result["status"]).toBe(400);
+				});
+			})
+		})
 	});
-
 });
 
 

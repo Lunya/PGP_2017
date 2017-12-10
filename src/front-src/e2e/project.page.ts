@@ -10,7 +10,7 @@ export class ProjectPage {
   }
 
 	createUserStory(description, difficulty, priority) {
-   browser.element.all(by.cssContainingText('button','Add user story')).click()
+   return browser.element.all(by.cssContainingText('button','Add user story')).click()
       .then(function() {
         browser.element.all(by.css('.table-primary td:nth-of-type(2)')).sendKeys(description)
       })
@@ -29,7 +29,7 @@ export class ProjectPage {
 
 
   editUserStory(description, difficulty, priority) {
-    browser.element.all(by.css('tr:last-of-type button')).first().click()
+    return browser.element.all(by.css('tr:last-of-type button')).first().click()
        .then(function() {
          browser.element.all(by.css('.table-primary td:nth-of-type(2)')).sendKeys(description)
        })

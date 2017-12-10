@@ -34,7 +34,7 @@ export class SidebarPage {
 	}
 
 	createSprint(begin, duration) {
-				browser.element.all(by.id('begin')).sendKeys(begin)
+			return browser.element.all(by.id('begin')).sendKeys(begin)
 			.then(function() {
 				browser.element.all(by.id('duration')).sendKeys(duration);
 			})
@@ -61,7 +61,7 @@ export class SidebarPage {
 
 
   findUser(username) {
-        browser.element.all(by.css('input[type="search"]')).sendKeys(username)
+        return browser.element.all(by.css('input[type="search"]')).sendKeys(username)
         .then(function() {
           browser.element.all(by.cssContainingText('button', 'Select')).click()
         })
@@ -70,7 +70,7 @@ export class SidebarPage {
 
 
   addUser(username) {
-        browser.element.all(by.css('input[type="search"]')).sendKeys(username)
+      return browser.element.all(by.css('input[type="search"]')).sendKeys(username)
       .then(function() {
         browser.element.all(by.cssContainingText('button', 'Select')).first().click()
       })
