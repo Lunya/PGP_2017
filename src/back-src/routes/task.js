@@ -81,7 +81,6 @@ router.post('/tasks/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
 		db.query('INSERT INTO Task (id_sprint, description, developer, state) VALUES (?,?,?,?)',
 		[req.params.id, req.body.description, req.body.developer, req.body.state], (error, dbRes) => {
-			console.log(dbRes.insertId);
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {
@@ -99,7 +98,6 @@ router.patch('/task/:idsprint/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
 		db.query('UPDATE Task SET description = ?, developer=?, state = ? WHERE id_sprint = ? AND id = ? ',
 	            [req.body.description, req.body.developer, req.body.state, req.params.idsprint, req.params.id], (error, dbRes) => {
-			console.log(dbRes);
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {
@@ -114,7 +112,6 @@ router.patch('/task/:idsprint/:id', (req, res) => {
 
 router.delete('/task/:idsprint/:id', (req, res) => {
 	db.query("DELETE FROM Task WHERE id_sprint = ? AND id = ?", [req.params.idsprint, req.params.id], (error, dbRes) => {
-		console.log(dbRes);
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {

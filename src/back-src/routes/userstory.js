@@ -46,7 +46,6 @@ router.post('/userstories/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
 		db.query('INSERT INTO UserStory (id_project, description, difficulty, priority, state) VALUES (?,?,?,?,?)',
 		[req.params.id, req.body.description, req.body.difficulty, req.body.priority, req.body.state], (error, dbRes) => {
-			console.log(dbRes.insertId);
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {
@@ -67,7 +66,6 @@ router.patch('/userstory/:idproject/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
 		db.query('UPDATE UserStory SET description=?, difficulty=?, priority=?, state=? WHERE id=? AND id_project=?',
 		[req.body.description, req.body.difficulty, req.body.priority, req.body.state, req.params.id, req.params.idproject], (error, dbRes) => {
-			console.log(dbRes);
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {
@@ -82,7 +80,6 @@ router.patch('/userstory/:idproject/:id', (req, res) => {
 
 router.delete('/userstory/:idproject/:id', (req, res) => {
 	db.query("DELETE FROM UserStory WHERE id_project=? AND id=?", [req.params.idproject, req.params.id], (error, dbRes) => {
-		console.log(dbRes);
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
@@ -96,7 +93,6 @@ router.delete('/userstory/:idproject/:id', (req, res) => {
 
 router.delete('/userstory/:idproject/:idsprint/:id', (req, res) => {
 	db.query("DELETE FROM UserStory_Sprint WHERE id_sprint=? AND id_us=?", [req.params.idsprint, req.params.id], (error, dbRes) => {
-		console.log(dbRes);
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {

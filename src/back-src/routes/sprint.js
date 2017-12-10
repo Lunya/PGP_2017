@@ -46,13 +46,11 @@ router.post('/sprint', (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['idProject', 'end', 'begin'])) {
 		db.query('INSERT INTO Sprint(id_project, begin, end) VALUES (?, ?, ?)', [req.body.idProject, new Date(req.body.begin), new Date(req.body.end)], (error, result) => {
-			console.log(error, req.body);
 			if (error)
 				sendError(res, 'Database error');
 			else {
 				req.body.usSprint.forEach((us) => {
 					db.query('INSERT INTO UserStory_Sprint (id_us, id_sprint) VALUES (?,?)', [us.id, result.insertId], (err, dbRes) => {
-						console.log(dbRes.insertId);
 						if (err)
 							sendError(res, 'Unable to query database');
 					});
@@ -87,9 +85,9 @@ router.get('/sprint/:idsprint', (req, res) => {
 });
 
 
+
 router.delete('/sprint/:idproject/:id', (req, res) => {
 	db.query('DELETE FROM Sprint WHERE id_project = ? AND id = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
-		console.log(dbRes);
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
@@ -104,7 +102,6 @@ router.delete('/sprint/:idproject/:id', (req, res) => {
 router.patch('/sprint/:idproject/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['end', 'begin'])) {
 		db.query('UPDATE Sprint SET begin=?, end =? WHERE id_project=? AND id=?', [req.body.begin, req.body.end, req.params.idproject, req.params.id], (err, dbRes) => {
-			console.log(dbRes);
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {

@@ -103,7 +103,6 @@ router.patch('/user/:id', (req, res) => {
 
 router.delete('/user/:id', (req, res) => {
 	db.query('DELETE FROM User WHERE id = ?', [req.params.id], (error, dbRes) => {
-		console.log(dbRes);
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
@@ -116,7 +115,6 @@ router.delete('/user/:id', (req, res) => {
 
 router.delete('/user/:idproject/:id', (req, res) => {
 	db.query('DELETE FROM User_Project WHERE id_project = ? AND id_user = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
-		console.log(dbRes);
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {

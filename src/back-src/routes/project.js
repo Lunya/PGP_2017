@@ -98,7 +98,6 @@ router.patch('/project/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['name','description', 'url', 'begin', 'end'])) {
 		db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
 		[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end, req.params.id], (error, dbRes) => {
-			console.log(dbRes);
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {
@@ -130,7 +129,6 @@ router.patch('/project/:id', (req, res) => {
 
 router.delete('/project/:id', (req, res) => {
 	db.query('DELETE FROM Project WHERE id = ?', [req.params.id], (error, dbRes) => {
-		console.log(dbRes);
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
