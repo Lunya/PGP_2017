@@ -28,6 +28,7 @@ router.get('/tasks/:id', (req, res) => {
 				tasks.push({
 					id: results[i].id,
 					description: results[i].description,
+					developer: results[i].developer,
 					state: results[i].state
 				});
 			}
@@ -36,11 +37,50 @@ router.get('/tasks/:id', (req, res) => {
 	});
 });
 
+router.get('/tasks/:idproject/:developerName', (req, res) => {
+	db.query('SELECT * FROM Task WHERE developer = ?', [req.params.developerName], (error, results) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let tasks = [];
+			for (let i = 0; i < results.length; i++) {
+				tasks.push({
+					id: results[i].id,
+					id_sprint: results[i].id_sprint,
+					description: results[i].description,
+					developer: results[i].developer,
+					state: results[i].state
+				});
+			}
+			res.send(tasks);
+		}
+	});
+});
+
+/*router.get('/tasks/:idsprint/:id', (req, res) => {
+	db.query('SELECT * FROM Task WHERE id_sprint = ?', [req.params.id], (error, results) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let tasks = [];
+			for (let i = 0; i < results.length; i++) {
+				tasks.push({
+					id: results[i].id,
+					description: results[i].description,
+					developer: results[i].developer,
+					state: results[i].state
+				});
+			}
+			res.send(tasks);
+		}
+	});
+});*/
+
 
 router.post('/tasks/:id', (req, res) => {
-	if (checkUndefinedObject(req.body, ['description', 'state'])) {
-		db.query('INSERT INTO Task (id_sprint, description, state) VALUES (?,?,?)',
-		[req.params.id, req.body.description, req.body.state], (error, dbRes) => {
+	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
+		db.query('INSERT INTO Task (id_sprint, description, developer, state) VALUES (?,?,?,?)',
+		[req.params.id, req.body.description, req.body.developer, req.body.state], (error, dbRes) => {
 			console.log(dbRes.insertId);
 			if (error)
 				sendError(res, 'Unable to query database');
@@ -56,9 +96,9 @@ router.post('/tasks/:id', (req, res) => {
 
 
 router.patch('/task/:idsprint/:id', (req, res) => {
-	if (checkUndefinedObject(req.body, ['description', 'state'])) {
-		db.query('UPDATE Task SET description = ?, state = ? WHERE id_sprint = ? AND id = ? ',
-	            [req.body.description, req.body.state, req.params.idsprint, req.params.id], (error, dbRes) => {
+	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
+		db.query('UPDATE Task SET description = ?, developer=?, state = ? WHERE id_sprint = ? AND id = ? ',
+	            [req.body.description, req.body.developer, req.body.state, req.params.idsprint, req.params.id], (error, dbRes) => {
 			console.log(dbRes);
 			if (error)
 				sendError(res, 'Unable to query database');
@@ -79,7 +119,7 @@ router.delete('/task/:idsprint/:id', (req, res) => {
 			sendError(res, 'Unable to query database');
 		else {
 			res.status(200).send({
-				insertId: dbRes.insertId
+				error: false
 			});
 		}
 	});

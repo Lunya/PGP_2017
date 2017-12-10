@@ -13,6 +13,7 @@ function checkUndefinedObject(object, fields) {
 	return ok;
 }
 
+
 function sendError(res, reason) {
 	res.status(400).send({ error: true, reason: reason });
 	console.log(reason);
@@ -61,6 +62,7 @@ router.post('/userstories/:id', (req, res) => {
 
 
 
+
 router.patch('/userstory/:idproject/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
 		db.query('UPDATE UserStory SET description=?, difficulty=?, priority=?, state=? WHERE id=? AND id_project=?',
@@ -85,7 +87,21 @@ router.delete('/userstory/:idproject/:id', (req, res) => {
 			sendError(res, 'Unable to query database');
 		else {
 			res.status(200).send({
-				insertId: dbRes.insertId
+				error: false
+			});
+		}
+	});
+});
+
+
+router.delete('/userstory/:idproject/:idsprint/:id', (req, res) => {
+	db.query("DELETE FROM UserStory_Sprint WHERE id_sprint=? AND id_us=?", [req.params.idsprint, req.params.id], (error, dbRes) => {
+		console.log(dbRes);
+		if (error)
+			sendError(res, 'Unable to query database');
+		else {
+			res.status(200).send({
+				error: false
 			});
 		}
 	});

@@ -2,7 +2,7 @@ export class Project {
 	public id: number;
 	public name: string;
 	public description: string;
-	public git: string;
+	public url: string;
 	public begin: Date;
 	public end: Date;
 
@@ -10,13 +10,13 @@ export class Project {
 		id = -1,
 		name = '',
 		description = '',
-		git = '',
+		url = '',
 		begin = new Date(),
 		end = new Date()) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.git = git;
+		this.url = url;
 		this.begin = begin;
 		this.end = end;
 	}

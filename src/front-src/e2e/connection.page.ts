@@ -15,13 +15,16 @@ export class ConnexionPage {
   }
 
   fillAndSendFormConnection(login,passwd) {
-    var form =  browser.element.all(by.css('form')).first();
 		browser.element.all(by.css('input[type=email]')).first().sendKeys(login)
     .then(function() {
       browser.element.all(by.css('input[type=password]')).first().sendKeys(passwd);
     }).then(function() {
       browser.element.all(by.css('button[type=submit]')).first().click();
     });
+  }
+
+  logout() {
+    browser.element.all(by.css('a')).last().click();
   }
 
   errorMessageExist() {

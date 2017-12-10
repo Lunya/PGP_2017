@@ -25,12 +25,12 @@
 				'is-valid': projectForm.controls['description'].touched}"></textarea>
 		</div>
 		<div class="col mb-3">
-			<label for="git">Git url</label>
-			<input type="text" id="git" class="form-control"
-				   formControlName="git" placeholder="Git url"
+			<label for="url">Url</label>
+			<input type="text" id="url" class="form-control"
+				   formControlName="url" placeholder="Url repository"
 				   [ngClass]="{
-				'is-invalid': (projectForm.controls['git'].invalid && projectForm.controls['git'].touched),
-				'is-valid': projectForm.controls['git'].touched}">
+				'is-invalid': (projectForm.controls['url'].invalid && projectForm.controls['url'].touched),
+				'is-valid': projectForm.controls['url'].touched}">
 		</div>
 		<div class="col mb-3">
 			<label for="begin">Begin</label>
@@ -65,7 +65,10 @@
 	</div>
 
 	<div class="modal-footer">
-		<button class="btn btn-lg btn-primary btn-block" type="submit"
+		<button   *ngIf="project == undefined" class="btn btn-lg btn-primary btn-block" type="submit"
 				[disabled]="projectForm.invalid">Create project</button>
+
+				<button  *ngIf="project !== undefined" class="btn btn-lg btn-secondary btn-block" type="submit"
+						[disabled]="projectForm.invalid">Edit project</button>
 	</div>
 </form>

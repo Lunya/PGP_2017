@@ -33,14 +33,14 @@
 					<td>{{ project.description }}</td>
 					<td>{{ project.begin | date: 'dd/MM/yyyy' }}</td>
 					<td>{{ project.end | date: 'dd/MM/yyyy' }}</td>
-					<td>{{ project.git }}</td>
+					<td>{{ project.url }}</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 
   <div *ngIf='!projectsTableView' class="col-md-12">
-		<table class="table">
+		<table class="table table-bordered table-striped table-hover">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -54,8 +54,8 @@
 				<tr *ngFor="let project of otherProjects" [routerLink]="['/project',project.id]">
 					<td>{{ project.name }}</td>
 					<td>{{ project.creator }}</td>
-					<td>{{ project.begin }}</td>
-					<td>{{ project.end }}</td>
+					<td>{{ project.begin | date: 'dd/MM/yyyy' }}</td>
+					<td>{{ project.end | date: 'dd/MM/yyyy' }}</td>
 					<td>{{ project.url }}</td>
 				</tr>
 			</tbody>

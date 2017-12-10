@@ -4,15 +4,20 @@ import { ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { NgbDatepickerConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from '../../objects/Project';
+import { EditProjectComponent } from './edit-project/edit-project.component';
 
 const url_uStory = 'http://localhost:3000/api/userstory';
 const url_uStories = 'http://localhost:3000/api/userstories';
+const urlProject = 'http://localhost:3000/api/project';
+const urlStatus = 'http://localhost:3000/api/status';
 
 @Component({
 	selector: 'app-project',
 	templateUrl: './project.component.html',
 	styleUrls: ['./project.component.css'],
+	providers: [NgbDatepickerConfig]
 })
 
 
@@ -21,9 +26,8 @@ export class ProjectComponent implements OnInit {
 	private usList = [];
 	private userStory = new UserStory();
 	private previousUserStory = new Array<UserStory>();
-
-
 	public usSprintSelection = [];
+	private userStatus: any;
 
 	@Input('project')
 	public project: Project;
@@ -38,48 +42,42 @@ export class ProjectComponent implements OnInit {
 		private el: ElementRef,
 		private fb: FormBuilder,
 		private lc: NgZone,
-		private http: HttpClient
-	) {
-		/*this.repositoryForm = this.fb.group({
-			url: [null, [Validators.required, CustomValidators.url]]
-		});*/
-		/*this.userStoryForm = this.fb.group({
-			id: [{value: this.idUS, disabled: true}, []],
-			description: ["", [Validators.required, Validators.minLength(10)]],
-			difficulty: [0,[Validators.required, CustomValidators.number]],
-			priority: [0,[Validators.required, CustomValidators.number]],
-			state: ["",[Validators.required, Validators.minLength(1)]],
-		})*/
-		/*this.userStoryForm = this.fb.group({
-      backlog: this.fb.array([])
-    })*/
-	}
-
-	/*get backlog(): FormArray {
-		return <FormArray>this.userStoryForm.get('backlog')
-	}*/
+		private http: HttpClient,
+		private modalService: NgbModal,
+	) { }
 
 
 	ngOnInit() {
 		this.loadUserStories();
 	}
 
+
 	loadUserStories(): void {
 		this.http.get<UserStory[]>(url_uStories + '/' + this.project.id).subscribe((result) => {
 			this.usList = result;
-			console.log(this.usList);
+			this.loadPermissions();
 		}, error => console.log(error));
 	}
 
-	/*initItems(): FormGroup {
-		return this.fb.group({
-			id: [{ value: this.idUS, disabled: true }, []],
-			description: ["", [Validators.required, Validators.minLength(10)]],
-			difficulty: [0, [Validators.required, CustomValidators.number]],
-			priority: [0, [Validators.required, CustomValidators.number]],
-			state: ["", [Validators.required, Validators.minLength(1)]],
-		});
-	}*/
+	loadPermissions() {
+		this.http.get<any>(urlStatus + '/' + localStorage.getItem('user.id') + '/' + this.project.id).subscribe((result) => {
+			if (result) {
+				localStorage.setItem('user.status', result.status);
+				this.userStatus = localStorage.getItem('user.status');
+			}
+			/*const button = this.el.nativeElement.querySelectorAll('button');
+			for (let i = 0; i < button.length; ++i) {
+				console.log(i);
+				button[i].setAttribute('disabled','true');
+			}*/
+			else {
+				const td_priority = this.el.nativeElement.querySelectorAll('td.priority');
+				for (let i = 0; i < td_priority.length; ++i) {
+					td_priority[i].classList.remove('editable');
+				}
+			}
+		}, error => console.log(error));
+	}
 
 
 	resetModel() {
@@ -179,34 +177,49 @@ export class ProjectComponent implements OnInit {
 		this.resetModel();
 	}
 
+	selectUS(ligne) {
+		if (!ligne.onEdit) {
+			const tr_id = '#US' + ligne['id'] + ' button';
+			const classes = this.el.nativeElement.querySelector(tr_id).classList;
+			if (classes.contains('btn-primary')) {
+				classes.remove('btn-primary');
+				classes.add('btn-outline-secondary');
+				this.usSprintSelection.splice(this.usSprintSelection.indexOf(ligne), 1);
+			} else {
+				classes.add('btn-primary');
+				classes.remove('btn-outline-secondary');
 
-	removeProject() {
+				this.usSprintSelection.push(ligne);
+			}
+		}
 
 	}
 
-	selectUS(ligne) {
-		if (!ligne.onEdit) {
-			const tr_id = '#US' + ligne['id'];
-			const classes = this.el.nativeElement.querySelector(tr_id).classList;
-			if (classes.contains('table-warning')) {
-				classes.remove('table-warning');
-				/* if (usSprintSelection.count === 0) {
-					const buttons = this.el.nativeElement.querySelector(tr_id + ' td button');
-					for (let i = 0; i < buttons.length; ++i) {
-						buttons[i].disabled = false;
-					}
-				}*/
-			} else {
-				classes.add('table-warning');
-				/* if (usSprintSelection.count == 1) {
-					const buttons = this.el.nativeElement.querySelector(tr_id + ' td button');
-					for (let i = 0; i < buttons.length; ++i) {
-						buttons[i].disabled = true;
-					}
-				}*/
-			}
-			this.usSprintSelection.push(ligne);
-		}
+
+	deleteProject() {
+		const urlRequest = urlProject + '/' + this.project.id;
+		this.http.delete(urlRequest)
+			.subscribe((result: any) => {
+				if (result.error) {
+					console.log(result);
+				}
+			}, err => {
+				console.log(err);
+			});
+	}
+
+	editProject() {
+		const modalRef = this.modalService.open(EditProjectComponent);
+		modalRef.componentInstance.project = this.project;
+		modalRef.result
+			.then(res => {
+				//this.loadProjects('OWNER');
+			}).catch(reason => console.log(reason));
+
+	}
+
+	leaveProject() {
+
 	}
 
 }

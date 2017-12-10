@@ -94,14 +94,14 @@ router.delete('/sprint/:idproject/:id', (req, res) => {
 			sendError(res, 'Unable to query database');
 		else {
 			res.status(200).send({
-				insertId: dbRes.insertId
+				error: false
 			});
 		}
 	});
 });
 
 
-router.patch('/sprints/:idproject/:id', (req, res) => {
+router.patch('/sprint/:idproject/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['end', 'begin'])) {
 		db.query('UPDATE Sprint SET begin=?, end =? WHERE id_project=? AND id=?', [req.body.begin, req.body.end, req.params.idproject, req.params.id], (err, dbRes) => {
 			console.log(dbRes);

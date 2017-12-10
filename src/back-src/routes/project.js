@@ -33,7 +33,7 @@ function sendError(res, reason) {
 
 router.get('/project/:id', (req, res) => {
 	res.contentType('application/json');
-	db.query('SELECT id, name, description, git, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
+	db.query('SELECT id, name, description, url, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
@@ -43,7 +43,7 @@ router.get('/project/:id', (req, res) => {
 					id: project.id,
 					name: project.name,
 					description: project.description,
-					git: project.git,
+					url: project.url,
 					begin: project.begin,
 					end: project.end
 				});
@@ -54,28 +54,32 @@ router.get('/project/:id', (req, res) => {
 });
 
 
-
-router.get('/project/:userId/:id', (req, res) => {
-	let id = req.params.id;
-	let userId = req.param.userId;
-
-	db.query('SELECT * FROM User_Project WHERE id_user = ? AND id_project = ?',[userId, id], (err, cols) => {
-		let response = [];
-		treatment(err,res,values,cols);
+router.get('/status/:userId/:idProject', (req, res) => {
+	db.query('SELECT status FROM User_Project WHERE id_user = ? AND id_project = ?',[req.params.userId, req.params.idProject], (error, result) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			if (result) {
+				res.send(
+					result[0]
+				);
+			} else
+				sendError(res, 'No project selected');
+		}
 	});
 });
 
 router.post('/project', (req, res) => {
 	res.contentType('application/json');
-	if (checkUndefinedObject(req.body, ['name', 'description', 'git', 'begin', 'end', 'userId'])) {
-		db.query('INSERT INTO Project(name, description, git, begin, end) VALUES (?,?,?,?,?)',
-			[req.body.name, req.body.description, req.body.git, req.body.begin, req.body.end],
+	if (checkUndefinedObject(req.body, ['name', 'description', 'url', 'begin', 'end', 'userId'])) {
+		db.query('INSERT INTO Project(name, description, url, begin, end) VALUES (?,?,?,?,?)',
+			[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end],
 			(error, dbRes) => {
 				if (error)
 					sendError(res, 'Unable to query database');
 				else {
 					db.query('INSERT INTO User_Project(id_project, id_user, status) VALUES (?,?,?)',
-						[dbRes.insertId, req.body.userId, req.body.status], (error) => {
+						[dbRes.insertId, req.body.userId, 'OWNER'], (error) => {
 						if (error)
 							sendError(res, 'Unable to complete insertion');
 						else
@@ -89,26 +93,58 @@ router.post('/project', (req, res) => {
 		sendError(res, 'Error: required parameters not set');
 });
 
+
 router.patch('/project/:id', (req, res) => {
+	if (checkUndefinedObject(req.body, ['name','description', 'url', 'begin', 'end'])) {
+		db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
+		[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end, req.params.id], (error, dbRes) => {
+			console.log(dbRes);
+			if (error)
+				sendError(res, 'Unable to query database');
+			else {
+				res.status(200).send({
+					insertId: dbRes.insertId
+				});
+			}
+		});
+	} else
+		sendError(res, 'Error: required parameters not set');
+});
+
+/*router.patch('/project/:id', (req, res) => {
 	let id = req.params.id;
-	db.query('UPDATE Project SET name=?, description=?, git=?, begin=?, end=? WHERE id=?',
-		[req.body.name,req.body.description, req.body.git, req.body.begin, req.body.end, id], (err, cols) => {
+	db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
+		[req.body.name,req.body.description, req.body.url, req.body.begin, req.body.end, id], (err, cols) => {
 			let values = [];
 			treatment(err,res,values, "success");
 		});
-});
+});*/
 
-router.delete('/project/:id', (req, res) => {
+/*router.delete('/project/:id', (req, res) => {
 	let id = req.params.id;
 	db.query("DELETE FROM Project WHERE id=?",[id], (err,count) => {
 		let values = [];
 		treatment(err, res, values, "success");
 	})
+});*/
+
+router.delete('/project/:id', (req, res) => {
+	db.query('DELETE FROM Project WHERE id = ?', [req.params.id], (error, dbRes) => {
+		console.log(dbRes);
+		if (error)
+			sendError(res, 'Unable to query database');
+		else {
+			res.status(200).send({
+				error: false
+			});
+		}
+	});
 });
 
-router.get('/projects/:id/:role', (req, res) => {
+
+router.get('/projects/:id', (req, res) => {
 	res.contentType('application/json');
-	db.query('SELECT id, name, description, git, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ? AND status = ?', [req.params.id, req.params.role], (error, results) => {
+	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
@@ -117,7 +153,28 @@ router.get('/projects/:id/:role', (req, res) => {
 				projects.push({
 					id: results[i].id, name: results[i].name,
 					description: results[i].description,
-					git: results[i].git, begin: results[i].begin,
+					url: results[i].url, begin: results[i].begin,
+					end: results[i].end
+				});
+			}
+			res.send(projects);
+		}
+	});
+});
+
+
+router.get('/projects/:id/:role', (req, res) => {
+	res.contentType('application/json');
+	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ? AND status = ?', [req.params.id, req.params.role], (error, results) => {
+		if (error)
+			sendError(res, 'Database error');
+		else {
+			let projects = [];
+			for (let i = 0; i < results.length; i++) {
+				projects.push({
+					id: results[i].id, name: results[i].name,
+					description: results[i].description,
+					url: results[i].url, begin: results[i].begin,
 					end: results[i].end
 				});
 			}

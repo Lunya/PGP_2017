@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
 	@Output() onSelectProject = new EventEmitter<void>();
 	@Output() onSelectSprint = new EventEmitter < { sprint: Sprint; developers: User[]; } > ();
 	@Output() onNewSprint = new EventEmitter<void>();
-	@Output() onSelectUser = new EventEmitter<number>();
+	@Output() onSelectUser = new EventEmitter<User>();
 	@Output() onAddUser = new EventEmitter<void>();
 
 	@ViewChild('project') private projectElement: ElementRef;
@@ -52,8 +52,8 @@ export class SidebarComponent implements OnInit {
 		this.unselectAllItemsAndSelectOne(target);
 	}
 
-	onUserSelected(event: MouseEvent, userId: number): void {
-		this.onSelectUser.emit(userId);
+	onUserSelected(event: MouseEvent, user: User): void {
+		this.onSelectUser.emit(user);
 		const target: any = event.currentTarget;
 		this.unselectAllItemsAndSelectOne(target);
 	}
