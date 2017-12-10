@@ -1,7 +1,7 @@
 # PGP_2017
 Projet de Gestion de Projet
 
-[![Build Status](https://travis-ci.org/Lunya/PGP_2017.svg?branch=karom_dev)](https://travis-ci.org/Lunya/PGP_2017)
+[![Build Status](https://travis-ci.org/Lunya/PGP_2017.svg?branch=karom_dev2)](https://travis-ci.org/Lunya/PGP_2017)
 
 ## user stories
 
@@ -10,12 +10,12 @@ Projet de Gestion de Projet
 | 1 | En tant qu'**utilisateur**, je veux créer un profil (username, password, adresse mail) | 2 | 1 | ✓ |
 | 2 | En tant qu'**utilisateur**, je souhaite me connecter a mon profil en utilisant mon adresse mail et mon mot de passe | 1 | 1 | ✓ |
 | 3 | En tant qu'**utilisateur connecté**, je souhaite créer un projet (nom, description, URL dépôt git associé, date de début/fin théorique du projet) | 5 | 1 | ✓ |
-| 4 | En tant que **membre d'un projet**, je souhaite ajouter des membres a un projet | 1 | 2 | ✗ |
+| 4 | En tant que **membre d'un projet**, je souhaite ajouter des membres a un projet | 1 | 2 | ✓ |
 | 5 | En tant que **propriétaire**, je souhaite éditer les priorités des US | 1 | 3 | ✗ |
-| 6 | En tant que **membre d'un projet**, je souhaite obtenir la liste des US du backlog | 1 | 2 | ✗ |
-| 7 | En tant que **membre d'un projet**, je souhaite éditer le backlog (ajout, modification, suppression d'une US contenant (description, difficulté)) | 2 | 2 | ✗ |
+| 6 | En tant que **membre d'un projet**, je souhaite obtenir la liste des US du backlog | 1 | 2 | ✓ |
+| 7 | En tant que **membre d'un projet**, je souhaite éditer le backlog (ajout, modification, suppression d'une US contenant (description, difficulté)) | 2 | 2 | ✓ |
 | 8 | En tant que **membre d'un projet**, je souhaite créer des sprints (numéro, sélection des user stories que l'on souhaite associer au sprint via le backlog, date de début/fin) | 2 | 2 | ✓ |
-| 9 | En tant que **membre d'un projet**, je souhaite créer des tâches dans un sprint (description, état{done, not done}, lien vers le dépôt) | 3 | 3 | ✗ |
+| 9 | En tant que **membre d'un projet**, je souhaite créer des tâches dans un sprint (description, état{done, not done}, lien vers le dépôt) | 3 | 3 | ✓ |
 | 10 | En tant que **membre d'un projet**, je souhaite modifier la description et l'état des tâches d'un sprint | 2 | 3 | ✗ |
 | 11 | En tant que **membre d'un projet**, je souhaite obtenir les propriétés d'un sprint (leurs tâches associées, dates début/fin) | 3 | 3 | ✓ |
 | 12 | En tant que **membre d'un projet**, je souhaite à la fin d'un sprint l'archivage de ma version disponible dans le menu "archives/versions" (URL git vers le build correspondant) | 3 | 3 | ✗ |
