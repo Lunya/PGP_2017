@@ -289,7 +289,7 @@ describe('POST /sprint : pgp sprint creation e2e testing', () => {
 			idProject: 1,
 			usSprint:
 			[{
-				id: 2,
+				id: 3,
 				description: 'Ouvrir une boite de brocolis',
 				difficulty: 8,
 				priority: 2,
