@@ -13,6 +13,9 @@ const url_uStories = 'http://localhost:3000/api/userstories';
 const urlProject = 'http://localhost:3000/api/project';
 const urlStatus = 'http://localhost:3000/api/status';
 
+const MAX_INT_PRIORITY = 1001;
+const MIN_INT_PRIORITY = 0;
+
 @Component({
 	selector: 'app-project',
 	templateUrl: './project.component.html',
@@ -234,32 +237,24 @@ export class ProjectComponent implements OnInit {
 
 				var a = x.innerHTML.toLowerCase();
 				var b = y.innerHTML.toLowerCase();
-				if (a > 0 && a < 101 && b > 0 && b < 101){
-					if (dir == "asc") {
-	        	if (parseInt(a) > parseInt(b)) {
-	          	shouldSwitch= true;
-	          	break;
-	        	}
-	      	} else if (dir == "desc") {
-	        	if (parseInt(a) < parseInt(b)) {
-	          	shouldSwitch= true;
-	          	break;
-	        	}
-	      	}
-	    	} else {
-					if (dir == "asc") {
-        		if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          		shouldSwitch= true;
-          		break;
-        		}
-      		} else if (dir == "desc") {
-        		if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          		shouldSwitch= true;
-          		break;
-        		}
-      		}
-    		}
-			}
+
+				if (a > MIN_INT_PRIORITY && a < MAX_INT_PRIORITY && b > MIN_INT_PRIORITY && b < MAX_INT_PRIORITY){
+					a = parseInt(a);
+					b = parseInt(b);
+				}
+
+				if (dir == "asc") {
+        	if (a > b) {
+        		shouldSwitch= true;
+        		break;
+        	}
+      	} else if (dir == "desc") {
+        	if (a < b) {
+        		shouldSwitch= true;
+        		break;
+        	}
+      	}
+    	}
     	if (shouldSwitch) {
       	rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
       	switching = true;
