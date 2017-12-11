@@ -1,5 +1,5 @@
 let express = require('express');
-let db = require('../databaseConnect');
+let databaseConnect = require('../databaseConnect');
 
 let router = express.Router();
 
@@ -33,12 +33,15 @@ function sendError(res, reason) {
 
 router.get('/project/:id', (req, res) => {
 	res.contentType('application/json');
+	let db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
-		if (error)
+		if (error) {
+			console.log(error);
 			sendError(res, 'Database error');
-		else {
+		} else {
 			let project = result[0];
 			if (project) {
+				console.log(result);
 				res.send({
 					id: project.id,
 					name: project.name,
@@ -55,6 +58,7 @@ router.get('/project/:id', (req, res) => {
 
 
 router.get('/status/:userId/:idProject', (req, res) => {
+	let db = databaseConnect();
 	db.query('SELECT status FROM User_Project WHERE id_user = ? AND id_project = ?',[req.params.userId, req.params.idProject], (error, result) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -72,6 +76,7 @@ router.get('/status/:userId/:idProject', (req, res) => {
 router.post('/project', (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name', 'description', 'url', 'begin', 'end', 'userId'])) {
+		let db = databaseConnect();
 		db.query('INSERT INTO Project(name, description, url, begin, end) VALUES (?,?,?,?,?)',
 			[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end],
 			(error, dbRes) => {
@@ -96,6 +101,7 @@ router.post('/project', (req, res) => {
 
 router.patch('/project/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['name','description', 'url', 'begin', 'end'])) {
+		let db = databaseConnect();
 		db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
 		[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end, req.params.id], (error, dbRes) => {
 			if (error)
@@ -128,6 +134,7 @@ router.patch('/project/:id', (req, res) => {
 });*/
 
 router.delete('/project/:id', (req, res) => {
+	let db = databaseConnect();
 	db.query('DELETE FROM Project WHERE id = ?', [req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');
@@ -142,6 +149,7 @@ router.delete('/project/:id', (req, res) => {
 
 router.get('/projects/:id', (req, res) => {
 	res.contentType('application/json');
+	let db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -163,6 +171,7 @@ router.get('/projects/:id', (req, res) => {
 
 router.get('/projects/:id/:role', (req, res) => {
 	res.contentType('application/json');
+	let db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ? AND status = ?', [req.params.id, req.params.role], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');

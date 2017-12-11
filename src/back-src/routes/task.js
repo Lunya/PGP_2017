@@ -1,5 +1,5 @@
 let express = require('express');
-let db = require('../databaseConnect')
+let databaseConnect = require('../databaseConnect')
 
 let router = express.Router();
 
@@ -19,6 +19,7 @@ function sendError(res, reason) {
 
 
 router.get('/tasks/:id', (req, res) => {
+	let db = databaseConnect();
 	db.query('SELECT * FROM Task WHERE id_sprint = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -38,6 +39,7 @@ router.get('/tasks/:id', (req, res) => {
 });
 
 router.get('/tasks/:idproject/:developerName', (req, res) => {
+	let db = databaseConnect();
 	db.query('SELECT * FROM Task WHERE developer = ?', [req.params.developerName], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -79,6 +81,7 @@ router.get('/tasks/:idproject/:developerName', (req, res) => {
 
 router.post('/tasks/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
+		let db = databaseConnect();
 		db.query('INSERT INTO Task (id_sprint, description, developer, state) VALUES (?,?,?,?)',
 		[req.params.id, req.body.description, req.body.developer, req.body.state], (error, dbRes) => {
 			if (error)
@@ -96,6 +99,7 @@ router.post('/tasks/:id', (req, res) => {
 
 router.patch('/task/:idsprint/:id', (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
+		let db = databaseConnect();
 		db.query('UPDATE Task SET description = ?, developer=?, state = ? WHERE id_sprint = ? AND id = ? ',
 	            [req.body.description, req.body.developer, req.body.state, req.params.idsprint, req.params.id], (error, dbRes) => {
 			if (error)
@@ -111,6 +115,7 @@ router.patch('/task/:idsprint/:id', (req, res) => {
 });
 
 router.delete('/task/:idsprint/:id', (req, res) => {
+	let db = databaseConnect();
 	db.query("DELETE FROM Task WHERE id_sprint = ? AND id = ?", [req.params.idsprint, req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');

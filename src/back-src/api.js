@@ -1,5 +1,5 @@
 let express = require('express');
-let bd = require('./databaseConnect');
+let databaseConnect = require('./databaseConnect');
 let login = require('./routes/login');
 let project = require('./routes/project');
 let user = require('./routes/user');
@@ -34,6 +34,7 @@ router.get('/secured', login.tokenVerifier, (req, res) => {
 	res.send('Secured OK');
 });
 
+let bd = databaseConnect();
 bd.connect(err => {
 	if (err) throw err;
 	else {

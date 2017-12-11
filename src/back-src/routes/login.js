@@ -1,7 +1,7 @@
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-let bd = require('../databaseConnect');
+let databaseConnect = require('../databaseConnect');
 let router = express.Router();
 
 const secret = 'someSecretString';
@@ -10,7 +10,8 @@ const saltRounds = 8;
 
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
-	bd.query("SELECT mail FROM User WHERE mail = ?", [req.body.email], function(err, user) {
+	let db = databaseConnect();
+	db.query("SELECT mail FROM User WHERE mail = ?", [req.body.email], function(err, user) {
 		if (user.length > 0) {
 			res.status(400).send({
 				error: true,
@@ -37,7 +38,8 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err, result) => {
+	let db = databaseConnect();
+	db.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err, result) => {
 		if (err) throw err;
 		if (result.length === 0)
 			res.status(400).send({

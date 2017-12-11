@@ -1,7 +1,7 @@
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-let db = require('../databaseConnect');
+let databaseConnect = require('../databaseConnect');
 
 let router = express.Router();
 const saltRounds = 8;
@@ -26,6 +26,7 @@ function sendError(res, reason) {
 router.post('/users', (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name'])) {
+		let db = databaseConnect();
 		db.query("SELECT id, name, mail FROM User WHERE name LIKE ? ", '%' + req.body.name + '%', (err, result) => {
 			if (err) throw err;
 			else {
@@ -49,6 +50,7 @@ router.post('/users', (req, res) => {
 router.post('/user/:idproject', (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['id'])) {
+		let db = databaseConnect();
 		db.query("INSERT INTO User_Project (id_project, id_user) VALUES(?,?)", [req.params.idproject, req.body.id], (error, result) => {
 			if (error)
 				sendError(res, 'Unable to query database');
@@ -66,6 +68,7 @@ router.post('/user/:idproject', (req, res) => {
 router.patch('/user/:id', (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['email', 'name', 'password', 'newPassword'])) {
+		let db = databaseConnect();
 		db.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err, result) => {
 			if (err) throw err;
 			if (result.length === 0)
@@ -102,6 +105,7 @@ router.patch('/user/:id', (req, res) => {
 });
 
 router.delete('/user/:id', (req, res) => {
+	let db = databaseConnect();
 	db.query('DELETE FROM User WHERE id = ?', [req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');
@@ -114,6 +118,7 @@ router.delete('/user/:id', (req, res) => {
 });
 
 router.delete('/user/:idproject/:id', (req, res) => {
+	let db = databaseConnect();
 	db.query('DELETE FROM User_Project WHERE id_project = ? AND id_user = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');
@@ -128,6 +133,7 @@ router.delete('/user/:idproject/:id', (req, res) => {
 
 router.get('/users/:idProject', (req, res) => {
 	res.contentType('application/json');
+	let db = databaseConnect();
 	db.query('SELECT User_Project.id_project, User_Project.id_user, User.id, User.mail, User.name FROM User_Project INNER JOIN User ON User_Project.id_user = User.id AND User_Project.id_project = ?', [req.params.idProject], (error, result) => {
 		if (error)
 			sendError(res, 'Database error');
