@@ -13,6 +13,9 @@ const url_uStories = 'http://localhost:3000/api/userstories';
 const urlProject = 'http://localhost:3000/api/project';
 const urlStatus = 'http://localhost:3000/api/status';
 
+const MAX_INT_PRIORITY = 1001;
+const MIN_INT_PRIORITY = 0;
+
 @Component({
 	selector: 'app-project',
 	templateUrl: './project.component.html',
@@ -217,6 +220,54 @@ export class ProjectComponent implements OnInit {
 			}).catch(reason => console.log(reason));
 
 	}
+
+	sortTable(n) {
+  	var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  	table = document.getElementById("MyTable");
+  	switching = true;
+  	dir = "asc";
+
+  	while (switching) {
+    	switching = false;
+    	rows = table.getElementsByTagName("TR");
+    	for (i = 1; i < (rows.length - 1); i++) {
+      	shouldSwitch = false;
+      	x = rows[i].getElementsByTagName("TD")[n];
+      	y = rows[i + 1].getElementsByTagName("TD")[n];
+
+				var a = x.innerHTML.toLowerCase();
+				var b = y.innerHTML.toLowerCase();
+
+				if (a > MIN_INT_PRIORITY && a < MAX_INT_PRIORITY && b > MIN_INT_PRIORITY && b < MAX_INT_PRIORITY){
+					a = parseInt(a);
+					b = parseInt(b);
+				}
+
+				if (dir == "asc") {
+        	if (a > b) {
+        		shouldSwitch= true;
+        		break;
+        	}
+      	} else if (dir == "desc") {
+        	if (a < b) {
+        		shouldSwitch= true;
+        		break;
+        	}
+      	}
+    	}
+    	if (shouldSwitch) {
+      	rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      	switching = true;
+      	switchcount ++;
+    	} else {
+      	if (switchcount == 0 && dir == "asc") {
+        	dir = "desc";
+        	switching = true;
+      	}
+    	}
+  	}
+	}
+
 
 	leaveProject() {
 
