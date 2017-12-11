@@ -67,7 +67,7 @@
 											<option *ngFor="let user of developers">{{user.name}}</option>
 									</select>
 					</td>
-					<td contenteditable='false' [(ngModel)]="task.state" #priority="ngModel">{{task.state}}</td>
+					<td contenteditable='false' class="editable" [(ngModel)]="task.state" #priority="ngModel">{{task.state}}</td>
 					<td>
 						<button *ngIf='!task.onEdit' class="btn btn-default" (click)="onEditTaskRow(task)"><i class="fa fa-edit"></i> Edit</button>
 						<button *ngIf='!task.onEdit' class="btn btn-danger" (click)="onDeleteTaskRow(task)"><i class="fa fa-times"></i></button>

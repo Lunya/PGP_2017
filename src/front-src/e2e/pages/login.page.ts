@@ -1,6 +1,6 @@
 import { browser, by, element } from 'protractor';
 
-export class ConnexionPage {
+export class LoginPage {
 
   navigateTo(path) {
     return browser.get(path);
@@ -27,7 +27,4 @@ export class ConnexionPage {
     browser.element.all(by.css('a')).last().click();
   }
 
-  errorMessageExist() {
-    //return form.findElement(by.css()).getText();
-  }
 }

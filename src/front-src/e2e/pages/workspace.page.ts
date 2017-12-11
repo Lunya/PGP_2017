@@ -21,7 +21,7 @@ export class WorkspacePage {
 	fillAndSendFormProject(name, description, url, begin,end) {
    return browser.element.all(by.css('button[type=button]')).last().click()
     .then(function() {
-        browser.wait(element(by.className("modal-header")).isDisplayed, 5000);
+        browser.wait(element(by.className("modal-body")).isDisplayed, 5000);
       })
       .then(function() {
         browser.element.all(by.id('name')).sendKeys(name)
@@ -48,7 +48,4 @@ export class WorkspacePage {
     browser.element.all(by.css('tr')).last().click();
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
-  }
 }

@@ -55,7 +55,7 @@ export class ProjectComponent implements OnInit {
 	loadUserStories(): void {
 		this.http.get<UserStory[]>(url_uStories + '/' + this.project.id).subscribe((result) => {
 			this.usList = result;
-			this.loadPermissions();
+			//this.loadPermissions();
 		}, error => console.log(error));
 	}
 
