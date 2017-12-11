@@ -1,6 +1,6 @@
 import { browser, by, element } from 'protractor';
 
-export class ConnexionPage {
+export class LoginPage {
 
   navigateTo(path) {
     return browser.get(path);
@@ -15,7 +15,6 @@ export class ConnexionPage {
   }
 
   fillAndSendFormConnection(login,passwd) {
-    var form =  browser.element.all(by.css('form')).first();
 		browser.element.all(by.css('input[type=email]')).first().sendKeys(login)
     .then(function() {
       browser.element.all(by.css('input[type=password]')).first().sendKeys(passwd);
@@ -24,7 +23,8 @@ export class ConnexionPage {
     });
   }
 
-  errorMessageExist() {
-    //return form.findElement(by.css()).getText();
+  logout() {
+    browser.element.all(by.css('a')).last().click();
   }
+
 }

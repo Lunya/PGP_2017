@@ -8,8 +8,7 @@ const url = 'http://localhost:3000/api/project';
 
 @Component({
 	selector: 'app-new-project',
-	templateUrl: '../../home-project/edit-project/edit-project.component.html',
-	styleUrls: ['../../home-project/edit-project/edit-project.component.css']
+	templateUrl: '../../popups/popup-project.component.html'
 })
 export class NewProjectComponent implements OnInit {
 	private projectForm: FormGroup;
@@ -26,7 +25,7 @@ export class NewProjectComponent implements OnInit {
 		this.projectForm = this.fb.group({
 			name: [null, [Validators.required]],
 			description: [null, []],
-			git: [null, [CustomValidators.url]],
+			url: [null, [CustomValidators.url]],
 			begin: [null, [Validators.required, /*CustomValidators.dateISO*/]],
 			end: [null, [/*CustomValidators.dateISO*/]]
 		});
@@ -39,10 +38,14 @@ export class NewProjectComponent implements OnInit {
 	ngOnSubmit(): void {
 		const body = this.projectForm.value;
 		body.begin = this.beginDateModel.year.toString() + '-' + this.beginDateModel.month.toString() + '-' + this.beginDateModel.day.toString();
-		if (body.end)
+		console.log(body.begin);
+		if (body.end) {
 			body.end = this.endDateModel.year.toString() + '-' + this.endDateModel.month.toString() + '-' + this.endDateModel.day.toString();
-		else body.end = null;
+		} else {
+			body.end = null;
+		}
 		body.userId = localStorage.getItem('user.id');
+		body.status = 'OWNER';
 		this.http.post(url, body).subscribe((res: any) => {
 			if (res.error) {
 				console.log(res.reason);

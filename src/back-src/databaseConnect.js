@@ -5,6 +5,7 @@ console.log(process.env.DB_SERVER_HOST,
 	process.env.DB_SERVER_USER,
 	process.env.DB_SERVER_PASSWORD,
 	process.env.DB_NAME);
+
 let bd;
 if(process.env.NODE_ENV == 'TEST')
 bd = mysql.createConnection({

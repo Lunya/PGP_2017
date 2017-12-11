@@ -20,12 +20,13 @@ import { SidebarComponent } from './home-project/sidebar/sidebar.component';
 import { HomeProjectComponent } from './home-project/home-project.component';
 import { SprintComponent } from './home-project/sprint/sprint.component';
 import { AccountComponent } from './account/account.component';
-import { EditSprintComponent } from './popups/edit-sprint/edit-sprint.component';
-import { EditProjectComponent } from './popups/edit-project/edit-project.component';
+import { EditSprintComponent } from './home-project/sprint/edit-sprint/edit-sprint.component';
+//import { EditProjectComponent } from './popups/edit-project/edit-project.component';
 import { AddUserComponent } from './popups/add-user/add-user.component';
 import { UserInfoComponent } from './home-project/user-info/user-info.component';
 import { NewProjectComponent } from './workspace/new-project/new-project.component';
-
+import { NewSprintComponent } from './popups/new-sprint/new-sprint.component';
+import { EditProjectComponent } from './home-project/project/edit-project/edit-project.component';
 
 
 
@@ -48,7 +49,9 @@ import { NewProjectComponent } from './workspace/new-project/new-project.compone
 		EditProjectComponent,
 		AddUserComponent,
 		UserInfoComponent,
-		NewProjectComponent
+		NewProjectComponent,
+		NewSprintComponent
+
 	],
 	imports: [
 		BrowserModule,
@@ -71,7 +74,8 @@ import { NewProjectComponent } from './workspace/new-project/new-project.compone
 		EditProjectComponent,
 		EditSprintComponent,
 		UserInfoComponent,
-		NewProjectComponent
+		NewProjectComponent,
+		NewSprintComponent
 	]
 })
 export class AppModule { }

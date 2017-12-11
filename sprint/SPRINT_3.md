@@ -6,7 +6,7 @@ Date de fin :
 ## Backlog lié
 | Id | Description | Difficulté | Priorité | Fait |
 |---:|:---|:---:|:---:|:---:|
-| 11 | En tant que **membre d'un projet**, je souhaite obtenir les propriétés d'un sprint (leurs tâches associées, dates début/fin) | 3 | 3 | ✗ |
+| 11 | En tant que **membre d'un projet**, je souhaite obtenir les propriétés d'un sprint (leurs tâches associées, dates début/fin) | 3 | 3 | ✓ |
 | 12 | En tant que **membre d'un projet**, je souhaite à la fin d'un sprint l'archivage de ma version disponible dans le menu "archives/versions" (URL git vers le build correspondant) | 3 | 3 | ✗ |
 | 13 | En tant que **membre d'un projet**, je souhaite accéder aux différentes versions du projet (via le menu "versions", builds, rendu disponible a la fin de chaque sprint) | 2 | 3 | ✗ |
 | 14 | En tant que **membre d'un projet**, je souhaite accéder a l'historique des tests de chaque build (via le menu "versions") | 3 | 3 | ✗ |
@@ -18,7 +18,7 @@ Date de fin :
 
 | Id | US | Description | Statut |
 |---:|:---:|:---|:---:|
-| 1 | **11** | Récupérer les propriétés d'un sprint | TODO |
+| 1 | **11** | Récupérer les propriétés d'un sprint | DONE |
 | 2 | **12** | Créer un menu "archives/versions" | TODO |
 | 3 | **12** | Mettre en place l'archivage du projet sous la forme d'une archive stockée sur le serveur courant ou sur le git associé au projet.  | TODO |
 | 4 | **13** | Créer un menu "versions" dans un projet pour accéder aux differentes versions de ce projet | TODO |

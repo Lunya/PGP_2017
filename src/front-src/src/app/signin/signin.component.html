@@ -3,8 +3,8 @@
 
 	<div class="col mb-3">
 		<label for="email">Email address</label>
-		<input id="email" class="form-control" formControlName="email"
-			placeholder="Email address" required autofocus type="email"
+		<input type="email" id="email" class="form-control" formControlName="email"
+			placeholder="Email address" required autofocus
 			[ngClass]="{
 				'is-invalid': (signinForm.controls['email'].invalid && signinForm.controls['email'].touched),
 				'is-valid': signinForm.controls['email'].touched}">
@@ -13,8 +13,8 @@
 
 	<div class="col mb-3">
 		<label for="password">Password</label>
-		<input id="password" class="form-control" formControlName="password"
-			placeholder="Password" required type="password"
+		<input type="password" id="password" class="form-control"
+		formControlName="password" placeholder="Password" required
 			[ngClass]="{
 				'is-invalid': (signinForm.controls['password'].invalid && signinForm.controls['password'].touched),
 				'is-valid': signinForm.controls['password'].touched}">

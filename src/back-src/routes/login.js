@@ -7,19 +7,29 @@ let router = express.Router();
 const secret = 'someSecretString';
 const saltRounds = 8;
 
+
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
-	bcrypt.hash(req.body.password, saltRounds, (err, password) => {
-		if (!err) {
-			bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)", [req.body.name, password, req.body.email], (error, result) => {
-				if (err) throw err;
-				res.send({
-					error: false
-				});
+	bd.query("SELECT mail FROM User WHERE mail = ?", [req.body.email], function(err, user) {
+		if (user.length > 0) {
+			res.status(400).send({
+				error: true,
+				message: 'Email already exist'
 			});
 		} else {
-			res.send({
-				error: err
+			bcrypt.hash(req.body.password, saltRounds, (err, password) => {
+				if (!err) {
+					bd.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)", [req.body.name, password, req.body.email], (error, result) => {
+						if (err) throw err;
+						res.send({
+							error: false
+						});
+					});
+				} else {
+					res.send({
+						error: err
+					});
+				}
 			});
 		}
 	});
@@ -27,10 +37,12 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?",[req.body.email], (err, result) => {
-		if(err) throw err;
+	bd.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err, result) => {
+		if (err) throw err;
 		if (result.length === 0)
-			res.status(400).send({ error: true });
+			res.status(400).send({
+				error: true
+			});
 		else {
 			/*bd.query("SELECT * FROM Project WHERE id IN (SELECT id_project FROM User_Project WHERE id_user= ?)", [result[0]['id']], (err, result, fields) => {
 								if (err) throw err;
@@ -52,12 +64,15 @@ router.post('/login', (req, res) => {
 						};
 						let token = jwt.sign(
 							infos,
-							secret,
-							{ expiresIn: '1h' });
+							secret, {
+								expiresIn: '1h'
+							});
 						infos.token = token;
 						res.status(200).send(infos);
 					} else
-						res.status(401).send({ error: true });
+						res.status(401).send({
+							error: true
+						});
 				});
 		}
 	});

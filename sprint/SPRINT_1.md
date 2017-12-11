@@ -9,9 +9,9 @@ Date de fin : 17/11/17
 | 1 | En tant qu'**utilisateur**, je veux créer un profil (username, password, adresse mail) | 2 | 1 | ✓ |
 | 2 | En tant qu'**utilisateur**, je souhaite me connecter a mon profil en utilisant mon adresse mail et mon mot de passe | 1 | 1 | ✓ |
 | 3 | En tant qu'**utilisateur connecté**, je souhaite créer un projet (nom, description, URL dépôt git associé, date de début/fin théorique du projet) | 5 | 1 | ✓ |
-| 4 | En tant que **membre d'un projet**, je souhaite ajouter des membres a un projet | 1 | 2 | ✗ |
-| 6 | En tant que **membre d'un projet**, je souhaite obtenir la liste des US du backlog | 1 | 2 | ✗ |
-| 7 | En tant que **membre d'un projet**, je souhaite éditer le backlog (ajout, modification, suppression d'une US contenant (description, difficulté)) | 2 | 2 | ✗ |
+| 4 | En tant que **membre d'un projet**, je souhaite ajouter des membres a un projet | 1 | 2 | ✓ |
+| 6 | En tant que **membre d'un projet**, je souhaite obtenir la liste des US du backlog | 1 | 2 | ✓ |
+| 7 | En tant que **membre d'un projet**, je souhaite éditer le backlog (ajout, modification, suppression d'une US contenant (description, difficulté)) | 2 | 2 | ✓ |
 
 ## Tâches
 
@@ -29,13 +29,13 @@ Date de fin : 17/11/17
 | 10 | **3,7** | Créer une vue d'un projet sélectionné, avec backlog du projet. | DONE |
 | 12 | **1** | Tester la création d'un compte. | DONE |
 | 13 | **2** | Tester le module de connexion. | DONE |
-| 14 | **3** | Tester la création d'un projet. | TODO |
+| 14 | **3** | Tester la création d'un projet. | DONE |
 | 15 | **1,2,3,7** | Tester la base de données avec des requêtes. | DONE |
 | 16 | **-** | Créer un script de peuplement de base de données, supprimant puis réinsérant des entités dans la base de données. | DONE |
 | 17 | **-** | Mettre en place `travis` qui appelera `mocha`. | DONE |
-| 18 | **7** | Rendre le backlog modifiable (ajout, modification, et suppression d'une tâche). | DOING |
+| 18 | **7** | Rendre le backlog modifiable (ajout, modification, et suppression d'une tâche). | DONE |
 | 19 | **-** | Pouvoir trier les colonnes du backlog par ID, et Statut. | TODO |
-| 20 | **4** | Pouvoir lier un utilisateur à un projet. | TODO |
+| 20 | **4** | Pouvoir lier un utilisateur à un projet. | DONE |
 | 21 | **6** | Voir la liste des contributeurs dans un projet | DONE |
 | 22 | **-** | Créer les routes `/register, /login` | DONE |
 | 23 | **-** | Créer les routes `/project, /project/:id, /userstories/:id` | DONE |

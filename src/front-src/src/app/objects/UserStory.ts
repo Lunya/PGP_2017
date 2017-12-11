@@ -1,17 +1,23 @@
 export class UserStory {
-  id : number;
-  description : string;
-  difficulty : number;
-  priority : number;
-  status : string;
-	onEdit: boolean;
+	public id: number;
+	public description: string;
+	public difficulty: number;
+	public priority: number;
+	public state: string;
+	public onEdit: boolean;
 
-  constructor(id , description, difficulty, priority, status) {
-    this.id = id;
-    this.description = description;
-    this.difficulty = difficulty;
-    this.priority = priority;
-    this.status = status;
-		this.onEdit = false;
-  }
+	constructor(
+		id = -1,
+		description = '',
+		difficulty = 0,
+		priority = 0,
+		state = 'TODO',
+onEdit = false) {
+		this.id = id;
+		this.description = description;
+		this.difficulty = difficulty;
+		this.priority = priority;
+		this.state = state;
+	}
+
 }

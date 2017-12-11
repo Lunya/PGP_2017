@@ -1,4 +1,8 @@
-nav {
+table thead {
+				background-color: #f9f9f9;
+}
+
+/*nav {
 				box-shadow: 0px 5px 3px 0px #BBBBBB;
 }
 
@@ -56,4 +60,4 @@ table td {
 
 table td.developers select {
 				max-width: 270px;
-}
+}*/
