@@ -27,14 +27,14 @@
 		<div class="col-md-12">
 			<!-- <form class="form-inline form-repository" [formGroup]="userStoryForm" (ngSubmit)="ngOnSubmit()" novalidate> -->
 			<!-- <table class="table" formArrayName="backlog"> -->
-			<table class="table table-bordered table-striped table-hover">
+			<table class="table table-bordered table-striped table-hover" id="MyTable">
 				<thead>
 					<tr>
-						<th>ID</th>
-						<th>Description</th>
-						<th>Difficulty</th>
-						<th>Priority</th>
-						<th>Status</th>
+						<th (click)="sortTable(0)">ID</th>
+						<th (click)="sortTable(1)">Description</th>
+						<th (click)="sortTable(2)">Difficulty</th>
+						<th (click)="sortTable(3)">Priority</th>
+						<th (click)="sortTable(4)">Status</th>
 						<th>Action</th>
 					</tr>
 				</thead>
