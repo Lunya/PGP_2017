@@ -23,28 +23,27 @@ export class WorkspaceComponent implements OnInit {
 		private http: HttpClient
 	) {}
 
-	private loadProjects(status: string): void {
-		this.http.get<Project[]>(projectsUrl + '/' + localStorage.getItem('user.id') + '/' + status).subscribe((result) => {
+	private loadProjects(): void {
+		this.http.get<Project[]>(projectsUrl + '/' + localStorage.getItem('user.id')).subscribe((result) => {
+			this.myProjects = []; this.otherProjects = [];
 			for (let i = 0; i < result.length; i++) {
 				result[i].begin = new Date(result[i].begin);
 				result[i].end = new Date(result[i].end);
+				result[i].status === 'OWNER' ? this.myProjects.push(result[i]) : this.otherProjects.push(result[i]);
 			}
-			status === 'OWNER' ? this.myProjects = result : this.otherProjects = result;
-			console.log(this.myProjects);
 		}, error => console.log(error));
 	}
 
 
 	ngOnInit() {
-		this.loadProjects('OWNER');
-		this.loadProjects('DEVELOPER');
+		this.loadProjects();
 	}
 
 	newProject() {
 		const modalRef = this.modalService.open(NewProjectComponent);
 		modalRef.result
 			.then(res => {
-				this.loadProjects('OWNER');
+				this.loadProjects();
 			}).catch(reason => console.log(reason));
 	}
 
