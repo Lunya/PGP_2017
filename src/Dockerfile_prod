@@ -1,0 +1,25 @@
+FROM node:9
+
+USER node
+
+# include data from front
+RUN mkdir -p /home/node/front
+WORKDIR /home/node/front
+COPY ./front-src/package.json /home/node/front
+COPY ./front-src/package-lock.json /home/node/front
+RUN cd /home/node/front && npm install --save
+COPY ./front-src /home/node/front
+
+# include data from back
+RUN mkdir -p /home/node/app
+WORKDIR /home/node/app
+COPY ./back-src/wait-for-it.sh /home/node/app
+COPY ./back-src/package.json /home/node/app
+COPY ./back-src/package-lock.json /home/node/app
+COPY ./back-src/prod-start.sh /home/node/app
+RUN cd /home/node/app && npm install --save
+COPY ./back-src /home/node/app
+
+# serve back
+EXPOSE 80
+CMD ["./wait-for-it.sh", "mariadb:3306", "-t", "40", "--", "./prod-start.sh"]

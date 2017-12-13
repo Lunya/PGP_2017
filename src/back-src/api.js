@@ -34,6 +34,7 @@ router.get('/secured', login.tokenVerifier, (req, res) => {
 	res.send('Secured OK');
 });
 
+
 let bd = databaseConnect();
 bd.connect(err => {
 	if (err) throw err;

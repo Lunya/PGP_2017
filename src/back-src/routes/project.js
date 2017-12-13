@@ -154,7 +154,7 @@ router.get('/projects/:id', (req, res) => {
 		if (error)
 			sendError(res, 'Database error');
 		}
-	});
+	);
 });
 
 
