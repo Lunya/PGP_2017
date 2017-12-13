@@ -153,8 +153,10 @@ router.delete('/project/:id', (req, res) => {
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
+
 		});
 	});*/
+
 
 router.get('/projects/:id', (req, res) => {
 	res.contentType('application/json');
