@@ -147,23 +147,23 @@ router.delete('/project/:id', (req, res) => {
 });
 
 
-router.get('/projects/:id', (req, res) => {
+/*router.get('/projects/:id', (req, res) => {
 	res.contentType('application/json');
 	let db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
-		}
-	});
-});
+		});
+	});*/
 
-
-router.get('/projects/:id/:role', (req, res) => {
+router.get('/projects/:id', (req, res) => {
 	res.contentType('application/json');
-	let db = databaseConnect();
-	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ? AND status = ?', [req.params.id, req.params.role], (error, results) => {
-		if (error)
+		let db = databaseConnect();
+	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project up INNER JOIN Project p ON up.id_project = p.id WHERE id_user = ?', [req.params.id], (error, results) => {
+		if (error) {
+			console.log(error);
 			sendError(res, 'Database error');
+		}
 		else {
 			let projects = [];
 			for (let i = 0; i < results.length; i++) {
