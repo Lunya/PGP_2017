@@ -153,17 +153,6 @@ router.get('/projects/:id', (req, res) => {
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
-		else {
-			let projects = [];
-			for (let i = 0; i < results.length; i++) {
-				projects.push({
-					id: results[i].id, name: results[i].name,
-					description: results[i].description,
-					url: results[i].url, begin: results[i].begin,
-					end: results[i].end
-				});
-			}
-			res.send(projects);
 		}
 	});
 });
@@ -182,7 +171,8 @@ router.get('/projects/:id/:role', (req, res) => {
 					id: results[i].id, name: results[i].name,
 					description: results[i].description,
 					url: results[i].url, begin: results[i].begin,
-					end: results[i].end
+					end: results[i].end,
+					status: results[i].status
 				});
 			}
 			res.send(projects);
