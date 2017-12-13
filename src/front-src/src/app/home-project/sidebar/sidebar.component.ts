@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Sprint } from '../../objects/Sprint';
 import { User } from '../../objects/User';
+import { Version } from '../../objects/Version';
 
 @Component({
 	selector: 'app-sidebar',
@@ -17,7 +18,10 @@ export class SidebarComponent implements OnInit {
 	@Output() onNewSprint = new EventEmitter<void>();
 	@Output() onSelectUser = new EventEmitter<User>();
 	@Output() onAddUser = new EventEmitter<void>();
+	@Output() onAccessVersions = new EventEmitter<Version[]>();
+	@Output() onAddVersion = new EventEmitter<void>();
 
+	@ViewChild('version') private versionElement:ElementRef;
 	@ViewChild('project') private projectElement: ElementRef;
 	@ViewChild('sprints') private sprintsElement: ElementRef;
 	@ViewChild('users') private usersElement: ElementRef;
@@ -58,7 +62,19 @@ export class SidebarComponent implements OnInit {
 		this.unselectAllItemsAndSelectOne(target);
 	}
 
+
 	onUserAdd(): void {
-		this.onAddUser.emit();
+	  this.onAddUser.emit();
+	}
+
+
+	onAccessVersions(event: MouseEvent, version: Version[]): void {
+	 	this.onAddVersion.emit(version);
+		const target: any = event.currentTarget;
+		this.unselectAllItemsAndSelectOne(target);
+	}
+
+	onAddVersion(): void {
+		this.onAddVersion.emit();
 	}
 }

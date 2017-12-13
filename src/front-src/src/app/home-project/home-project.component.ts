@@ -10,10 +10,12 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { HttpClient } from '@angular/common/http';
 import { Project } from '../objects/Project';
 import { User } from '../objects/User';
+import { VersionComponent } from './version/version.component';
 
 const projectUrl = 'http://localhost:3000/api/project';
 const sprintUrl = 'http://localhost:3000/api/sprint';
 const userUrl = 'http://localhost:3000/api/user';
+const versionURL = 'http://localhost:3000/api/version';
 //const urlStatus = 'http://localhost:3000/api/status';
 
 @Component({
@@ -27,6 +29,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	private project: Project;
 	private developers = new Array<User>();
 	private usSprint = [];
+	private version = [];
 	//private userStatus: any;
 
 	@ViewChild(SidebarComponent)
@@ -68,9 +71,9 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 		});
 
 		const projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
-
 		const sprintComponentFactory = this.cfr.resolveComponentFactory(SprintComponent);
 		const userComponentFactory = this.cfr.resolveComponentFactory(UserInfoComponent);
+		const versionComponentFactory = this.cfr.resolveComponentFactory(VersionComponent);
 
 		this.sidebar.onSelectProject.subscribe(() => {
 			this.pageContent.remove();
@@ -109,6 +112,29 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 		this.sidebar.onAddUser.subscribe(() => {
 			const modalRef = this.modalService.open(AddUserComponent);
 			modalRef.componentInstance.project = this.project;
+			modalRef.result
+				.then(value => {
+					this.updateSidebar();
+					console.log(value);
+				}).catch(reason => console.log(reason));
+		});
+
+
+
+		this.sidebar.onAccessVersions(() => {
+			this.pageContent.remove();
+			const versionComponent = this.pageContent.createComponent(versionComponentFactory);
+			versionComponent.instance.project = this.project;
+			versionComponent.instance.setVersion(version);
+		});
+
+
+
+
+		this.sidebar.onAddVersion.subscribe(() => {
+			const modalRef = this.modalService.open(AddVersionComponent);
+			modalRef.componentInstance.project = this.project;
+			modalRef.componentInstance.version = this.version;
 			modalRef.result
 				.then(value => {
 					this.updateSidebar();
