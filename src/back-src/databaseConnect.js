@@ -35,7 +35,6 @@ module.exports = {
             if(args.length > 2){
                 sql_args = args[1];
             }
-						console.log('connected to the database');
         connection.query(args[0], sql_args, function(err, results) {
           connection.release();
           if(err){
