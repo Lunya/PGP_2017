@@ -35,10 +35,10 @@ router.get('/version/:idProject', (req, res) => {
 					id: version.id,
 					num_version_maj: version.num_version_maj,
 					num_version_min: version.num_version_min,
-          link_doc: version.link_doc;
-          link_test: version.link_test;
-          link_source: version.link_source;
-          link_build: version.link_build;
+          link_doc: version.link_doc,
+          link_test: version.link_test,
+          link_source: version.link_source,
+          link_build: version.link_build
 				});
 			}
 			res.status(200).send(versions);
@@ -49,11 +49,12 @@ router.get('/version/:idProject', (req, res) => {
 
 router.post('/version/:idProject', (req, res) => {
 	res.contentType('application/json');
-	if (checkUndefinedObject(req.body, ['idProject', 'num_version_maj', 'num_version_min', 'link_source', 'link_build', 'link_test', 'link_doc'])) {
+	if (checkUndefinedObject(req.body, ['versionMaj', 'versionMin', 'linkSrc', 'linkBld', 'linkDoc', 'linkTst'])) {
 		let db = databaseConnect();
-		db.query('INSERT INTO Version(id_project, num_version_maj, num_version_min, link_source, link_build, link_test, link_doc) VALUES (?, ?, ?, ?, ?, ?, ?)', [req.body.idProject, req.body.num_version_maj, req.body.num_version_min, req.body.link_source, req.body.link_build, req.body.link_test ,req.body.link_doc], (error, result) => {
-			if (error)
+		db.query('INSERT INTO Version(id_project, num_version_maj, num_version_min, link_source, link_build, link_test, link_doc) VALUES (?, ?, ?, ?, ?, ?, ?)', [req.params.idProject, req.body.versionMaj, req.body.versionMin, req.body.linkSrc, req.body.linkBld, req.body.linkTst, req.body.linkDoc], (error, result) => {
+			if (error){
 				sendError(res, 'Database error');
+			}
 			else {
 				res.status(200).send({
 					id: result.insertId

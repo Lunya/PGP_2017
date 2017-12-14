@@ -28,10 +28,10 @@ export class NewVersionComponent implements OnInit, OnDestroy {
 		this.versionForm = this.fb.group({
 			versionMaj: [1, [Validators.required]],
       versionMin: [0, [Validators.required]],
-      linkBld: [null, [Validators.required]],
-      linkSrc: [null, [Validators.required]],
-      linkDoc: [null, []],
-      linkTst: [null, []]
+      linkBld: [null, [Validators.required, CustomValidators.url]],
+      linkSrc: [null, [Validators.required, CustomValidators.url]],
+      linkDoc: [null, [CustomValidators.url]],
+      linkTst: [null, [CustomValidators.url]]
 		});
 		this.formAction = 'New';
 	}
@@ -50,7 +50,8 @@ export class NewVersionComponent implements OnInit, OnDestroy {
 		console.log(this.project);
 		values.idProject = this.project.id;
 		console.log(values);
-		this.http.post(versionUrl, values).subscribe((value: any) => {
+		this.http.post(versionUrl + '/' + this.project.id , values).subscribe((value: any) => {
+			console.log('TAG');
 			if (value.error) {
 				console.log(value);
 			} else {

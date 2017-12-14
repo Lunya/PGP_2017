@@ -72,9 +72,9 @@ CREATE TABLE Task (
 
 CREATE TABLE Version (
 	id			BIGINT(20)		UNSIGNED		PRIMARY KEY		AUTO_INCREMENT,
+	id_project	BIGINT(20)		UNSIGNED	NOT NULL,
 	num_version_maj	BIGINT(20)		UNSIGNED NOT NULL,
 	num_version_min BIGINT(20)    UNSIGNED NOT NULL,
-	id_project	BIGINT(20)		UNSIGNED	NOT NULL,
 	link_source VARCHAR(512) NOT NULL,
 	link_build		VARCHAR(512) NOT NULL,
 	link_test VARCHAR(512),

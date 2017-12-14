@@ -6,6 +6,7 @@ let user = require('./routes/user');
 let userstory = require('./routes/userstory');
 let sprint = require('./routes/sprint');
 let task = require('./routes/task');
+let version = require('./routes/version');
 let cors = require('cors');
 
 let router = express.Router();
@@ -85,6 +86,7 @@ bd.connect(err => {
 		router.use(userstory);
 		router.use(sprint);
 		router.use(task);
+		router.use(version);
 	}
 });
 
