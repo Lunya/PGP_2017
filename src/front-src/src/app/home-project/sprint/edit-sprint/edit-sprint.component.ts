@@ -2,9 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../../objects/Project';
 import { Sprint } from '../../../objects/Sprint';
+import { AuthService } from '../../../services/auth.service';
 
 
 const sprintUrl = 'http://localhost:3000/api/sprint';
@@ -31,17 +32,18 @@ export class EditSprintComponent implements OnInit, OnDestroy {
 		public activeModal: NgbActiveModal,
 		private fb: FormBuilder,
 		private http: HttpClient,
-		private datepickerConfig: NgbDatepickerConfig
+		private datepickerConfig: NgbDatepickerConfig,
+		private auth: AuthService
 	) {}
 
 	ngOnInit() {
 		console.log('AddUserComponent initialized');
 		console.log(this.usSelection);
-		let endDate = new Date(this.sprint.end);
-		let beginDate = new Date(this.sprint.begin);
+		const endDate = new Date(this.sprint.end);
+		const beginDate = new Date(this.sprint.begin);
 		this.sprintForm = this.fb.group({
 			begin: [this.sprint.begin, [Validators.required/*, CustomValidators.dateISO*/]],
-			duration: [(endDate.getTime() - beginDate.getTime())/1000/60/60/24, [Validators.required, CustomValidators.gte(1)]]
+			duration: [(endDate.getTime() - beginDate.getTime()) / 1000 / 60 / 60 / 24, [Validators.required, CustomValidators.gte(1)]]
 		});
 		this.formAction = 'Edit';
 	}
@@ -58,8 +60,9 @@ export class EditSprintComponent implements OnInit, OnDestroy {
 		values.begin = new Date(values.begin.year, values.begin.month, values.begin.day);
 		values.end = new Date(values.begin.getTime() + values.duration * 1000 * 60 * 60 * 24);
 		values['usSprint'] = this.usSelection;
-		console.log(values);
-		this.http.patch(sprintUrl + '/' + this.project.id + '/' + this.sprint.id, values).subscribe((value: any) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.patch(sprintUrl + '/' + this.project.id + '/' + this.sprint.id, values, { headers: headers }).subscribe((value: any) => {
 			if (value.error) {
 				console.log(value);
 			} else {

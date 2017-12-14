@@ -31,7 +31,7 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.get('/project/:id', (req, res) => {
+router.get('/project/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	let db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
@@ -57,7 +57,7 @@ router.get('/project/:id', (req, res) => {
 });
 
 
-router.get('/status/:userId/:idProject', (req, res) => {
+router.get('/status/:userId/:idProject', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('SELECT status FROM User_Project WHERE id_user = ? AND id_project = ?',[req.params.userId, req.params.idProject], (error, result) => {
 		if (error)
@@ -99,7 +99,7 @@ router.post('/project', login.tokenVerifier, (req, res) => {
 });
 
 
-router.patch('/project/:id', (req, res) => {
+router.patch('/project/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['name','description', 'url', 'begin', 'end'])) {
 		let db = databaseConnect();
 		db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
@@ -133,7 +133,7 @@ router.patch('/project/:id', (req, res) => {
 	})
 });*/
 
-router.delete('/project/:id', (req, res) => {
+router.delete('/project/:id', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('DELETE FROM Project WHERE id = ?', [req.params.id], (error, dbRes) => {
 		if (error)

@@ -19,7 +19,7 @@ function sendError(res, reason) {
 }
 
 
-router.get('/tasks/:id', (req, res) => {
+router.get('/tasks/:id', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('SELECT * FROM Task WHERE id_sprint = ?', [req.params.id], (error, results) => {
 		if (error)
@@ -80,7 +80,7 @@ router.get('/tasks/:idproject/:developerName', login.tokenVerifier, (req, res) =
 });*/
 
 
-router.post('/tasks/:id', (req, res) => {
+router.post('/tasks/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
 		let db = databaseConnect();
 		db.query('INSERT INTO Task (id_sprint, description, developer, state) VALUES (?,?,?,?)',
@@ -98,7 +98,7 @@ router.post('/tasks/:id', (req, res) => {
 });
 
 
-router.patch('/task/:idsprint/:id', (req, res) => {
+router.patch('/task/:idsprint/:id' ,login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
 		let db = databaseConnect();
 		db.query('UPDATE Task SET description = ?, developer=?, state = ? WHERE id_sprint = ? AND id = ? ',
@@ -115,7 +115,7 @@ router.patch('/task/:idsprint/:id', (req, res) => {
 		sendError(res, 'Error: required parameters not set');
 });
 
-router.delete('/task/:idsprint/:id', (req, res) => {
+router.delete('/task/:idsprint/:id', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query("DELETE FROM Task WHERE id_sprint = ? AND id = ?", [req.params.idsprint, req.params.id], (error, dbRes) => {
 		if (error)

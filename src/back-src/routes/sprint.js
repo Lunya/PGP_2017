@@ -21,7 +21,7 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.get('/sprints/:id', (req, res) => {
+router.get('/sprints/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	let db = databaseConnect();
 	db.query('SELECT id, id_project, begin, end FROM Sprint WHERE id_project = ?', [req.params.id], (error, result) => {
@@ -66,7 +66,7 @@ router.post('/sprint', login.tokenVerifier, (req, res) => {
 		sendError(res, 'Error: required parameters not set');
 });
 
-router.get('/sprint/:idsprint', (req, res) => {
+router.get('/sprint/:idsprint', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('SELECT id, description, difficulty, priority, state FROM UserStory u INNER JOIN UserStory_Sprint u2 ON u.id=u2.id_us WHERE u2.id_sprint = ?', [req.params.idsprint], (error, results) => {
 		if (error)
@@ -89,7 +89,7 @@ router.get('/sprint/:idsprint', (req, res) => {
 
 
 
-router.delete('/sprint/:idproject/:id', (req, res) => {
+router.delete('/sprint/:idproject/:id', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('DELETE FROM Sprint WHERE id_project = ? AND id = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
 		if (error)
@@ -103,7 +103,7 @@ router.delete('/sprint/:idproject/:id', (req, res) => {
 });
 
 
-router.patch('/sprint/:idproject/:id', (req, res) => {
+router.patch('/sprint/:idproject/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['end', 'begin'])) {
 		let db = databaseConnect();
 		db.query('UPDATE Sprint SET begin=?, end =? WHERE id_project=? AND id=?', [req.body.begin, req.body.end, req.params.idproject, req.params.id], (err, dbRes) => {
