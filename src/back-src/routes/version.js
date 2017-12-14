@@ -1,5 +1,5 @@
 let express = require('express');
-let databaseConnect = require('../databaseConnect')
+let db = require('../databaseConnect')
 
 let router = express.Router();
 
@@ -23,7 +23,6 @@ function sendError(res, reason) {
 
 router.get('/versions/:idProject', (req, res) => {
 	res.contentType('application/json');
-	let db = databaseConnect();
 	db.query('SELECT id, id_project, num_version_maj, num_version_min, link_doc, link_test, link_source, link_build FROM Version WHERE id_project = ?', [req.params.idProject], (error, result) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -51,7 +50,6 @@ router.get('/versions/:idProject', (req, res) => {
 router.post('/version/:idProject', (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['versionMaj', 'versionMin', 'linkSrc', 'linkBld', 'linkDoc', 'linkTst'])) {
-		let db = databaseConnect();
 		db.query('INSERT INTO Version(id_project, num_version_maj, num_version_min, link_source, link_build, link_test, link_doc) VALUES (?, ?, ?, ?, ?, ?, ?)', [req.params.idProject, req.body.versionMaj, req.body.versionMin, req.body.linkSrc, req.body.linkBld, req.body.linkTst, req.body.linkDoc], (error, result) => {
 			if (error){
 				sendError(res, 'Database error');
@@ -70,7 +68,6 @@ router.post('/version/:idProject', (req, res) => {
 
 
 router.delete('/version/:idProject/:idVersion', (req, res) => {
-	let db = databaseConnect();
 	db.query('DELETE FROM Version WHERE id_project = ? AND id = ?', [req.params.idProject, req.params.idVersion], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');

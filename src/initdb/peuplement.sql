@@ -10,10 +10,10 @@ INSERT INTO User_Project (id_project, id_user) VALUES (1,3);
 
 
 
-INSERT INTO UserStory (id_project,description,difficulty, priority) VALUES (1,'Faire Marcher la BD',5, 1);
-INSERT INTO UserStory (id_project,description,difficulty, priority) VALUES (1,'Faire Marcher le projet',8, 2);
-INSERT INTO UserStory (id_project,description,difficulty, priority) VALUES (1,'Valider l UE',13, 3);
-INSERT INTO UserStory (id_project,description,difficulty, priority) VALUES (1,'Valider le semestre',20,4);
+INSERT INTO UserStory (id_project,visible_id,description,difficulty, priority) VALUES (1,1,'Faire Marcher la BD',5, 1);
+INSERT INTO UserStory (id_project,visible_id,description,difficulty, priority) VALUES (1,2,'Faire Marcher le projet',8, 2);
+INSERT INTO UserStory (id_project,visible_id,description,difficulty, priority) VALUES (1,3,'Valider l UE',13, 3);
+INSERT INTO UserStory (id_project,visible_id,description,difficulty, priority) VALUES (1,4,'Valider le semestre',20,4);
 
 INSERT INTO Sprint (id_project, begin, end) VALUES (1,'2017-11-19','2017-12-19');
 INSERT INTO Sprint (id_project, begin, end) VALUES (1,'2017-12-24','2018-01-19');

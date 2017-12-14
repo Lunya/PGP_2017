@@ -7,7 +7,8 @@ CREATE TABLE Project (
 	description	VARCHAR(2000),
 	url			VARCHAR(512),
 	begin		DATE			NOT NULL,
-	end			DATE
+	end			DATE,
+	us_id_index	BIGINT(20)		UNSIGNED		NOT NULL		DEFAULT 1	-- index for id generation in user stories
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
 
@@ -33,6 +34,7 @@ CREATE TABLE User_Project (
 CREATE TABLE UserStory (
 	id			BIGINT(20)		UNSIGNED		PRIMARY KEY		AUTO_INCREMENT,
 	id_project	BIGINT(20)		UNSIGNED		NOT NULL,
+	visible_id	BIGINT(20)		UNSIGNED		NOT NULL,	-- id showed on interface
 	description	VARCHAR(512)	NOT NULL,
 	difficulty	INT(11)			UNSIGNED		NOT NULL,
 	priority	INT(11)			UNSIGNED		NOT NULL,

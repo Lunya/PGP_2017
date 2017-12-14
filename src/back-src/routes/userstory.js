@@ -21,46 +21,52 @@ function sendError(res, reason) {
 
 router.get('/userstories/:id', login.tokenVerifier, (req, res) => {
 	const db = databaseConnect();
-	db.query('SELECT * FROM UserStory WHERE id_project = ?', [req.params.id], (error, results) => {
+	db.query('SELECT id, id_project, visible_id, description, difficulty, priority, state FROM UserStory WHERE id_project = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			let userstories = [];
+			const userStories = [];
 			for (let i = 0; i < results.length; i++) {
-				userstories.push({
+				userStories.push({
 					id: results[i].id,
+					visibleId: results[i].visible_id,
 					description: results[i].description,
 					difficulty: results[i].difficulty,
 					priority: results[i].priority,
 					state: results[i].state
 				});
 			}
-			res.send(userstories);
+			res.send(userStories);
 		}
 	});
 });
 
 
-
 router.post('/userstories/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
 		const db = databaseConnect();
-		db.query('INSERT INTO UserStory (id_project, description, difficulty, priority, state) VALUES (?,?,?,?,?)',
-			[req.params.id, req.body.description, req.body.difficulty, req.body.priority, req.body.state], (error, dbRes) => {
-				if (error)
-					sendError(res, 'Unable to query database');
-				else {
-					res.status(200).send({
-						insertId: dbRes.insertId
+		db.query('SELECT id, us_id_index FROM Project WHERE id = ?', [req.params.id], (error, projectRes) => {
+			if (error)
+				sendError(res, 'Unable to query database');
+			else {
+				let usIdIndex = projectRes[0].us_id_index;
+				db.query('INSERT INTO UserStory (id_project, visible_id, description, difficulty, priority, state) VALUES (?,?,?,?,?,?)',
+					[req.params.id, usIdIndex, req.body.description, req.body.difficulty, req.body.priority, req.body.state], (error, dbRes) => {
+						if (error)
+							sendError(res, 'Unable to query database');
+						else {
+							res.status(200).send({
+								insertId: dbRes.insertId
+							});
+							usIdIndex ++;
+							db.query('UPDATE Project SET us_id_index = ? WHERE id = ?', [usIdIndex, req.params.id]);
+						}
 					});
-				}
-			});
+			}
+		});
 	} else
 		sendError(res, 'Error: required parameters not set');
 });
-
-
-
 
 
 router.patch('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
@@ -79,6 +85,7 @@ router.patch('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 	} else
 		sendError(res, 'Error: required parameters not set');
 });
+
 
 router.delete('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 	const db = databaseConnect();
