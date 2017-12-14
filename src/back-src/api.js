@@ -1,12 +1,14 @@
-const express = require('express');
-const databaseConnect = require('./databaseConnect');
-const login = require('./routes/login');
-const project = require('./routes/project');
-const user = require('./routes/user');
-const userstory = require('./routes/userstory');
-const sprint = require('./routes/sprint');
-const task = require('./routes/task');
-const cors = require('cors');
+let express = require('express');
+let databaseConnect = require('./databaseConnect');
+let login = require('./routes/login');
+let project = require('./routes/project');
+let user = require('./routes/user');
+let userstory = require('./routes/userstory');
+let sprint = require('./routes/sprint');
+let task = require('./routes/task');
+let version = require('./routes/version');
+let cors = require('cors');
+
 
 const router = express.Router();
 
@@ -86,6 +88,7 @@ bd.connect(err => {
 		router.use(userstory);
 		router.use(sprint);
 		router.use(task);
+		router.use(version);
 	}
 });
 
