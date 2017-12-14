@@ -66,7 +66,6 @@ router.post('/sprint', login.tokenVerifier, (req, res) => {
 });
 
 router.get('/sprint/:idsprint', login.tokenVerifier, (req, res) => {
-	const db = databaseConnect();
 	db.query('SELECT id, visible_id, description, difficulty, priority, state FROM UserStory u INNER JOIN UserStory_Sprint u2 ON u.id=u2.id_us WHERE u2.id_sprint = ?', [req.params.idsprint], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');

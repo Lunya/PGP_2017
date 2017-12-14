@@ -4,7 +4,8 @@ CREATE TABLE Project (
 	description	VARCHAR(2000),
 	url			VARCHAR(512),
 	begin		DATE			NOT NULL,
-	end			DATE
+	end			DATE,
+	us_id_index	BIGINT(20)		UNSIGNED		NOT NULL		DEFAULT 1	-- index for id generation in user stories
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
 
@@ -30,6 +31,7 @@ CREATE TABLE User_Project (
 CREATE TABLE UserStory (
 	id			BIGINT(20)		UNSIGNED		PRIMARY KEY		AUTO_INCREMENT,
 	id_project	BIGINT(20)		UNSIGNED		NOT NULL,
+	visible_id	BIGINT(20)		UNSIGNED		NOT NULL,	-- id showed on interface
 	description	VARCHAR(512)	NOT NULL,
 	difficulty	INT(11)			UNSIGNED		NOT NULL,
 	priority	INT(11)			UNSIGNED		NOT NULL,
@@ -63,6 +65,20 @@ CREATE TABLE Task (
 	developer VARCHAR(50),
 	state		ENUM('TODO', 'DOING', 'DONE')	NOT NULL		DEFAULT 'TODO',
 	FOREIGN KEY (id_sprint) REFERENCES Sprint(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+
+
+
+CREATE TABLE Version (
+	id			BIGINT(20)		UNSIGNED		PRIMARY KEY		AUTO_INCREMENT,
+	id_project	BIGINT(20)		UNSIGNED	NOT NULL,
+	num_version_maj	BIGINT(20)		UNSIGNED NOT NULL,
+	num_version_min BIGINT(20)    UNSIGNED NOT NULL,
+	link_source VARCHAR(512) NOT NULL,
+	link_build		VARCHAR(512) NOT NULL,
+	link_test VARCHAR(512),
+	link_doc VARCHAR(512),
+	FOREIGN KEY (id_project) REFERENCES Project(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 
 
