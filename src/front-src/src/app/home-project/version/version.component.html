@@ -19,7 +19,7 @@
 			<ng-container *ngFor="let version of versionList">
 				<tr id="{{ 'Version' + version.id  }}" >
 					<td align="center"><strong>{{version.id}}</strong></td>
-					<td contenteditable='false' class="editable" [(ngModel)]="version.num_version_maj" #num_version_maj="ngModel">{{version.num_version_maj}}</td>
+					<td align="center" contenteditable='false' class="editable"  [(ngModel)]="version.num_version_maj" #num_version_maj="ngModel"> {{version.num_version_maj}} </td>
 					<td contenteditable='false' class="editable" [(ngModel)]="version.link_source" #linkSource="ngModel">{{version.link_source}}</td>
 					<td contenteditable='false' class="editable" [(ngModel)]="version.link_build" #link_build="ngModel">{{version.link_build}}</td>
 					<td contenteditable='false' class="editable" [(ngModel)]="version.link_test" #link_test="ngModel">{{version.link_test}}</td>
