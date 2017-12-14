@@ -60,11 +60,14 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 			this.project = new Project();
 			this.project.id = params['id'];
 			this.http.get(projectUrl + '/' + this.project.id).subscribe((result: any) => {
-				this.project = result;
-				this.sidebar.onSelectProject.emit(); // update project on load
-				this.updateSidebar();
+				this.http.get('http://localhost:3000/api/status/' + localStorage.getItem('user.id') + '/' + this.project.id).subscribe((value: any) => {
+					localStorage.setItem('user.status', value.status);
+					this.project = result;
+					this.project.status = value.status;
+					this.sidebar.onSelectProject.emit(); // update project on load
+					this.updateSidebar();
+				}, error => console.log(error));
 			}, error => console.log(error));
-
 		});
 
 		const projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
@@ -119,9 +122,9 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 	resetUsSelection() {
 		let selection = this.el.nativeElement.querySelectorAll('.usID');
-		for(let i = 0 ; i < selection.length; i ++ ) {
+		for (let i = 0; i < selection.length; i++) {
 			selection[i].classList.remove('btn-primary');
-			selection[i].classList.add('btn-outline-secondary');
+			selection[i].classList.add('btn-outline-primary');
 		}
 	}
 

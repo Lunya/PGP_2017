@@ -1,0 +1,91 @@
+<div class="container-fluid">
+	<div class="row">
+		<nav class="col col-sm-4 col-md-3 col-lg-2 sidebar">
+
+			<div class="container">
+				<div class="row mt-3">
+					<div class="col">
+						<button class="btn btn-lg btn-block btn-outline-primary" disabled>Info</button>
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col">
+						<div class="card">
+							<h3 class="card-header">Sprints</h3>
+							<div class="card-block">
+								<a *ngFor="let sprint of sprints" class="list-group-item list-group-item-action">
+									<div class="d-flex flex-row justify-content-between align-items-center">
+										<div>
+											Sprint {{ sprint.id }}
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row mt-3">
+					<div class="col">
+						<div class="card">
+							<h3 class="card-header">Users</h3>
+							<div class="card-block">
+								<a *ngFor="let user of users" class="list-group-item list-group-item-action">
+									<div class="d-flex flex-row justify-content-between align-items-center">
+										<div>
+											<b>{{ user.name }} </b> <em class="text-muted"> {{ user.email }}</em>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+
+
+		<main class="col col-sm-8 col-md-9 col-lg-10">
+			<div class="container-fluid">
+				<div class="jumbotron py-2 mt-3 mb-1">
+					<h4 class="display-4">{{ project.name }}</h4>
+					<p class="lead">{{ project.description }}</p>
+				</div>
+				<div class="row">
+					<a class="navbar-brand">Backlog</a>
+					<a class="btn btn-link mr-sm-2" href="{{ project.url }}" target="_blank">Subversionnig repository URL</a>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table class="table table-bordered table-striped table-hover" id="MyTable">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Description</th>
+									<th>Difficulty</th>
+									<th>Priority</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<ng-container *ngFor="let us of usList">
+									<tr id="{{ 'US' + us.id  }}">
+										<td style="padding-right:0; padding-left:0;" align="center"><button class="btn btn-outline-secondary usID"><strong>{{us.id}}</strong></button></td>
+										<td>{{us.description}}</td>
+										<td>{{us.difficulty}}</td>
+										<td>{{us.priority}}</td>
+										<td>{{us.state}}</td>
+									</tr>
+								</ng-container>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</main>
+
+	</div>
+</div>

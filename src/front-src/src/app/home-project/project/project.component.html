@@ -17,8 +17,8 @@
 				<button type="button" class="btn btn-secondary mr-sm-5" *ngIf="addUsMode" (click)=onBack()>
 					<i class="fa fa-reply"></i></button>
 	 			<button type="button" class="btn ml-sm-5" (click)="editProject()"><i class="fa fa-edit" ></i>Edit project</button>
-	 			<button type="button" class="btn btn-danger ml-sm-2" (click)="deleteProject()" [routerLink]="['/workspace']"><i class="fa fa-trash"></i> Delete project</button>
-				<button type="button" class="btn btn-outline-danger ml-sm-2" (click)="leaveProject()" [routerLink]="['/workspace']"><i class="fa fa-hand-paper-o"></i> Leave project</button>
+	 			<button *ngIf="project.status === 'OWNER'" type="button" class="btn btn-danger ml-sm-2" (click)="deleteProject()" [routerLink]="['/workspace']"><i class="fa fa-trash"></i> Delete project</button>
+				<button *ngIf="project.status !== 'OWNER'" type="button" class="btn btn-outline-danger ml-sm-2" (click)="leaveProject()" [routerLink]="['/workspace']"><i class="fa fa-hand-paper-o"></i> Leave project</button>
 			</form>
 		</nav>
 	</div>

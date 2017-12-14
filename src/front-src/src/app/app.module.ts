@@ -27,6 +27,8 @@ import { UserInfoComponent } from './home-project/user-info/user-info.component'
 import { NewProjectComponent } from './workspace/new-project/new-project.component';
 import { NewSprintComponent } from './popups/new-sprint/new-sprint.component';
 import { EditProjectComponent } from './home-project/project/edit-project/edit-project.component';
+import { PublicProjectComponent } from './public-project/public-project.component';
+
 
 
 
@@ -50,7 +52,8 @@ import { EditProjectComponent } from './home-project/project/edit-project/edit-p
 		AddUserComponent,
 		UserInfoComponent,
 		NewProjectComponent,
-		NewSprintComponent
+		NewSprintComponent,
+		PublicProjectComponent
 
 	],
 	imports: [

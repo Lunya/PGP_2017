@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, Input } from '@angular/core';
+import { Component, OnInit, NgZone, Input, AfterViewInit } from '@angular/core';
 import { UserStory } from '../../objects/UserStory';
 import { ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -7,11 +7,12 @@ import { CustomValidators } from 'ng2-validation';
 import { NgbDatepickerConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from '../../objects/Project';
 import { EditProjectComponent } from './edit-project/edit-project.component';
+import { Router } from '@angular/router';
 
 const url_uStory = 'http://localhost:3000/api/userstory';
 const url_uStories = 'http://localhost:3000/api/userstories';
 const urlProject = 'http://localhost:3000/api/project';
-const urlStatus = 'http://localhost:3000/api/status';
+
 
 const MAX_INT_PRIORITY = 1001;
 const MIN_INT_PRIORITY = 0;
@@ -30,16 +31,11 @@ export class ProjectComponent implements OnInit {
 	private userStory = new UserStory();
 	private previousUserStory = new Array<UserStory>();
 	public usSprintSelection = [];
-	private userStatus: any;
 
 	@Input('project')
 	public project: Project;
 
-	// private idUS = 1;
-	// private index = 10;
-
 	private repositoryForm: FormGroup;
-	// private userStoryForm: FormGroup;
 
 	constructor(
 		private el: ElementRef,
@@ -47,7 +43,8 @@ export class ProjectComponent implements OnInit {
 		private lc: NgZone,
 		private http: HttpClient,
 		private modalService: NgbModal,
-	) { }
+		private router: Router
+	) {}
 
 
 	ngOnInit() {
@@ -58,27 +55,6 @@ export class ProjectComponent implements OnInit {
 	loadUserStories(): void {
 		this.http.get<UserStory[]>(url_uStories + '/' + this.project.id).subscribe((result) => {
 			this.usList = result;
-			//this.loadPermissions();
-		}, error => console.log(error));
-	}
-
-	loadPermissions() {
-		this.http.get<any>(urlStatus + '/' + localStorage.getItem('user.id') + '/' + this.project.id).subscribe((result) => {
-			if (result) {
-				localStorage.setItem('user.status', result.status);
-				this.userStatus = localStorage.getItem('user.status');
-			}
-			/*const button = this.el.nativeElement.querySelectorAll('button');
-			for (let i = 0; i < button.length; ++i) {
-				console.log(i);
-				button[i].setAttribute('disabled','true');
-			}*/
-			else {
-				const td_priority = this.el.nativeElement.querySelectorAll('td.priority');
-				for (let i = 0; i < td_priority.length; ++i) {
-					td_priority[i].classList.remove('editable');
-				}
-			}
 		}, error => console.log(error));
 	}
 
@@ -99,6 +75,8 @@ export class ProjectComponent implements OnInit {
 		this.el.nativeElement.querySelector(tr_id).classList.add('table-info');
 		const tab = this.el.nativeElement.querySelectorAll(tr_id + ' .editable');
 		for (let i = 0; i < tab.length; ++i) {
+			if(tab[i].classList.contains('priority') && this.project.status === 'DEVELOPER')
+					continue;
 			tab[i].setAttribute('contenteditable', 'true');
 		}
 	}
@@ -270,7 +248,16 @@ export class ProjectComponent implements OnInit {
 
 
 	leaveProject() {
-
+		let userUrl = 'http://localhost:3000/api/user';
+		const urlRequest = userUrl + '/' + this.project.id + '/' + localStorage.getItem('user.id');
+		this.http.delete(urlRequest)
+			.subscribe((result: any) => {
+				if (result.error) {
+					console.log(result);
+				}
+			}, err => {
+				console.log(err);
+			});
 	}
 
 }

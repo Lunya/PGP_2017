@@ -1,7 +1,6 @@
-let express = require('express');
+const express = require('express');
+const router = express.Router();
 let databaseConnect = require('../databaseConnect');
-
-let router = express.Router();
 
 
 function treatment(errorStatus, response, values,  rows) {
@@ -30,6 +29,33 @@ function sendError(res, reason) {
 	res.status(400).send({ error: true, reason: reason });
 	console.log(reason);
 }
+
+router.get('/:idProject', (req, res) => {
+	res.contentType('application/json');
+		let db = databaseConnect();
+	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project up INNER JOIN Project p ON up.id_project = p.id WHERE id_project = ?', [req.params.idProject], (error, result) => {
+		if (error) {
+			console.log(error);
+			sendError(res, 'Database error');
+		}
+		else {
+			let project = result[0];
+			if (project) {
+				console.log(result);
+				res.send({
+					id: project.id,
+					name: project.name,
+					description: project.description,
+					url: project.url,
+					begin: project.begin,
+					end: project.end
+				});
+			} else
+				sendError(res, 'No project selected');
+		}
+	});
+});
+
 
 router.get('/project/:id', (req, res) => {
 	res.contentType('application/json');
