@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container text-ce">
 	<div class="row mt-3">
 		<div class="col">
 			<button #project (click)="onProjectSelected()" class="btn btn-lg btn-block btn-outline-primary">Project</button>
@@ -36,5 +36,15 @@
 
 		</div>
 	</div>
+
 <button type="button" class="btn btn-block btn-secondary mt-3" (click)="onUserAdd()"><i class="fa fa-plus-circle"></i> Add user</button>
+
+	<div class="row">
+		<div class="col">
+			<h2>Version</h2>
+				<button #version type="button" class="btn btn-block btn-secondary" (click)="onVersionsAccess($event)"> All versions </button>
+				<button type="button" class="btn btn-block btn-secondary" (click)="onVersionAdd()"><i class="fa fa-plus-circle"></i> Add version</button>
+		</div>
+	</div>
+
 </div>

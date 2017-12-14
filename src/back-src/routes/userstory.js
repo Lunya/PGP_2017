@@ -1,25 +1,21 @@
-let express = require('express');
-let db = require('../databaseConnect');
-let login = require('./login');
-
-let router = express.Router();
+const express = require('express');
+const db = require('../databaseConnect');
+const login = require('./login');
+const router = express.Router();
 
 
 function checkUndefinedObject(object, fields) {
 	let ok = true;
-	for (let field in fields) {
+	for (const field in fields) {
 		if (object[fields[field]] === undefined)
 			ok = false;
 	}
 	return ok;
 }
 
-
 function sendError(res, reason) {
 	res.status(400).send({ error: true, reason: reason });
-	console.log(reason);
 }
-
 
 router.get('/userstories/:id', login.tokenVerifier, (req, res) => {
 	db.query('SELECT * FROM UserStory WHERE id_project = ?', [req.params.id], (error, results) => {
@@ -46,15 +42,15 @@ router.get('/userstories/:id', login.tokenVerifier, (req, res) => {
 router.post('/userstories/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
 		db.query('INSERT INTO UserStory (id_project, description, difficulty, priority, state) VALUES (?,?,?,?,?)',
-		[req.params.id, req.body.description, req.body.difficulty, req.body.priority, req.body.state], (error, dbRes) => {
-			if (error)
-				sendError(res, 'Unable to query database');
-			else {
-				res.status(200).send({
-					insertId: dbRes.insertId
-				});
-			}
-		});
+			[req.params.id, req.body.description, req.body.difficulty, req.body.priority, req.body.state], (error, dbRes) => {
+				if (error)
+					sendError(res, 'Unable to query database');
+				else {
+					res.status(200).send({
+						insertId: dbRes.insertId
+					});
+				}
+			});
 	} else
 		sendError(res, 'Error: required parameters not set');
 });
@@ -66,15 +62,15 @@ router.post('/userstories/:id', login.tokenVerifier, (req, res) => {
 router.patch('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
 		db.query('UPDATE UserStory SET description=?, difficulty=?, priority=?, state=? WHERE id=? AND id_project=?',
-		[req.body.description, req.body.difficulty, req.body.priority, req.body.state, req.params.id, req.params.idproject], (error, dbRes) => {
-			if (error)
-				sendError(res, 'Unable to query database');
-			else {
-				res.status(200).send({
-					insertId: dbRes.insertId
-				});
-			}
-		});
+			[req.body.description, req.body.difficulty, req.body.priority, req.body.state, req.params.id, req.params.idproject], (error, dbRes) => {
+				if (error)
+					sendError(res, 'Unable to query database');
+				else {
+					res.status(200).send({
+						insertId: dbRes.insertId
+					});
+				}
+			});
 	} else
 		sendError(res, 'Error: required parameters not set');
 });

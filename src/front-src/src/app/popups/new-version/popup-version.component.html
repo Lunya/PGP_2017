@@ -1,0 +1,82 @@
+<div class="modal-header">
+	<h4 class="modal-title">{{ formAction }} version</h4>
+	<button type="button" class="close" aria-label="close"
+			(click)="activeModal.dismiss('Cross click')">
+		<i class="fa fa-close"></i>
+	</button>
+</div>
+<form [formGroup]="versionForm" (submit)="ngOnSubmit($event)" novalidate>
+	<div class="modal-body">
+		<div class="form-row">
+
+			<div class="form-group col-md-6">
+				<label for="versionMaj">Numéro version maj</label>
+					<input type="number" class="form-control" id="versionMaj"
+						formControlName="versionMaj"
+						[ngClass]="{
+							'is-invalid': (versionForm.controls['versionMaj'].invalid && versionForm.controls['versionMaj'].touched),
+							'is-valid': versionForm.controls['versionMaj'].touched}" />
+
+			</div>
+
+			<div class="form-group col-md-6">
+				<label for="versionMin">Numéro version min</label>
+				<input type="number" class="form-control" id="versionMin"
+					formControlName="versionMin"
+					[ngClass]="{
+						'is-invalid': (versionForm.controls['versionMin'].invalid && versionForm.controls['versionMin'].touched),
+						'is-valid': versionForm.controls['versionMin'].touched}" />
+			</div>
+
+			<div class="row">
+      	<div class="form-group col-md-12">
+
+				<label for="linkSrc">Lien vers la doc:</label>
+				<input type="text" class="form-control" id="linkSrc"
+					formControlName="linkSrc"
+					[ngClass]="{
+						'is-invalid': (versionForm.controls['linkSrc'].invalid && versionForm.controls['linkSrc'].touched),
+						'is-valid': versionForm.controls['linkSrc'].touched}" />
+					</div>
+			</div>
+
+			<div class="row">
+      	<div class="form-group col-md-12">
+				<label for="linkBld">Lien vers le build:</label>
+				<input type="text" class="form-control" id="linkBld"
+					formControlName="linkBld"
+					[ngClass]="{
+						'is-invalid': (versionForm.controls['linkBld'].invalid && versionForm.controls['linkBld'].touched),
+						'is-valid': versionForm.controls['linkBld'].touched}" />
+					</div>
+			</div>
+
+			<div class="row">
+      <div class="form-group col-md-12">
+				<label for="linkDoc">Lien vers le build:</label>
+				<input type="text" class="form-control" id="linkDoc"
+					formControlName="linkDoc"
+					[ngClass]="{
+						'is-invalid': (versionForm.controls['linkDoc'].invalid && versionForm.controls['linkDoc'].touched),
+						'is-valid': versionForm.controls['linkDoc'].touched}" />
+					</div>
+			</div>
+
+			<div class="row">
+      <div class="form-group col-md-12">
+				<label for="linkTst">Lien vers les tests:</label>
+				<input type="text" class="form-control" id="linkTst"
+					formControlName="linkTst"
+					[ngClass]="{
+						'is-invalid': (versionForm.controls['linkTst'].invalid && versionForm.controls['linkTst'].touched),
+						'is-valid': versionForm.controls['linkTst'].touched}" />
+					</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="submit"
+			[disabled]="versionForm.invalid">{{ formAction }}</button>
+	</div>
+</form>

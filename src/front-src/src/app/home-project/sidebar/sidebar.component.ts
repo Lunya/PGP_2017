@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Sprint } from '../../objects/Sprint';
 import { User } from '../../objects/User';
+import { Version } from '../../objects/Version';
 
 @Component({
 	selector: 'app-sidebar',
@@ -10,14 +11,18 @@ import { User } from '../../objects/User';
 export class SidebarComponent implements OnInit {
 	private content: {
 		sprints: Array<Sprint>,
-		users: Array<User>};
+		users: Array<User>,
+		versions: Array<Version>};
 
 	@Output() onSelectProject = new EventEmitter<void>();
 	@Output() onSelectSprint = new EventEmitter < { sprint: Sprint; developers: User[]; } > ();
 	@Output() onNewSprint = new EventEmitter<void>();
 	@Output() onSelectUser = new EventEmitter<User>();
 	@Output() onAddUser = new EventEmitter<void>();
+	@Output() onAccessVersions = new EventEmitter<Version[]>();
+	@Output() onAddVersion = new EventEmitter<void>();
 
+	@ViewChild('version') private versionElement:ElementRef;
 	@ViewChild('project') private projectElement: ElementRef;
 	@ViewChild('sprints') private sprintsElement: ElementRef;
 	@ViewChild('users') private usersElement: ElementRef;
@@ -25,7 +30,7 @@ export class SidebarComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		this.content = { sprints: [], users: [] };
+		this.content = { sprints: [], users: [], versions: [] };
 		this.onProjectSelected();
 	}
 
@@ -38,6 +43,7 @@ export class SidebarComponent implements OnInit {
 		this.projectElement.nativeElement.classList.remove('active');
 		this.sprintsElement.nativeElement.querySelectorAll('.active').forEach(e => e.classList.remove('active'));
 		this.usersElement.nativeElement.querySelectorAll('.active').forEach(e => e.classList.remove('active'));
+		this.versionElement.nativeElement.classList.remove('active');
 		element.classList.add('active');
 	}
 
@@ -58,7 +64,19 @@ export class SidebarComponent implements OnInit {
 		this.unselectAllItemsAndSelectOne(target);
 	}
 
+
 	onUserAdd(): void {
-		this.onAddUser.emit();
+	  this.onAddUser.emit();
+	}
+
+
+	onVersionsAccess(event: MouseEvent): void {
+	 	this.onAccessVersions.emit(this.content.versions);
+		const target: any = event.currentTarget;
+		this.unselectAllItemsAndSelectOne(target);
+	}
+
+	onVersionAdd(): void {
+		this.onAddVersion.emit();
 	}
 }

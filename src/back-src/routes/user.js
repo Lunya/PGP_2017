@@ -1,14 +1,15 @@
-let express = require('express');
-let bcrypt = require('bcryptjs');
-let db = require('../databaseConnect');
-let login = require('./login');
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const db = require('../databaseConnect');
+const login = require('./login');
 
-let router = express.Router();
+
+const router = express.Router();
 const saltRounds = 8;
 
 function checkUndefinedObject(object, fields) {
 	let ok = true;
-	for (let field in fields) {
+	for (const field in fields) {
 		if (object[fields[field]] === undefined)
 			ok = false;
 	}
@@ -20,7 +21,6 @@ function sendError(res, reason) {
 		error: true,
 		reason: reason
 	});
-	console.log(reason);
 }
 
 router.post('/users', login.tokenVerifier, (req, res) => {
@@ -29,7 +29,7 @@ router.post('/users', login.tokenVerifier, (req, res) => {
 		db.query("SELECT id, name, mail FROM User WHERE name LIKE ? ", '%' + req.body.name + '%', (err, result) => {
 			if (err) throw err;
 			else {
-				let users = [];
+				const users = [];
 				for (let i = 0; i < result.length; i++) {
 					users.push({
 						id: result[i]['id'],
@@ -42,14 +42,13 @@ router.post('/users', login.tokenVerifier, (req, res) => {
 		})
 	} else
 		sendError(res, 'Error: required parameters not set');
-
 });
 
 
 router.post('/user/:idproject', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['id'])) {
-		db.query("INSERT INTO User_Project (id_project, id_user) VALUES(?,?)", [req.params.idproject, req.body.id], (error, result) => {
+		db.query("INSERT INTO User_Project (id_project, id_user) VALUES(?,?)", [req.params.idproject, req.body.id], (error) => {
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {
@@ -73,7 +72,7 @@ router.patch('/user/:id', login.tokenVerifier, (req, res) => {
 					error: true
 				});
 			else {
-				let user = result[0];
+				const user = result[0];
 				bcrypt.compare(req.body.password, user.password).then(match => {
 					if (match) {
 						bcrypt.hash(req.body.newPassword, saltRounds, (err, newPassword) => {
@@ -102,7 +101,7 @@ router.patch('/user/:id', login.tokenVerifier, (req, res) => {
 });
 
 router.delete('/user/:id', login.tokenVerifier, (req, res) => {
-	db.query('DELETE FROM User WHERE id = ?', [req.params.id], (error, dbRes) => {
+	db.query('DELETE FROM User WHERE id = ?', [req.params.id], (error) => {
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
@@ -114,7 +113,7 @@ router.delete('/user/:id', login.tokenVerifier, (req, res) => {
 });
 
 router.delete('/user/:idproject/:id', login.tokenVerifier, (req, res) => {
-	db.query('DELETE FROM User_Project WHERE id_project = ? AND id_user = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
+	db.query('DELETE FROM User_Project WHERE id_project = ? AND id_user = ?', [req.params.idproject, req.params.id], (error) => {
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
@@ -144,8 +143,6 @@ router.get('/users/:idProject', login.tokenVerifier, (req, res) => {
 		}
 	});
 });
-
-
 
 
 module.exports = router;

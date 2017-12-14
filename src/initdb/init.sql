@@ -72,12 +72,13 @@ CREATE TABLE Task (
 
 CREATE TABLE Version (
 	id			BIGINT(20)		UNSIGNED		PRIMARY KEY		AUTO_INCREMENT,
-	num_version	BIGINT(20)		UNSIGNED NOT NULL,
 	id_project	BIGINT(20)		UNSIGNED	NOT NULL,
-	link_doc VARCHAR(512),
-	link_test VARCHAR(512),
+	num_version_maj	BIGINT(20)		UNSIGNED NOT NULL,
+	num_version_min BIGINT(20)    UNSIGNED NOT NULL,
 	link_source VARCHAR(512) NOT NULL,
 	link_build		VARCHAR(512) NOT NULL,
+	link_test VARCHAR(512),
+	link_doc VARCHAR(512),
 	FOREIGN KEY (id_project) REFERENCES Project(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 

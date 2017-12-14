@@ -1,12 +1,13 @@
-let express = require('express');
-let db = require('../databaseConnect')
-let login = require('./login');
-let router = express.Router();
+const express = require('express');
+const db = require('../databaseConnect');
+const login = require('./login');
+const router = express.Router();
+
 
 
 function checkUndefinedObject(object, fields) {
 	let ok = true;
-	for (let field in fields) {
+	for (const field in fields) {
 		if (object[fields[field]] === undefined)
 			ok = false;
 	}
@@ -18,7 +19,6 @@ function sendError(res, reason) {
 		error: true,
 		reason: reason
 	});
-	console.log(reason);
 }
 
 router.get('/sprints/:id', login.tokenVerifier, (req, res) => {
@@ -27,9 +27,9 @@ router.get('/sprints/:id', login.tokenVerifier, (req, res) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			let sprints = [];
+			const sprints = [];
 			for (let i = 0; i < result.length; i++) {
-				let sprint = result[i];
+				const sprint = result[i];
 				sprints.push({
 					id: sprint.id,
 					begin: sprint.begin,
@@ -45,6 +45,7 @@ router.get('/sprints/:id', login.tokenVerifier, (req, res) => {
 router.post('/sprint', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['idProject', 'end', 'begin'])) {
+
 		db.query('INSERT INTO Sprint(id_project, begin, end) VALUES (?, ?, ?)', [req.body.idProject, new Date(req.body.begin), new Date(req.body.end)], (error, result) => {
 			if (error)
 				sendError(res, 'Database error');
@@ -69,7 +70,7 @@ router.get('/sprint/:idsprint', login.tokenVerifier, (req, res) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			let userstories = [];
+			const userstories = [];
 			for (let i = 0; i < results.length; i++) {
 				userstories.push({
 					id: results[i].id,

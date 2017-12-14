@@ -9,8 +9,6 @@ Date de fin : 17/11/17
 | 1 | En tant qu'**utilisateur**, je veux créer un profil (username, password, adresse mail) | 2 | 1 | ✓ |
 | 2 | En tant qu'**utilisateur**, je souhaite me connecter a mon profil en utilisant mon adresse mail et mon mot de passe | 1 | 1 | ✓ |
 | 3 | En tant qu'**utilisateur connecté**, je souhaite créer un projet (nom, description, URL dépôt git associé, date de début/fin théorique du projet) | 5 | 1 | ✓ |
-| 4 | En tant que **membre d'un projet**, je souhaite ajouter des membres a un projet | 1 | 2 | ✓ |
-| 6 | En tant que **membre d'un projet**, je souhaite obtenir la liste des US du backlog | 1 | 2 | ✓ |
 | 7 | En tant que **membre d'un projet**, je souhaite éditer le backlog (ajout, modification, suppression d'une US contenant (description, difficulté)) | 2 | 2 | ✓ |
 
 ## Tâches
