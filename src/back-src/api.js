@@ -1,13 +1,13 @@
-let express = require('express');
-let databaseConnect = require('./databaseConnect');
-let login = require('./routes/login');
-let project = require('./routes/project');
-let user = require('./routes/user');
-let userstory = require('./routes/userstory');
-let sprint = require('./routes/sprint');
-let task = require('./routes/task');
+const express = require('express');
+const databaseConnect = require('./databaseConnect');
+const login = require('./routes/login');
+const project = require('./routes/project');
+const user = require('./routes/user');
+const userstory = require('./routes/userstory');
+const sprint = require('./routes/sprint');
+const task = require('./routes/task');
 let version = require('./routes/version');
-let cors = require('cors');
+const cors = require('cors');
 
 
 const router = express.Router();
@@ -17,17 +17,6 @@ router.use(cors());
 router.get('/', (req, res) => {
 	res.setHeader('Content-Type', 'text/plain');
 	res.send('API Works');
-	/*bd.query("INSERT INTO User (name,password,mail) VALUES('toto','toto','toto@toto')", (err,result) => {
-		if (err) throw err;
-		console.log(result);
-		bd.query("SELECT * FROM User",(err,result,fields) => {
-			if (err) throw err;
-			console.log(result);
-		})
-
-	})*/
-
-	//res.sendfile(__dirname + '/index.html');
 });
 
 
@@ -41,7 +30,6 @@ const bd = databaseConnect();
 bd.connect(err => {
 	if (err) throw err;
 	else {
-		// console.log('Connected to the database');
 
 		// exemple d'utilisation pour lister toutes les tables de la base de donnée courante
 		router.get('/tables', (req, res) => {
@@ -56,7 +44,6 @@ bd.connect(err => {
 					for (const i in tables) {
 						const table = tables[i]['Tables_in_pgp'];
 						bd.query(`DESCRIBE ${table}`, (err, cols, fields) => {
-							//pendingRequests += cols.length;
 							const column = {};
 							for (let j = 0; j < cols.length; j++) {
 								for (let k = 0; k < fields.length; k++)
@@ -72,10 +59,6 @@ bd.connect(err => {
 									res.end(JSON.stringify(content));
 							});
 						}).on('end', () => {
-							/*pendingRequests--;
-							console.log(pendingRequests);
-							if (pendingRequests === 0)
-								res.end(JSON.stringify(content));*/
 						});
 					}
 				}
