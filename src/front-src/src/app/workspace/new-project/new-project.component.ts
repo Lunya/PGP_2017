@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 const url = 'http://localhost:3000/api/project';
 
@@ -20,7 +21,8 @@ export class NewProjectComponent implements OnInit {
 	constructor(
 		public activeModal: NgbActiveModal,
 		private fb: FormBuilder,
-		private http: HttpClient
+		private http: HttpClient,
+		private auth: AuthService
 	) {
 		this.projectForm = this.fb.group({
 			name: [null, [Validators.required]],
@@ -46,7 +48,9 @@ export class NewProjectComponent implements OnInit {
 		}
 		body.userId = localStorage.getItem('user.id');
 		body.status = 'OWNER';
-		this.http.post(url, body).subscribe((res: any) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.post(url, body, {headers: headers}).subscribe((res: any) => {
 			if (res.error) {
 				console.log(res.reason);
 			} else {

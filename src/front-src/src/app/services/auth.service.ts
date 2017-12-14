@@ -39,4 +39,7 @@ export class AuthService {
 		return this.token !== null;
 	}
 
+	addAuthHeader(headers: HttpHeaders): HttpHeaders {
+		return headers.set('x-access-token', this.token);
+	}
 }

@@ -1,23 +1,25 @@
-/*if (process.env.NODE_ENV !== 'production')
-	require('dotenv').load();
-
-*/let express = require('express');
-let path = require('path');
-let http = require('http');
-let bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const http = require('http');
+const bodyParser = require('body-parser');
 
 // files included
-let api = require('./api');
+const api = require('./api');
 
-let app = express();
+const app = express();
 
 app.use(bodyParser.json());
+
+// serve angular app
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, '../front/dist')));
+}
 
 // set API routes
 app.use('/api', api);
 
 // start server
-let server = http.createServer(app);
+const server = http.createServer(app);
 
 server.listen(process.env.NODE_PORT,
 	() => console.log(`Server running on localhost:${process.env.NODE_PORT}`));

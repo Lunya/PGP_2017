@@ -1,13 +1,13 @@
-let express = require('express');
-let databaseConnect = require('../databaseConnect');
-
-let router = express.Router();
+const express = require('express');
+const databaseConnect = require('../databaseConnect');
+const login = require('./login');
+const router = express.Router();
 
 
 function treatment(errorStatus, response, values,  rows) {
 	if(errorStatus) response.status(400).send(err);
 	else {
-		if (rows.length != 0) {
+		if (rows.length !== 0) {
 			values.push({'result' : 'success', 'data' : rows});
 		} else {
 			values.push({'result' : 'error', 'msg' : 'No Results Found'});
@@ -19,7 +19,7 @@ function treatment(errorStatus, response, values,  rows) {
 
 function checkUndefinedObject(object, fields) {
 	let ok = true;
-	for (let field in fields) {
+	for (const field in fields) {
 		if (object[fields[field]] === undefined)
 			ok = false;
 	}
@@ -28,20 +28,20 @@ function checkUndefinedObject(object, fields) {
 
 function sendError(res, reason) {
 	res.status(400).send({ error: true, reason: reason });
-	console.log(reason);
+	// console.log(reason);
 }
 
-router.get('/project/:id', (req, res) => {
+router.get('/project/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
-	let db = databaseConnect();
+	const db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
 		if (error) {
-			console.log(error);
+			// console.log(error);
 			sendError(res, 'Database error');
 		} else {
-			let project = result[0];
+			const  project = result[0];
 			if (project) {
-				console.log(result);
+				// console.log(result);
 				res.send({
 					id: project.id,
 					name: project.name,
@@ -57,8 +57,8 @@ router.get('/project/:id', (req, res) => {
 });
 
 
-router.get('/status/:userId/:idProject', (req, res) => {
-	let db = databaseConnect();
+router.get('/status/:userId/:idProject', login.tokenVerifier, (req, res) => {
+	const db = databaseConnect();
 	db.query('SELECT status FROM User_Project WHERE id_user = ? AND id_project = ?',[req.params.userId, req.params.idProject], (error, result) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -73,10 +73,10 @@ router.get('/status/:userId/:idProject', (req, res) => {
 	});
 });
 
-router.post('/project', (req, res) => {
+router.post('/project', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name', 'description', 'url', 'begin', 'end', 'userId'])) {
-		let db = databaseConnect();
+		const db = databaseConnect();
 		db.query('INSERT INTO Project(name, description, url, begin, end) VALUES (?,?,?,?,?)',
 			[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end],
 			(error, dbRes) => {
@@ -99,9 +99,9 @@ router.post('/project', (req, res) => {
 });
 
 
-router.patch('/project/:id', (req, res) => {
+router.patch('/project/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['name','description', 'url', 'begin', 'end'])) {
-		let db = databaseConnect();
+		const db = databaseConnect();
 		db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
 		[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end, req.params.id], (error, dbRes) => {
 			if (error)
@@ -116,25 +116,8 @@ router.patch('/project/:id', (req, res) => {
 		sendError(res, 'Error: required parameters not set');
 });
 
-/*router.patch('/project/:id', (req, res) => {
-	let id = req.params.id;
-	db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
-		[req.body.name,req.body.description, req.body.url, req.body.begin, req.body.end, id], (err, cols) => {
-			let values = [];
-			treatment(err,res,values, "success");
-		});
-});*/
-
-/*router.delete('/project/:id', (req, res) => {
-	let id = req.params.id;
-	db.query("DELETE FROM Project WHERE id=?",[id], (err,count) => {
-		let values = [];
-		treatment(err, res, values, "success");
-	})
-});*/
-
-router.delete('/project/:id', (req, res) => {
-	let db = databaseConnect();
+router.delete('/project/:id', login.tokenVerifier, (req, res) => {
+	const db = databaseConnect();
 	db.query('DELETE FROM Project WHERE id = ?', [req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');
@@ -146,19 +129,9 @@ router.delete('/project/:id', (req, res) => {
 	});
 });
 
-
-/*router.get('/projects/:id', (req, res) => {
+router.get('/projects/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
-	let db = databaseConnect();
-	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project INNER JOIN Project ON id_project = id WHERE id_user = ?', [req.params.id], (error, results) => {
-		if (error)
-			sendError(res, 'Database error');
-		});
-	});*/
-
-router.get('/projects/:id', (req, res) => {
-	res.contentType('application/json');
-		let db = databaseConnect();
+		const db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project up INNER JOIN Project p ON up.id_project = p.id WHERE id_user = ?', [req.params.id], (error, results) => {
 		if (error) {
 			console.log(error);

@@ -9,7 +9,8 @@ let task = require('./routes/task');
 let version = require('./routes/version');
 let cors = require('cors');
 
-let router = express.Router();
+
+const router = express.Router();
 
 router.use(cors());
 
@@ -35,27 +36,28 @@ router.get('/secured', login.tokenVerifier, (req, res) => {
 	res.send('Secured OK');
 });
 
-let bd = databaseConnect();
+
+const bd = databaseConnect();
 bd.connect(err => {
 	if (err) throw err;
 	else {
-		console.log('Connected to the database');
+		// console.log('Connected to the database');
 
 		// exemple d'utilisation pour lister toutes les tables de la base de donnée courante
 		router.get('/tables', (req, res) => {
 			res.contentType('application/json');
-			bd.query('SHOW TABLES', (error, tables, fields) => {
-				let result = {};
+			bd.query('SHOW TABLES', (error, tables) => {
+				const result = {};
 				if (tables.length === 0)
 					res.end(JSON.stringify(result));
 				else {
 					let pendingRequests = tables.length;
-					let content = [];
-					for (let i in tables) {
-						let table = tables[i]['Tables_in_pgp'];
+					const content = [];
+					for (const i in tables) {
+						const table = tables[i]['Tables_in_pgp'];
 						bd.query(`DESCRIBE ${table}`, (err, cols, fields) => {
 							//pendingRequests += cols.length;
-							let column = {};
+							const column = {};
 							for (let j = 0; j < cols.length; j++) {
 								for (let k = 0; k < fields.length; k++)
 									column[fields[k].name] = cols[j][fields[k].name];
