@@ -60,11 +60,34 @@ router.get('/status/:userId/:idProject', login.tokenVerifier, (req, res) => {
 	});
 });
 
+router.get('/:idProject',login.tokenVerifier, (req, res) => {
+	res.contentType('application/json');
+	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project up INNER JOIN Project p ON up.id_project = p.id WHERE id_project = ?', [req.params.idProject], (error, result) => {
+		if (error) {
+			sendError(res, 'Database error');
+		}
+		else {
+			let project = result[0];
+			if (project) {
+				res.send({
+					id: project.id,
+					name: project.name,
+					description: project.description,
+					url: project.url,
+					begin: project.begin,
+					end: project.end
+				});
+			} else
+				sendError(res, 'No project selected');
+		}
+	});
+});
+
 
 router.post('/project', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name', 'description', 'url', 'begin', 'end', 'userId'])) {
-    
+
 		db.query('INSERT INTO Project(name, description, url, begin, end) VALUES (?,?,?,?,?)',
 			[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end],
 			(error, dbRes) => {
@@ -89,7 +112,7 @@ router.post('/project', login.tokenVerifier, (req, res) => {
 
 router.patch('/project/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['name','description', 'url', 'begin', 'end'])) {
-    
+
 		db.query('UPDATE Project SET name=?, description=?, url=?, begin=?, end=? WHERE id=?',
 		[req.body.name, req.body.description, req.body.url, req.body.begin, req.body.end, req.params.id], (error, dbRes) => {
 			if (error)

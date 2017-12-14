@@ -57,9 +57,9 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	private updateSidebar(): void {
     let headers = new HttpHeaders();
 		headers = this.auth.addAuthHeader(headers);
-		this.http.get(sprintUrl + 's/' + this.project.id).subscribe((sprints: any) => {
-			this.http.get(userUrl + 's/' + this.project.id).subscribe((users: any) => {
-				this.http.get(versionUrl + 's/' + this.project.id).subscribe((versions: any) => {
+		this.http.get(sprintUrl + 's/' + this.project.id, {headers: headers}).subscribe((sprints: any) => {
+			this.http.get(userUrl + 's/' + this.project.id, {headers: headers}).subscribe((users: any) => {
+				this.http.get(versionUrl + 's/' + this.project.id, {headers: headers}).subscribe((versions: any) => {
 				this.sidebar.setContent({
 					sprints: sprints,
 					users: users,
