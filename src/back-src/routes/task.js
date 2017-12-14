@@ -1,5 +1,6 @@
 let express = require('express');
-let databaseConnect = require('../databaseConnect')
+let databaseConnect = require('../databaseConnect');
+let login = require('./login');
 
 let router = express.Router();
 
@@ -38,7 +39,7 @@ router.get('/tasks/:id', (req, res) => {
 	});
 });
 
-router.get('/tasks/:idproject/:developerName', (req, res) => {
+router.get('/tasks/:idproject/:developerName', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('SELECT * FROM Task WHERE developer = ?', [req.params.developerName], (error, results) => {
 		if (error)

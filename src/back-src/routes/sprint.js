@@ -1,6 +1,6 @@
 let express = require('express');
 let databaseConnect = require('../databaseConnect')
-
+let login = require('./login');
 let router = express.Router();
 
 
@@ -43,7 +43,7 @@ router.get('/sprints/:id', (req, res) => {
 });
 
 
-router.post('/sprint', (req, res) => {
+router.post('/sprint', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['idProject', 'end', 'begin'])) {
 		let db = databaseConnect();

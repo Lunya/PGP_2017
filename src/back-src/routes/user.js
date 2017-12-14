@@ -1,7 +1,7 @@
 let express = require('express');
-let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
 let databaseConnect = require('../databaseConnect');
+let login = require('./login');
 
 let router = express.Router();
 const saltRounds = 8;
@@ -23,7 +23,7 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.post('/users', (req, res) => {
+router.post('/users', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name'])) {
 		let db = databaseConnect();
@@ -47,7 +47,7 @@ router.post('/users', (req, res) => {
 });
 
 
-router.post('/user/:idproject', (req, res) => {
+router.post('/user/:idproject', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['id'])) {
 		let db = databaseConnect();
@@ -117,7 +117,7 @@ router.delete('/user/:id', (req, res) => {
 	});
 });
 
-router.delete('/user/:idproject/:id', (req, res) => {
+router.delete('/user/:idproject/:id', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('DELETE FROM User_Project WHERE id_project = ? AND id_user = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
 		if (error)

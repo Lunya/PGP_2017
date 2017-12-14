@@ -73,7 +73,7 @@ router.get('/status/:userId/:idProject', (req, res) => {
 	});
 });
 
-router.post('/project', (req, res) => {
+router.post('/project', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name', 'description', 'url', 'begin', 'end', 'userId'])) {
 		let db = databaseConnect();

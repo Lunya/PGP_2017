@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit, Input, ElementRef, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../objects/Project';
+import { AuthService } from '../../services/auth.service';
 
 
 const usersUrl = 'http://localhost:3000/api/users';
@@ -26,6 +27,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
 		private fb: FormBuilder,
 		private http: HttpClient,
 		private el: ElementRef,
+		private auth: AuthService,
 		public activeModal: NgbActiveModal
 	) {
 		this.userSearchForm = this.fb.group({
@@ -34,7 +36,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
 		this.userSearchForm.valueChanges.subscribe(data => {
 			if (data !== '') {
-				this.http.post(usersUrl, data).subscribe((value: any) => {
+				let headers = new HttpHeaders();
+				headers = this.auth.addAuthHeader(headers);
+				this.http.post(usersUrl, data, { headers: headers }).subscribe((value: any) => {
 					if (value.error) {
 						console.log(value.error);
 					} else {
@@ -52,7 +56,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
 	ngOnSubmit() {
 		const selectElement = this.el.nativeElement.querySelector('.list-group .active');
 		console.log(selectElement);
-		if (selectElement !== null) selectElement.click();
+		if (selectElement !== null) {
+			selectElement.click();
+		}
 	}
 
 	sendMe(index) {
@@ -76,7 +82,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
 	}
 
 	addUser() {
-		this.http.post(userUrl + '/' + this.project.id, this.userSelected).subscribe((value: any) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.post(userUrl + '/' + this.project.id, this.userSelected, { headers: headers }).subscribe((value: any) => {
 			if (value.error) {
 				console.log(value.reason);
 			} else {
@@ -94,7 +102,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
 				list.classList.add('active');
 			} else {
 				list.classList.remove('active');
-				if (list.previousSibling.classList !== undefined) list.previousSibling.classList.add('active');
+				if (list.previousSibling.classList !== undefined) {
+					list.previousSibling.classList.add('active');
+				}
 			}
 		}
 	}
@@ -106,10 +116,11 @@ export class AddUserComponent implements OnInit, OnDestroy {
 			if (list == null) {
 				list = this.el.nativeElement.querySelector('.list-group .list-group-item');
 				list.classList.add('active');
-			}
-			else {
+			} else {
 				list.classList.remove('active');
-				if (list.nextSibling.classList !== undefined) list.nextSibling.classList.add('active');
+				if (list.nextSibling.classList !== undefined) {
+					list.nextSibling.classList.add('active');
+				}
 			}
 		}
 	}
