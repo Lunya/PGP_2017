@@ -42,4 +42,8 @@ export class VersionComponent implements OnInit {
 		this.versionList = versionFrom;
 	}
 
+  versionsView(value) {
+		this.versionTableView = value;
+	}
+
 }
