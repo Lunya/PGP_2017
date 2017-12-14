@@ -33,13 +33,13 @@ export class VersionComponent implements OnInit {
   }
 
   loadVersion(): void {
-		this.http.get<Version[]>(urlVersion + '/' + this.version.id).subscribe((result) => {
-			this.versionList = result;
+		this.http.get<Version[]>(urlVersion + 's/' + this.project.id).subscribe((result) => {
+			  this.versionList = result;
 		}, error => console.log(error));
 	}
 
   public setVersion(versionFrom): void {
-		this.version = versionFrom.version;
+		this.versionList = versionFrom;
 	}
 
 }

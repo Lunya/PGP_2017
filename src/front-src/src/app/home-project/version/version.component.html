@@ -1,3 +1,35 @@
-<nav class="navbar mb-3 navbar-expand-md navbar-light bg-light">
+<div class="jumbotron py-2 mt-3 mb-1">
+	<h4 class="display-4 text-center">Version</h4>
+</div>
 
-</nav>
+<div *ngIf='versionTableView' class="col-md-12">
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Version</th>
+				<th>Src</th>
+				<th>Build</th>
+				<th>Test</th>
+				<th>Doc</th>
+			</tr>
+		</thead>
+    <tbody>
+			<ng-container *ngFor="let version of versionList">
+				<tr id="{{ 'Version' + version.id  }}" >
+					<td (click)="selectVersion(version)" align="center"><strong>{{version.id}}</strong></td>
+					<td contenteditable='false' class="editable numVersion" [(ngModel)]="version.numVersion" #numVersion="ngModel">{{version.numVersion}}</td>
+					<td contenteditable='false' class="editable" [(ngModel)]="version.linkSource" #linkSource="ngModel">{{version.linkSource}}</td>
+					<td contenteditable='false' class="editable" [(ngModel)]="version.linkBuild" #linkBuild="ngModel">{{version.linkBuild}}</td>
+					<td contenteditable='false' class="editable" [(ngModel)]="version.linkTest" #linkTest="ngModel">{{version.linkTest}}</td>
+          <td contenteditable='false' class="editable" [(ngModel)]="version.linkDoc" #linkDoc="ngModel">{{version.linkDoc}}</td>
+					<td>
+						<button *ngIf='!version.onEdit' class="btn btn-default" (click)="onEditVersionRow(us)"><i class="fa fa-edit"></i> Edit</button>
+						<button *ngIf='!version.onEdit' class="btn btn-danger" (click)="onDeleteVersionRow(us)"><i class="fa fa-times"></i> </button>
+						<button *ngIf='version.onEdit' class="btn" (click)="onBackVersionRow(us)"><i class="fa fa-reply"></i> Back</button>
+						<button *ngIf='us.onEdit' class="btn btn-primary" (click)="onConfirmVersionRow(us)"><i class="fa fa-check-square"></i> Confirm</button>
+					</td>
+				</tr>
+			</ng-container>
+		</tbody>
+  </table>
+</div>

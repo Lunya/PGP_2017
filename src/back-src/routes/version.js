@@ -21,7 +21,7 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.get('/version/:idProject', (req, res) => {
+router.get('/versions/:idProject', (req, res) => {
 	res.contentType('application/json');
 	let db = databaseConnect();
 	db.query('SELECT id, id_project, num_version_maj, num_version_min, link_doc, link_test, link_source, link_build FROM Version WHERE id_project = ?', [req.params.idProject], (error, result) => {
@@ -33,6 +33,7 @@ router.get('/version/:idProject', (req, res) => {
 				let version = result[i];
 				versions.push({
 					id: version.id,
+					id_project: version.id_project,
 					num_version_maj: version.num_version_maj,
 					num_version_min: version.num_version_min,
           link_doc: version.link_doc,

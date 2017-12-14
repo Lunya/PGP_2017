@@ -70,8 +70,8 @@ export class SidebarComponent implements OnInit {
 	}
 
 
-	onVersionsAccess(event: MouseEvent, version: Version[]): void {
-	 	this.onAccessVersions.emit(version);
+	onVersionsAccess(event: MouseEvent): void {
+	 	this.onAccessVersions.emit(this.content.versions);
 		const target: any = event.currentTarget;
 		this.unselectAllItemsAndSelectOne(target);
 	}

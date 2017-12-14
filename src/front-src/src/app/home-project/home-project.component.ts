@@ -16,7 +16,7 @@ import { VersionComponent } from './version/version.component';
 const projectUrl = 'http://localhost:3000/api/project';
 const sprintUrl = 'http://localhost:3000/api/sprint';
 const userUrl = 'http://localhost:3000/api/user';
-const versionURL = 'http://localhost:3000/api/version';
+const versionUrl = 'http://localhost:3000/api/version';
 //const urlStatus = 'http://localhost:3000/api/status';
 
 @Component({
@@ -51,10 +51,13 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	private updateSidebar(): void {
 		this.http.get(sprintUrl + 's/' + this.project.id).subscribe((sprints: any) => {
 			this.http.get(userUrl + 's/' + this.project.id).subscribe((users: any) => {
+				this.http.get(versionUrl + 's/' + this.project.id).subscribe((versions: any) => {
 				this.sidebar.setContent({
 					sprints: sprints,
-					users: users
-				});
+					users: users,
+					versions: versions
+					});
+				}), error => console.log(error);
 			}, error => console.log(error));
 		}, error => console.log(error));
 	}

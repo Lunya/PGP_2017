@@ -51,7 +51,6 @@ export class NewVersionComponent implements OnInit, OnDestroy {
 		values.idProject = this.project.id;
 		console.log(values);
 		this.http.post(versionUrl + '/' + this.project.id , values).subscribe((value: any) => {
-			console.log('TAG');
 			if (value.error) {
 				console.log(value);
 			} else {
