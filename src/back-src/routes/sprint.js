@@ -18,7 +18,6 @@ function sendError(res, reason) {
 		error: true,
 		reason: reason
 	});
-	// console.log(reason);
 }
 
 router.get('/sprints/:id', login.tokenVerifier, (req, res) => {
@@ -52,7 +51,7 @@ router.post('/sprint', login.tokenVerifier, (req, res) => {
 				sendError(res, 'Database error');
 			else {
 				req.body.usSprint.forEach((us) => {
-					db.query('INSERT INTO UserStory_Sprint (id_us, id_sprint) VALUES (?,?)', [us.id, result.insertId], (err, dbRes) => {
+					db.query('INSERT INTO UserStory_Sprint (id_us, id_sprint) VALUES (?,?)', [us.id, result.insertId], (err) => {
 						if (err)
 							sendError(res, 'Unable to query database');
 					});
@@ -91,7 +90,7 @@ router.get('/sprint/:idsprint', login.tokenVerifier, (req, res) => {
 
 router.delete('/sprint/:idproject/:id', login.tokenVerifier, (req, res) => {
 	const db = databaseConnect();
-	db.query('DELETE FROM Sprint WHERE id_project = ? AND id = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
+	db.query('DELETE FROM Sprint WHERE id_project = ? AND id = ?', [req.params.idproject, req.params.id], (error) => {
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
