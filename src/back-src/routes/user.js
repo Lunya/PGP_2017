@@ -69,7 +69,7 @@ router.patch('/user/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['email', 'name', 'password', 'newPassword'])) {
 		const db = databaseConnect();
-		db.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err, result) => {
+		db.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err) => {
 			if (err) throw err;
 			if (result.length === 0)
 				res.status(400).send({
@@ -138,7 +138,7 @@ router.get('/users/:idProject', login.tokenVerifier, (req, res) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			let users = [];
+			const users = [];
 			for (let i = 0; i < result.length; i++) {
 				users.push({
 					id: result[i]['id'],

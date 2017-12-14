@@ -25,7 +25,7 @@ router.get('/userstories/:id', login.tokenVerifier, (req, res) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			let userstories = [];
+			const userstories = [];
 			for (let i = 0; i < results.length; i++) {
 				userstories.push({
 					id: results[i].id,
@@ -67,7 +67,7 @@ router.patch('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
 		const db = databaseConnect();
 		db.query('UPDATE UserStory SET description=?, difficulty=?, priority=?, state=? WHERE id=? AND id_project=?',
-			[req.body.description, req.body.difficulty, req.body.priority, req.body.state, req.params.id, req.params.idproject], (error, dbRes) => {
+			[req.body.description, req.body.difficulty, req.body.priority, req.body.state, req.params.id, req.params.idproject], (error) => {
 				if (error)
 					sendError(res, 'Unable to query database');
 				else {
@@ -82,7 +82,7 @@ router.patch('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 
 router.delete('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 	const db = databaseConnect();
-	db.query("DELETE FROM UserStory WHERE id_project=? AND id=?", [req.params.idproject, req.params.id], (error, dbRes) => {
+	db.query("DELETE FROM UserStory WHERE id_project=? AND id=?", [req.params.idproject, req.params.id], (error) => {
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {

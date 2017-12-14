@@ -20,7 +20,7 @@ router.post('/register', (req, res) => {
 		} else {
 			bcrypt.hash(req.body.password, saltRounds, (err, password) => {
 				if (!err) {
-					db.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)", [req.body.name, password, req.body.email], (error, result) => {
+					db.query("INSERT INTO User (name,password,mail) VALUES (?,?,?)", [req.body.name, password, req.body.email], (error) => {
 						if (error) throw err;
 						res.send({
 							error: false
