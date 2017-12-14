@@ -7,14 +7,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { NewSprintComponent } from '../popups/new-sprint/new-sprint.component';
 import { UserInfoComponent } from './user-info/user-info.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../objects/Project';
 import { User } from '../objects/User';
+import { AuthService } from '../services/auth.service';
 
 const projectUrl = 'http://localhost:3000/api/project';
 const sprintUrl = 'http://localhost:3000/api/sprint';
 const userUrl = 'http://localhost:3000/api/user';
-//const urlStatus = 'http://localhost:3000/api/status';
+// const urlStatus = 'http://localhost:3000/api/status';
 
 @Component({
 	selector: 'app-home-project',
@@ -27,7 +28,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	private project: Project;
 	private developers = new Array<User>();
 	private usSprint = [];
-	//private userStatus: any;
+	// private userStatus: any;
 
 	@ViewChild(SidebarComponent)
 	private sidebar: SidebarComponent;
@@ -41,12 +42,15 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 		private cfr: ComponentFactoryResolver,
 		private modalService: NgbModal,
 		private http: HttpClient,
-		private el: ElementRef
+		private el: ElementRef,
+		private auth: AuthService
 	) { }
 
 	private updateSidebar(): void {
-		this.http.get(sprintUrl + 's/' + this.project.id).subscribe((sprints: any) => {
-			this.http.get(userUrl + 's/' + this.project.id).subscribe((users: any) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.get(sprintUrl + 's/' + this.project.id, { headers: headers }).subscribe((sprints: any) => {
+			this.http.get(userUrl + 's/' + this.project.id, { headers: headers }).subscribe((users: any) => {
 				this.sidebar.setContent({
 					sprints: sprints,
 					users: users
@@ -59,7 +63,9 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 		this.subPar = this.route.params.subscribe(params => {
 			this.project = new Project();
 			this.project.id = params['id'];
-			this.http.get(projectUrl + '/' + this.project.id).subscribe((result: any) => {
+			let headers = new HttpHeaders();
+			headers = this.auth.addAuthHeader(headers);
+			this.http.get(projectUrl + '/' + this.project.id, { headers: headers }).subscribe((result: any) => {
 				this.project = result;
 				this.sidebar.onSelectProject.emit(); // update project on load
 				this.updateSidebar();
@@ -118,8 +124,8 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 	}
 
 	resetUsSelection() {
-		let selection = this.el.nativeElement.querySelectorAll('.usID');
-		for(let i = 0 ; i < selection.length; i ++ ) {
+		const  selection = this.el.nativeElement.querySelectorAll('.usID');
+		for (let i = 0 ; i < selection.length; i ++ ) {
 			selection[i].classList.remove('btn-primary');
 			selection[i].classList.add('btn-outline-secondary');
 		}

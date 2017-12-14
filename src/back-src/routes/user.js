@@ -1,7 +1,7 @@
 let express = require('express');
-let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
 let databaseConnect = require('../databaseConnect');
+let login = require('./login');
 
 let router = express.Router();
 const saltRounds = 8;
@@ -23,7 +23,7 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.post('/users', (req, res) => {
+router.post('/users', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['name'])) {
 		let db = databaseConnect();
@@ -47,7 +47,7 @@ router.post('/users', (req, res) => {
 });
 
 
-router.post('/user/:idproject', (req, res) => {
+router.post('/user/:idproject', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['id'])) {
 		let db = databaseConnect();
@@ -65,7 +65,7 @@ router.post('/user/:idproject', (req, res) => {
 });
 
 
-router.patch('/user/:id', (req, res) => {
+router.patch('/user/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['email', 'name', 'password', 'newPassword'])) {
 		let db = databaseConnect();
@@ -104,7 +104,7 @@ router.patch('/user/:id', (req, res) => {
 		sendError(res, 'Error: required parameters not set');
 });
 
-router.delete('/user/:id', (req, res) => {
+router.delete('/user/:id', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('DELETE FROM User WHERE id = ?', [req.params.id], (error, dbRes) => {
 		if (error)
@@ -117,7 +117,7 @@ router.delete('/user/:id', (req, res) => {
 	});
 });
 
-router.delete('/user/:idproject/:id', (req, res) => {
+router.delete('/user/:idproject/:id', login.tokenVerifier, (req, res) => {
 	let db = databaseConnect();
 	db.query('DELETE FROM User_Project WHERE id_project = ? AND id_user = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
 		if (error)
@@ -131,7 +131,7 @@ router.delete('/user/:idproject/:id', (req, res) => {
 });
 
 
-router.get('/users/:idProject', (req, res) => {
+router.get('/users/:idProject', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	let db = databaseConnect();
 	db.query('SELECT User_Project.id_project, User_Project.id_user, User.id, User.mail, User.name FROM User_Project INNER JOIN User ON User_Project.id_user = User.id AND User_Project.id_project = ?', [req.params.idProject], (error, result) => {

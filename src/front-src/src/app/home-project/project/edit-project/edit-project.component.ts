@@ -2,8 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../../objects/Project';
+import { AuthService } from '../../../services/auth.service';
 
 
 const url = 'http://localhost:3000/api/project';
@@ -25,7 +26,8 @@ export class EditProjectComponent implements OnInit {
 		public activeModal: NgbActiveModal,
 		private fb: FormBuilder,
 		private http: HttpClient,
-	) { }
+		private auth: AuthService
+	) {}
 
 	ngOnInit() {
 		this.action = 'Edit';
@@ -37,11 +39,12 @@ export class EditProjectComponent implements OnInit {
 			end: [this.project.end, [/*CustomValidators.dateISO*/]]
 		});
 
-		let begin = new Date(this.project.begin);
-		let end = new Date(this.project.end);
+		const begin = new Date(this.project.begin);
+		const end = new Date(this.project.end);
 		this.beginDateModel = { year: begin.getFullYear(), month: begin.getMonth() + 1, day: begin.getDate() };
-		if (this.project.end)
+		if (this.project.end) {
 			this.endDateModel = { year: end.getFullYear(), month: end.getMonth() + 1, day: end.getDate() };
+		}
 	}
 
 	ngOnSubmit(): void {
@@ -52,7 +55,9 @@ export class EditProjectComponent implements OnInit {
 		} else {
 			body.end = null;
 		}
-		this.http.patch(url + '/' + this.project.id, body).subscribe((res: any) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.patch(url + '/' + this.project.id, body, { headers: headers }).subscribe((res: any) => {
 			if (res.error) {
 				console.log(res.reason);
 			} else {

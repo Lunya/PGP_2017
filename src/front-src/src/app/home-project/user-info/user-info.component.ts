@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { User } from '../../objects/User';
 import { Project } from '../../objects/Project';
 import { Task } from '../../objects/Task';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 const projectsUrl = 'http://localhost:3000/api/projects';
 const urlUser = 'http://localhost:3000/api/user';
@@ -23,7 +24,10 @@ export class UserInfoComponent implements OnInit {
 	@Input('project')
 	public project: Project;
 
-	constructor(private http: HttpClient) { }
+	constructor(
+		private http: HttpClient,
+		private auth: AuthService
+	) {}
 
 	ngOnInit() {
 		this.loadTasks();
@@ -37,7 +41,9 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	private loadProjects(): void {
-		this.http.get<Project[]>(projectsUrl + '/' + this.user.id).subscribe((result) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.get<Project[]>(projectsUrl + '/' + this.user.id, { headers: headers }).subscribe((result) => {
 			for (let i = 0; i < result.length; i++) {
 				result[i].begin = new Date(result[i].begin);
 				result[i].end = new Date(result[i].end);
@@ -48,15 +54,19 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	private loadTasks(): void {
-		this.http.get<Task[]>(tasksUrl + '/' + this.project.id + '/' + this.user.name).subscribe((result) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.get<Task[]>(tasksUrl + '/' + this.project.id + '/' + this.user.name, { headers: headers }).subscribe((result) => {
 			this.userTasks = result;
 			console.log(this.userTasks);
 		}, error => console.log(error));
 	}
 
 	deleteUser() {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
 		const urlRequest = urlUser + '/' + this.project.id + '/' + this.user.id;
-		this.http.delete(urlRequest)
+		this.http.delete(urlRequest, {headers: headers })
 			.subscribe((result: any) => {
 				if (result.error) {
 					console.log(result);
