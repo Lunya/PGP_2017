@@ -1,8 +1,9 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const databaseConnect = require('../databaseConnect');
+const db = require('../databaseConnect');
 const router = express.Router();
+
 
 const secret = 'someSecretString';
 const saltRounds = 8;
@@ -10,7 +11,8 @@ const saltRounds = 8;
 
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
-	const db = databaseConnect();
+
+  
 	db.query("SELECT mail FROM User WHERE mail = ?", [req.body.email], function(err, user) {
 		if (user.length > 0) {
 			res.status(400).send({
@@ -38,7 +40,8 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	const db = databaseConnect();
+
+
 	db.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err, result) => {
 		if (err) throw err;
 		if (result.length === 0)

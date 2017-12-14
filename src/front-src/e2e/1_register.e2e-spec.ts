@@ -1,5 +1,5 @@
 import { RegisterPage } from './pages/register.page';
-import { postRequest, deleteRequest }  from './httpRequests';
+import { postRequest, deleteRequest } from './httpRequests';
 import { browser, by, element, protractor } from 'protractor';
 
 const serverURL = "http://localhost:3000/api";
@@ -29,12 +29,10 @@ describe('POST /register : pgp register e2e testing', () => {
 	it('should create profile with login = test0@gmail.com name=test0 and passwd = 123456789 -> code 200 and redirection to /home', () => {
 		page.fillAndSendFormCreateProfile("test0@gmail.com", "test0", "123456789", "123456789");
 		expect(page.url()).toEqual(browser.baseUrl + "/home").then(function(result) {
-			let data = { email: 'test0bis@gmail.com', password: '123456789', name: 'test0' };
+			let data = { email: 'test2@gmail.com', password: '123456789', name: 'test2' };
 			postRequest(serverURL + "/register", data).then(function(result) {
-				deleteRequest(serverURL + "/user/2").then(function(result) {
-					expect(result["status"]).toBe(200);
-				})
-			});
+				expect(result["status"]).toBe(200);
+			})
 		})
 	});
 
@@ -55,11 +53,6 @@ describe('POST /register : pgp register e2e testing', () => {
 	it('should not create profile if password is not long enough -> no redirection', () => {
 		page.fillAndSendFormCreateProfile("test1@gmail.com", "test0", "12345", "12345");
 		expect(page.url()).toEqual(browser.baseUrl + "/signup");
-	});
-
-	it('should create profile test2', () => {
-		page.fillAndSendFormCreateProfile("test2@gmail.com", "test2", "123456789", "123456789");
-		expect(page.url()).toEqual(browser.baseUrl + "/home");
 	});
 
 })

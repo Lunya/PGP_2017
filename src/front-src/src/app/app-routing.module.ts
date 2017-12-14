@@ -11,6 +11,8 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeProjectComponent } from './home-project/home-project.component';
+import { PublicProjectComponent } from './public-project/public-project.component';
+
 
 const routes: Routes = [
 	{ path: '', redirectTo: 'workspace', pathMatch: 'full' },
@@ -22,7 +24,8 @@ const routes: Routes = [
 	{ path: 'project', component: ProjectComponent},
 	{ path: 'sprint', component: SprintComponent},
 	{ path: 'resetPassword', component: AccountComponent },
-	{ path: 'project/:id', component: HomeProjectComponent }
+	{ path: 'project/:id', component: HomeProjectComponent },
+	{ path: ':idProject', component: PublicProjectComponent }
 ];
 
 @NgModule({

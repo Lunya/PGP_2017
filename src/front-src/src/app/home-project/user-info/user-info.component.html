@@ -13,7 +13,7 @@
 	</ul>
 	<div class="collapse navbar-collapse">
 		<ul class="navbar-nav mr-auto">
-			<li><button type="button" class="btn btn-danger ml-l " (click)="deleteUser()" [disabled]="userStatus!=='OWNER'"><i class="fa fa-times"></i> Remove {{ user.name }} from this project</button></li>
+			<li><button *ngIf="userStatus == 'OWNER'" type="button" class="btn btn-danger ml-l " (click)="deleteUser()"><i class="fa fa-times"></i> Remove {{ user.name }} from this project</button></li>
 		 </ul>
 	</div>
 </nav>
@@ -52,7 +52,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let project of allProjects" [routerLink]="['/project',project.id]">
+					<tr *ngFor="let project of allProjects" routerLink="/{{project.id}}">
 						<td>{{ project.name }}</td>
 						<td>{{ project.description }}</td>
 						<td>{{ project.url }}</td>
