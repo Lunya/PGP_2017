@@ -1,6 +1,6 @@
 let express = require('express');
-let databaseConnect = require('../databaseConnect')
-
+let db = require('../databaseConnect')
+let login = require('./login');
 let router = express.Router();
 
 
@@ -21,9 +21,8 @@ function sendError(res, reason) {
 	console.log(reason);
 }
 
-router.get('/sprints/:id', (req, res) => {
+router.get('/sprints/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
-	let db = databaseConnect();
 	db.query('SELECT id, id_project, begin, end FROM Sprint WHERE id_project = ?', [req.params.id], (error, result) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -43,10 +42,9 @@ router.get('/sprints/:id', (req, res) => {
 });
 
 
-router.post('/sprint', (req, res) => {
+router.post('/sprint', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 	if (checkUndefinedObject(req.body, ['idProject', 'end', 'begin'])) {
-		let db = databaseConnect();
 		db.query('INSERT INTO Sprint(id_project, begin, end) VALUES (?, ?, ?)', [req.body.idProject, new Date(req.body.begin), new Date(req.body.end)], (error, result) => {
 			if (error)
 				sendError(res, 'Database error');
@@ -66,8 +64,7 @@ router.post('/sprint', (req, res) => {
 		sendError(res, 'Error: required parameters not set');
 });
 
-router.get('/sprint/:idsprint', (req, res) => {
-	let db = databaseConnect();
+router.get('/sprint/:idsprint', login.tokenVerifier, (req, res) => {
 	db.query('SELECT id, description, difficulty, priority, state FROM UserStory u INNER JOIN UserStory_Sprint u2 ON u.id=u2.id_us WHERE u2.id_sprint = ?', [req.params.idsprint], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -89,8 +86,7 @@ router.get('/sprint/:idsprint', (req, res) => {
 
 
 
-router.delete('/sprint/:idproject/:id', (req, res) => {
-	let db = databaseConnect();
+router.delete('/sprint/:idproject/:id', login.tokenVerifier, (req, res) => {
 	db.query('DELETE FROM Sprint WHERE id_project = ? AND id = ?', [req.params.idproject, req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');
@@ -103,9 +99,8 @@ router.delete('/sprint/:idproject/:id', (req, res) => {
 });
 
 
-router.patch('/sprint/:idproject/:id', (req, res) => {
+router.patch('/sprint/:idproject/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['end', 'begin'])) {
-		let db = databaseConnect();
 		db.query('UPDATE Sprint SET begin=?, end =? WHERE id_project=? AND id=?', [req.body.begin, req.body.end, req.params.idproject, req.params.id], (err, dbRes) => {
 			if (error)
 				sendError(res, 'Unable to query database');

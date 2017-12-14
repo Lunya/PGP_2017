@@ -1,7 +1,7 @@
 let express = require('express');
 let jwt = require('jsonwebtoken');
 let bcrypt = require('bcryptjs');
-let databaseConnect = require('../databaseConnect');
+let db = require('../databaseConnect');
 let router = express.Router();
 
 const secret = 'someSecretString';
@@ -10,7 +10,6 @@ const saltRounds = 8;
 
 router.post('/register', (req, res) => {
 	res.contentType('application/json');
-	let db = databaseConnect();
 	db.query("SELECT mail FROM User WHERE mail = ?", [req.body.email], function(err, user) {
 		if (user.length > 0) {
 			res.status(400).send({
@@ -38,7 +37,6 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 	res.contentType('application/json');
-	let db = databaseConnect();
 	db.query("SELECT id, name, password, mail FROM User WHERE mail = ?", [req.body.email], (err, result) => {
 		if (err) throw err;
 		if (result.length === 0)
@@ -46,15 +44,6 @@ router.post('/login', (req, res) => {
 				error: true
 			});
 		else {
-			/*bd.query("SELECT * FROM Project WHERE id IN (SELECT id_project FROM User_Project WHERE id_user= ?)", [result[0]['id']], (err, result, fields) => {
-								if (err) throw err;
-								if (result.length === 0)
-									res.status(400).send({ error: true });
-								res.status(200).json({
-									error: false,
-									token: token
-								});
-							});*/
 			let user = result[0];
 			bcrypt.compare(req.body.password, user.password)
 				.then(match => {

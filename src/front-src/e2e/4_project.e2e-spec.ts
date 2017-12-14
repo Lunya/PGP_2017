@@ -1,9 +1,9 @@
 import { ProjectPage } from './pages/project.page';
-import { postRequest, deleteRequest, patchRequest }  from './httpRequests';
+import { postRequest, deleteRequest, patchRequest } from './httpRequests';
 import { browser, by, element, protractor } from 'protractor';
 
 const serverURL = "http://localhost:3000/api";
-
+const project_id = '1';
 /**************DO NOT REMOVE ! THIS SLOW DONW PROTRACTOR****************
 
 var origFn = browser.driver.controlFlow().execute;
@@ -22,7 +22,7 @@ describe('POST /userstories/:id : pgp create a user story e2e testing', () => {
 
 	beforeEach(() => {
 		page = new ProjectPage();
-		page.navigateTo('/project/1');
+		page.navigateTo('/project/' + project_id);
 	});
 
 	it('should add a user story with description "Apprendre aux poules à voler" into the database -> code 200', () => {
@@ -33,15 +33,15 @@ describe('POST /userstories/:id : pgp create a user story e2e testing', () => {
 				priority: 1,
 				state: 'TODO'
 			};
-			postRequest(serverURL + "/userstories/1", data).then(function(result) {
-				deleteRequest(serverURL + "/userstory/1/2").then(function(result) {
+			postRequest(serverURL + "/userstories/" + project_id, data).then(function(result) {
+				deleteRequest(serverURL + "/userstory/" + project_id + "/2").then(function(result) {
 					expect(result["status"]).toBe(200);
 				});
 			});
 		})
 	});
 
-	it('should display the added user story in the us list -> ', () => {
+	it('should display the added user story in the us list', () => {
 		expect(page.getFirstCellOfAddedUs()).toEqual('Apprendre aux poules à voler');
 	});
 
@@ -55,12 +55,12 @@ describe('GET /userstories/:id : pgp UserStories listing e2e testing', () => {
 
 	beforeEach(() => {
 		page = new ProjectPage();
-		page.navigateTo('/project/1');
+		page.navigateTo('/project/' + project_id);
 		page.createUserStory("Ouvrir une boite de brocolis", "8", "2");
 		page.createUserStory("Chercher l'oiseau dans la grange", "5", "1");
 	});
 
-	it('should display 3 UserStories after adding 2 other one - > ', () => {
+	it('should display 3 UserStories after adding 2 other one', () => {
 		let nbUsPLUSHeader = 3 + 1;
 		expect(page.countUserStory()).toEqual(nbUsPLUSHeader);
 
@@ -72,6 +72,7 @@ describe('GET /userstories/:id : pgp UserStories listing e2e testing', () => {
 ----------------------------------------------------------------------*/
 describe('PATCH, DELETE /userstory/:idproject/:id : pgp édition de user story e2e testing', () => {
 	let page: ProjectPage;
+	const us_id = '4';
 
 	beforeEach(() => {
 		page = new ProjectPage();
@@ -86,16 +87,16 @@ describe('PATCH, DELETE /userstory/:idproject/:id : pgp édition de user story e
 				priority: 1,
 				state: 'TODO'
 			};
-			patchRequest(serverURL + "/userstory/1/4", data).then(function(result) {
+			patchRequest(serverURL + "/userstory/" + project_id + '/' + us_id, data).then(function(result) {
 				expect(result["status"]).toBe(200);
 			});
 		})
 	});
 
 
-	it('should delete user story "Sortir la chèvre de la bergerie" -> after delete, http delete request code 400', () => {
+	it('should delete user story "Sortir la chèvre de la bergerie" ->  code 200', () => {
 		page.deleteUserStory();
-		deleteRequest(serverURL + "/userstory/1/4").then(function(result) {
+		deleteRequest(serverURL + "/userstory/" + project_id + '/' + us_id).then(function(result) {
 			expect(result["status"]).toBe(200);
 		})
 	});

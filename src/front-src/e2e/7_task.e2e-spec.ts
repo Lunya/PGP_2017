@@ -4,7 +4,8 @@ import { postRequest, deleteRequest, getRequest, patchRequest }  from './httpReq
 import { browser, by, element, protractor } from 'protractor';
 
 const serverURL = "http://localhost:3000/api";
-
+const project_id = '1';
+const sprint_id = '1';
 /**************DO NOT REMOVE ! THIS SLOW DONW PROTRACTOR****************
 
 var origFn = browser.driver.controlFlow().execute;
@@ -24,8 +25,8 @@ describe('POST /tasks/:idsprint : pgp create a task in a sprint e2e testing', ()
 
 	beforeEach(() => {
 		page = new SprintPage();
-		page.navigateTo('/project/1').then(function() {
-			page.clickOnSprint('1').then(function() {
+		page.navigateTo('/project/' + project_id).then(function() {
+			page.clickOnSprint(sprint_id).then(function() {
 				page.selectTasksArray();
 			})
 		})
@@ -38,15 +39,15 @@ describe('POST /tasks/:idsprint : pgp create a task in a sprint e2e testing', ()
 				developer: 'test0',
 				state: 'TODO'
 			};
-			postRequest(serverURL + "/tasks/1", data).then(function() {
-				deleteRequest(serverURL + "/task/1/2").then(function(result) {
+			postRequest(serverURL + "/tasks/" + sprint_id, data).then(function() {
+				deleteRequest(serverURL + "/task/" + sprint_id + '/2').then(function(result) {
 					expect(result["status"]).toBe(200);
 				});
 			});
 		})
 	});
 
-	it('should display the added task in the tasks list -> ', () => {
+	it('should display the added task in the tasks list', () => {
 		expect(page.getAddedTaskDescription()).toContain('Trouver un cric');
 	});
 
@@ -59,14 +60,14 @@ describe('GET /tasks/:idsprint : pgp tasks listing e2e testing', () => {
 
 	beforeEach(() => {
 		page = new SprintPage();
-		page.navigateTo('/project/1');
-		page.clickOnSprint('1');
+		page.navigateTo('/project/' + project_id);
+		page.clickOnSprint(sprint_id);
 		page.selectTasksArray();
 		page.createTask("Trouver l\'entrée de la bergerie", "test0", "TODO");
 		page.createTask("Enfiler des gants en caoutchouc", "test0", "TODO");
 	});
 
-	it('should display 3 Task after adding 2 other one - > ', () => {
+	it('should display 3 Tasks after adding 2 other one', () => {
 		let nbTaskPLUSHeader = 3 + 1;
 		expect(page.countTask()).toEqual(nbTaskPLUSHeader);
 	});
@@ -75,11 +76,11 @@ describe('GET /tasks/:idsprint : pgp tasks listing e2e testing', () => {
 ----------------------------------------------------------------------*/
 describe('PATCH, DELETE /task/:idsprint/:id : pgp tasks edition e2e testing', () => {
 	let page: SprintPage;
-
+	let task_id = '4';
 	beforeEach(() => {
 		page = new SprintPage();
-		page.navigateTo('/project/1');
-		page.clickOnSprint('1');
+		page.navigateTo('/project/' + project_id);
+		page.clickOnSprint(sprint_id);
 		page.selectTasksArray();
 	});
 
@@ -90,15 +91,15 @@ describe('PATCH, DELETE /task/:idsprint/:id : pgp tasks edition e2e testing', ()
 				developer: 'test0',
 				state: 'DONE'
 			};
-			patchRequest(serverURL + "/task/1/4", data).then(function(result) {
+			patchRequest(serverURL + "/task/" + sprint_id + '/' + task_id, data).then(function(result) {
 				expect(result["status"]).toBe(200);
 			});
 		})
 	});
 
-	it('should delete task "Enfiler des gants en caoutchouc" -> 3 tasks left, code 400', () => {
+	it('should delete task "Enfiler des gants en caoutchouc" -> 3 tasks left, code 200', () => {
 		page.deleteTask();
-      deleteRequest(serverURL + "/task/1/4").then(function(result) {
+      deleteRequest(serverURL + "/task/" + sprint_id + '/' + task_id).then(function(result) {
         expect(result["status"]).toBe(200);
       });
       let nbTaskPLUSHeader = 2 + 1;

@@ -1,7 +1,4 @@
-/*if (process.env.NODE_ENV !== 'production')
-	require('dotenv').load();
-
-*/let express = require('express');
+let express = require('express');
 let path = require('path');
 let http = require('http');
 let bodyParser = require('body-parser');
@@ -12,6 +9,11 @@ let api = require('./api');
 let app = express();
 
 app.use(bodyParser.json());
+
+// serve angular app
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, '../front/dist')));
+}
 
 // set API routes
 app.use('/api', api);

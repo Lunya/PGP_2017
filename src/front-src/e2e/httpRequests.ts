@@ -1,11 +1,17 @@
 import { browser, by, element, protractor } from 'protractor';
 
-//export module HttpRequests {
+
+let headers = {};
+
+
+export function setToken(token) {
+	headers['x-access-token'] = token;
+}
 
 export function getRequest(siteUrl) {
 	var request = require('request');
 	var defer = protractor.promise.defer();
-	request({ uri: siteUrl, method: 'GET', json: true }, function(error, response) {
+	request({ uri: siteUrl, method: 'GET', json: true, headers: headers }, function(error, response) {
 		defer.fulfill({
 			"status": response.statusCode,
 			"body": response.body
@@ -18,9 +24,9 @@ export function getRequest(siteUrl) {
 export function deleteRequest(siteUrl) {
 	var request = require('request');
 	var defer = protractor.promise.defer();
-	request({ uri: siteUrl, method: 'DELETE', json: true }, function(error, response) {
+	request({ uri: siteUrl, method: 'DELETE', json: true, headers: headers }, function(error, response) {
 		defer.fulfill({
-			"status": response.statusCode,
+			"status": response.statusCode
 		});
 	});
 	return defer.promise;
@@ -31,9 +37,10 @@ export function deleteRequest(siteUrl) {
 export function postRequest(siteUrl, data) {
 	var request = require('request');
 	var defer = protractor.promise.defer();
-	request({ uri: siteUrl, method: 'POST', json: true, body: data }, function(error, response) {
+	request({ uri: siteUrl, method: 'POST', json: true, body: data, headers: headers }, function(error, response) {
 		defer.fulfill({
 			"status": response.statusCode,
+			"body": response.body
 		});
 	});
 	return defer.promise;
@@ -43,13 +50,11 @@ export function postRequest(siteUrl, data) {
 export function patchRequest(siteUrl, data) {
 	var request = require('request');
 	var defer = protractor.promise.defer();
-	request({ uri: siteUrl, method: 'PATCH', json: true, body: data }, function(error, response) {
+	request({ uri: siteUrl, method: 'PATCH', json: true, body: data, headers: headers }, function(error, response) {
 		defer.fulfill({
 			"status": response.statusCode,
+			"body": response.body
 		});
 	});
 	return defer.promise;
 }
-
-
-//}

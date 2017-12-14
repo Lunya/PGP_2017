@@ -1,5 +1,6 @@
 let express = require('express');
-let databaseConnect = require('../databaseConnect');
+let db = require('../databaseConnect');
+let login = require('./login');
 
 let router = express.Router();
 
@@ -20,8 +21,7 @@ function sendError(res, reason) {
 }
 
 
-router.get('/userstories/:id', (req, res) => {
-	let db = databaseConnect();
+router.get('/userstories/:id', login.tokenVerifier, (req, res) => {
 	db.query('SELECT * FROM UserStory WHERE id_project = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
@@ -43,9 +43,8 @@ router.get('/userstories/:id', (req, res) => {
 
 
 
-router.post('/userstories/:id', (req, res) => {
+router.post('/userstories/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
-		let db = databaseConnect();
 		db.query('INSERT INTO UserStory (id_project, description, difficulty, priority, state) VALUES (?,?,?,?,?)',
 		[req.params.id, req.body.description, req.body.difficulty, req.body.priority, req.body.state], (error, dbRes) => {
 			if (error)
@@ -64,9 +63,8 @@ router.post('/userstories/:id', (req, res) => {
 
 
 
-router.patch('/userstory/:idproject/:id', (req, res) => {
+router.patch('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'difficulty', 'priority', 'state'])) {
-		let db = databaseConnect();
 		db.query('UPDATE UserStory SET description=?, difficulty=?, priority=?, state=? WHERE id=? AND id_project=?',
 		[req.body.description, req.body.difficulty, req.body.priority, req.body.state, req.params.id, req.params.idproject], (error, dbRes) => {
 			if (error)
@@ -81,8 +79,7 @@ router.patch('/userstory/:idproject/:id', (req, res) => {
 		sendError(res, 'Error: required parameters not set');
 });
 
-router.delete('/userstory/:idproject/:id', (req, res) => {
-	let db = databaseConnect();
+router.delete('/userstory/:idproject/:id', login.tokenVerifier, (req, res) => {
 	db.query("DELETE FROM UserStory WHERE id_project=? AND id=?", [req.params.idproject, req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');
@@ -95,8 +92,7 @@ router.delete('/userstory/:idproject/:id', (req, res) => {
 });
 
 
-router.delete('/userstory/:idproject/:idsprint/:id', (req, res) => {
-	let db = databaseConnect();
+router.delete('/userstory/:idproject/:idsprint/:id', login.tokenVerifier, (req, res) => {
 	db.query("DELETE FROM UserStory_Sprint WHERE id_sprint=? AND id_us=?", [req.params.idsprint, req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');

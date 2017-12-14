@@ -1,5 +1,5 @@
 import { LoginPage } from './pages/login.page';
-import { postRequest, deleteRequest }  from './httpRequests';
+import { postRequest, deleteRequest, setToken }  from './httpRequests';
 import { browser, by, element, protractor } from 'protractor';
 
 const serverURL = "http://localhost:3000/api";
@@ -29,7 +29,7 @@ describe('POST /login : pgp connection e2e testing', () => {
 	it('should connect with login = test0@gmail.com and passwd = 123456789 -> code 200 and redirection to /workspace ', () => {
 		page.fillAndSendFormConnection("test0@gmail.com", "123456789");
 		let data = { email: 'test0@gmail.com', password: '123456789' };
-		postRequest(serverURL + "/login", data).then(function(result) {
+		postRequest(serverURL + "/login", data).then(function(result: any) {
 			expect(result["status"]).toBe(200);
 		});
 		expect(page.url()).toEqual(browser.baseUrl + "/workspace");

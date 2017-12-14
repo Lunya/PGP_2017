@@ -36,14 +36,14 @@ export class SignupComponent implements OnInit {
 		this.loading = true;
 		this.http.post(url, this.signupForm.value)
 			.subscribe((result: any) => {
-				if (result.error)
+				if (result.error) {
 					this.loading = false;
-				else {
+				} else {
 					this.router.navigate(['/home'])
 						.catch(reason => console.log(reason));
 				}
 			}, err => {
-				console.log("err");
+				console.log('error');
 				this.loading = false;
 			});
 	}

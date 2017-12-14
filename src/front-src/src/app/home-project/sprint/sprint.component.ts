@@ -5,8 +5,9 @@ import { UserStory } from '../../objects/UserStory';
 import { User } from '../../objects/User';
 import { Project } from '../../objects/Project';
 import { NgbDatepickerConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EditSprintComponent } from './edit-sprint/edit-sprint.component';
+import { AuthService } from '../../services/auth.service';
 
 const urlTask = 'http://localhost:3000/api/task';
 const urlTasks = 'http://localhost:3000/api/tasks';
@@ -44,9 +45,9 @@ export class SprintComponent implements OnInit {
 	constructor(
 		private el: ElementRef,
 		private http: HttpClient,
-		private modalService: NgbModal
-	) {
-	}
+		private modalService: NgbModal,
+		private auth: AuthService
+	) {}
 
 	ngOnInit() {
 		this.loadTasks();
@@ -55,13 +56,17 @@ export class SprintComponent implements OnInit {
 	}
 
 	loadTasks(): void {
-		this.http.get<Task[]>(urlTasks + '/' + this.sprint.id).subscribe((result) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.get<Task[]>(urlTasks + '/' + this.sprint.id, { headers: headers }).subscribe((result) => {
 			this.taskList = result;
 		}, error => console.log(error));
 	}
 
 	loadUserStories(): void {
-		this.http.get<UserStory[]>(urlSprint + '/' + this.sprint.id).subscribe((result) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.get<UserStory[]>(urlSprint + '/' + this.sprint.id, { headers: headers }).subscribe((result) => {
 			this.sprintUSList = result;
 		}, error => console.log(error));
 	}
@@ -126,7 +131,9 @@ export class SprintComponent implements OnInit {
 		const tr_id = '#TASK' + ligne['id'];
 		ligne['onEdit'] = false;
 		const urlRequest = urlTask + '/' + this.sprint.id + '/' + ligne['id'];
-		this.http.patch(urlRequest, ligne)
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.patch(urlRequest, ligne, { headers: headers })
 			.subscribe((result: any) => {
 				if (result.error) {
 					console.log(result);
@@ -145,7 +152,9 @@ export class SprintComponent implements OnInit {
 
 	onDeleteTaskRow(ligne) {
 		const urlRequest = urlTask + '/' + this.sprint.id + '/' + ligne['id'];
-		this.http.delete(urlRequest)
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.delete(urlRequest, { headers: headers })
 			.subscribe((result: any) => {
 				if (result.error) {
 					console.log(result);
@@ -188,7 +197,9 @@ export class SprintComponent implements OnInit {
 	onConfirmUsRow(ligne) {
 		const tr_id = '#US' + ligne['id'];
 		const urlRequest = url_uStory + '/' + this.project.id + '/' + ligne['id'];
-		this.http.patch(urlRequest, ligne)
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.patch(urlRequest, ligne, { headers: headers })
 			.subscribe((result: any) => {
 				if (result.error) {
 					console.log(result);
@@ -208,7 +219,9 @@ export class SprintComponent implements OnInit {
 
 	onDeleteUsRow(ligne) {
 		const urlRequest = url_uStory + '/' + this.project.id + '/' + this.sprint.id + '/' + ligne['id'];
-		this.http.delete(urlRequest)
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.delete(urlRequest, { headers: headers })
 			.subscribe((result: any) => {
 				if (result.error) {
 					console.log(result);
@@ -236,7 +249,9 @@ export class SprintComponent implements OnInit {
 	onConfirm() {
 		this.addTaskMode = false;
 		const urlRequest = urlTasks + '/' + this.sprint.id;
-		this.http.post(urlRequest, this.currentTask)
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.post(urlRequest, this.currentTask, {headers: headers })
 			.subscribe((result: any) => {
 				if (result.error) {
 					console.log(result);
@@ -257,14 +272,16 @@ export class SprintComponent implements OnInit {
 		modalRef.componentInstance.usSelection = this.sprintUSList;
 		modalRef.result
 			.then(res => {
-				//this.loadProjects('OWNER');
+				// this.loadProjects('OWNER');
 			}).catch(reason => console.log(reason));
 
 	}
 
 	deleteSprint() {
 		const urlRequest = urlSprint + '/' + this.project.id + '/' + this.sprint.id;
-		this.http.delete(urlRequest)
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.delete(urlRequest, { headers: headers })
 			.subscribe((result: any) => {
 				if (result.error) {
 					console.log(result);
