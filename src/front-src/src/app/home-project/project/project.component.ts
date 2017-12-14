@@ -201,7 +201,6 @@ export class ProjectComponent implements OnInit {
 				this.usSprintSelection.push(ligne);
 			}
 		}
-
 	}
 
 
@@ -246,7 +245,7 @@ export class ProjectComponent implements OnInit {
 				let a = x.innerHTML.toLowerCase();
 				let b = y.innerHTML.toLowerCase();
 
-				if (a > MIN_INT_PRIORITY && a < MAX_INT_PRIORITY && b > MIN_INT_PRIORITY && b < MAX_INT_PRIORITY){
+				if (a > MIN_INT_PRIORITY && a < MAX_INT_PRIORITY && b > MIN_INT_PRIORITY && b < MAX_INT_PRIORITY) {
 					a = parseInt(a);
 					b = parseInt(b);
 				}
