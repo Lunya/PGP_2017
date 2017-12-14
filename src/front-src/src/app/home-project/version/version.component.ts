@@ -34,6 +34,7 @@ export class VersionComponent implements OnInit {
 
   loadVersion(): void {
 		this.http.get<Version[]>(urlVersion + 's/' + this.project.id).subscribe((result) => {
+      console.log(result);
 			  this.versionList = result;
 		}, error => console.log(error));
 	}
