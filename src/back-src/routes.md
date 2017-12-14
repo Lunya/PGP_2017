@@ -139,3 +139,20 @@ Route de base : `/api`
 	* **DELETE** : Supprimer une tâche
 		* Données :
 		* Résultats :
+* `/version/:idProject` :
+	* *idProject* : id du projet auquel appartiennent les versions
+	* **GET** : Récupère la liste des versions
+		* Données :
+		* Résultats :
+	* **POST** : Insère une version
+		* Données :
+		* Résultats :
+* `/version/:idProject/:idVersion` :
+	* *idProject* : id du projet auquel appartiennent les versions
+	* *idVersion* : id de la version dans le projet
+	* **PATCH** : Modifier la version
+		* Données :
+		* Résultats :
+	* **DELETE** : Supprimer une version
+		* Données :
+		* Résultats :
