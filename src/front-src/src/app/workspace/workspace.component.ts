@@ -29,6 +29,7 @@ export class WorkspaceComponent implements OnInit {
 	private loadProjects(): void {
 		let headers = new HttpHeaders();
 		headers = this.auth.addAuthHeader(headers);
+		console.log(headers);
 		this.http.get<Project[]>(projectsUrl + '/' + localStorage.getItem('user.id'), {headers: headers}).subscribe((result) => {
 			this.myProjects = []; this.otherProjects = [];
 			for (let i = 0; i < result.length; i++) {

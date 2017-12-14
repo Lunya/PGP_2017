@@ -1,10 +1,10 @@
 import { SidebarPage } from './pages/sidebar.page';
 import { SprintPage } from './pages/sprint.page';
-import { postRequest, deleteRequest, getRequest, patchRequest }  from './httpRequests';
+import { postRequest, deleteRequest, getRequest, patchRequest } from './httpRequests';
 import { browser, by, element, protractor } from 'protractor';
 
 const serverURL = "http://localhost:3000/api";
-
+const project_id = '1';
 /**************DO NOT REMOVE ! THIS SLOW DONW PROTRACTOR****************
 
 var origFn = browser.driver.controlFlow().execute;
@@ -24,7 +24,7 @@ describe('POST /sprint : pgp sprint creation e2e testing', () => {
 
 	beforeEach(() => {
 		page = new SidebarPage();
-		page.navigateTo('/project/1');
+		page.navigateTo('/project/' + project_id);
 	});
 
 	it('should not allow user to create sprint if no user stories are selected', () => {
@@ -42,7 +42,7 @@ describe('POST /sprint : pgp sprint creation e2e testing', () => {
 					let data = {
 						begin: '2018-1-1',
 						end: '2018-1-3',
-						idProject: 1,
+						idProject: project_id,
 						usSprint:
 						[{
 							id: 3,
@@ -53,7 +53,7 @@ describe('POST /sprint : pgp sprint creation e2e testing', () => {
 						}]
 					}
 					postRequest(serverURL + "/sprint", data).then(function() {
-						deleteRequest(serverURL + "/sprint/1/2").then(function(result) {
+						deleteRequest(serverURL + "/sprint/" + project_id + "/2").then(function(result) {
 							expect(result["status"]).toBe(200);
 						});
 					});
@@ -71,7 +71,7 @@ describe('GET /sprints/:idproject : pgp sprint listing e2e testing', () => {
 
 	beforeEach(() => {
 		page = new SidebarPage();
-		page.navigateTo('/project/1');
+		page.navigateTo('/project/' + project_id);
 	});
 
 	it('should get all sprint of project -> code 200, result = array of sprint', () => {
@@ -92,11 +92,12 @@ describe('GET /sprints/:idproject : pgp sprint listing e2e testing', () => {
 ----------------------------------------------------------------------*/
 describe('PATCH /userstory/:idproject/:id : pgp user story edition from sprint page e2e testing', () => {
 	let page: SprintPage;
+	const sprint_id = '1';
 
 	beforeEach(() => {
 		page = new SprintPage();
-		page.navigateTo('/project/1');
-		page.clickOnSprint('1');
+		page.navigateTo('/project/' + project_id);
+		page.clickOnSprint(sprint_id);
 	});
 
 	it('should modify user story "Ouvrir une boite de brocolis" from status TODO to DONE  -> code 200', () => {
@@ -107,7 +108,7 @@ describe('PATCH /userstory/:idproject/:id : pgp user story edition from sprint p
 				priority: 2,
 				state: 'DONE'
 			};
-			patchRequest(serverURL + "/userstory/1/3", data).then(function(result) {
+			patchRequest(serverURL + "/userstory/" + project_id + "/3", data).then(function(result) {
 				expect(result["status"]).toBe(200);
 			});
 		})

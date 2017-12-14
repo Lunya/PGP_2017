@@ -5,27 +5,39 @@
 		</div>
 	</div>
 
-	<div class="row">
+
+	<div class="row mt-3">
 		<div class="col">
-			<h2>Sprints</h2>
-			<div class="list-group mb-3" #sprints>
-				<a *ngFor="let sprint of content.sprints; let i = index" class="list-group-item list-group-item-action" (click)="onSprintSelected($event, sprint)">Sprint {{ sprint.id }}</a>
+			<div class="card">
+				<h3 class="card-header">Sprints</h3>
+				<div class="card-block list-group" #sprints>
+						<a *ngFor="let sprint of content.sprints; let i = index" class="list-group-item list-group-item-action" (click)="onSprintSelected($event, sprint)">Sprint {{ sprint.id }}</a>
+				</div>
 			</div>
-			<button type="button" class="btn btn-block btn-secondary" (click)="onNewSprint.emit()"><i class="fa fa-plus-circle"></i> New sprint</button>
+		</div>
+	</div>
+	<button type="button" class="btn btn-block btn-secondary mt-3" (click)="onNewSprint.emit()"><i class="fa fa-plus-circle"></i> New sprint</button>
+
+
+	<div class="row mt-3">
+		<div class="col">
+			<div class="card">
+				<h3 class="card-header">Users</h3>
+				<div class="card-block list-group" #users>
+						<a *ngFor="let user of content.users" class="list-group-item list-group-item-action" (click)="onUserSelected($event, user)">
+							<div class="d-flex flex-row justify-content-between align-items-center">
+								<div>
+									<b>{{ user.name }}</b> <em class="text-muted">{{ user.email }}</em>
+								</div>
+							</div>
+						</a>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col">
-			<h2>Users</h2>
-			<div class="list-group mb-3" #users>
-				<a *ngFor="let user of content.users" class="list-group-item list-group-item-action" (click)="onUserSelected($event, user)">
-					<b>{{ user.name }}</b> <em class="text-muted">{{ user.email }}</em>
-				</a>
-			</div>
-			<button type="button" class="btn btn-block btn-secondary" (click)="onUserAdd()"><i class="fa fa-plus-circle"></i> Add user</button>
-		</div>
-	</div>
+<button type="button" class="btn btn-block btn-secondary mt-3" (click)="onUserAdd()"><i class="fa fa-plus-circle"></i> Add user</button>
 
 	<div class="row">
 		<div class="col">

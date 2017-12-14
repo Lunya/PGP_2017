@@ -27,7 +27,9 @@ import { NewProjectComponent } from './workspace/new-project/new-project.compone
 import { NewSprintComponent } from './popups/new-sprint/new-sprint.component';
 import { NewVersionComponent } from './popups/new-version/new-version.component';
 import { EditProjectComponent } from './home-project/project/edit-project/edit-project.component';
+import { PublicProjectComponent } from './public-project/public-project.component';
 import { VersionComponent } from './home-project/version/version.component';
+
 
 
 
@@ -51,8 +53,10 @@ import { VersionComponent } from './home-project/version/version.component';
 		UserInfoComponent,
 		NewProjectComponent,
 		NewSprintComponent,
-		VersionComponent,
+		PublicProjectComponent,
+    VersionComponent,
 		NewVersionComponent
+
 	],
 	imports: [
 		BrowserModule,

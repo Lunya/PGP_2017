@@ -17,8 +17,10 @@ import { AuthService } from '../services/auth.service';
 const projectUrl = 'http://localhost:3000/api/project';
 const sprintUrl = 'http://localhost:3000/api/sprint';
 const userUrl = 'http://localhost:3000/api/user';
+
 const versionUrl = 'http://localhost:3000/api/version';
 //const urlStatus = 'http://localhost:3000/api/status';
+
 
 
 @Component({
@@ -74,12 +76,17 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 			this.project.id = params['id'];
 			let headers = new HttpHeaders();
 			headers = this.auth.addAuthHeader(headers);
-			this.http.get(projectUrl + '/' + this.project.id, { headers: headers }).subscribe((result: any) => {
-				this.project = result;
-				this.sidebar.onSelectProject.emit(); // update project on load
-				this.updateSidebar();
-			}, error => console.log(error));
 
+			this.http.get(projectUrl + '/' + this.project.id,  { headers: headers }).subscribe((result: any) => {
+				this.http.get('http://localhost:3000/api/status/' + localStorage.getItem('user.id') + '/' + this.project.id,  { headers: headers }).subscribe((value: any) => {
+					localStorage.setItem('user.status', value.status);
+					this.project = result;
+					this.project.status = value.status;
+					this.sidebar.onSelectProject.emit(); // update project on load
+					this.updateSidebar();
+				}, error => console.log(error));
+
+			}, error => console.log(error));
 		});
 
 		const projectComponentFactory = this.cfr.resolveComponentFactory(ProjectComponent);
@@ -159,7 +166,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 		const  selection = this.el.nativeElement.querySelectorAll('.usID');
 		for (let i = 0 ; i < selection.length; i ++ ) {
 			selection[i].classList.remove('btn-primary');
-			selection[i].classList.add('btn-outline-secondary');
+			selection[i].classList.add('btn-outline-primary');
 		}
 	}
 
