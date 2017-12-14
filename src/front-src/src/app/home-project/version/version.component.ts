@@ -1,6 +1,8 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, NgZone, Input } from '@angular/core';
 import { Project } from '../../objects/Project';
 import { Version } from '../../objects/Version';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient } from '@angular/common/http';
 
 
 const urlVersion = 'http://localhost:3000/api/version';
@@ -15,6 +17,7 @@ export class VersionComponent implements OnInit {
 
   public version : Version;
   public versionTableView = false;
+  private versionList = [];
 
   @Input('project')
   public project: Project;
@@ -26,6 +29,17 @@ export class VersionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadVersion();
   }
+
+  loadVersion(): void {
+		this.http.get<Version[]>(urlVersion + '/' + this.version.id).subscribe((result) => {
+			this.versionList = result;
+		}, error => console.log(error));
+	}
+
+  public setVersion(versionFrom): void {
+		this.version = versionFrom.version;
+	}
 
 }

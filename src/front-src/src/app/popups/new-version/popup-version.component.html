@@ -5,20 +5,18 @@
 		<i class="fa fa-close"></i>
 	</button>
 </div>
-<form *ngIf="usSelection.length > 0" [formGroup]="versionForm" (submit)="ngOnSubmit($event)" novalidate>
+<form [formGroup]="versionForm" (submit)="ngOnSubmit($event)" novalidate>
 	<div class="modal-body">
 		<div class="form-row">
 
 			<div class="form-group col-md-6">
-				<label for="begin">Numéro version maj</label>
-				<div class="input-group">
+				<label for="versionMaj">Numéro version maj</label>
 					<input type="number" class="form-control" id="versionMaj"
 						formControlName="versionMaj"
 						[ngClass]="{
 							'is-invalid': (versionForm.controls['versionMaj'].invalid && versionForm.controls['versionMaj'].touched),
 							'is-valid': versionForm.controls['versionMaj'].touched}" />
 
-				</div>
 			</div>
 
 			<div class="form-group col-md-6">
@@ -30,40 +28,49 @@
 						'is-valid': versionForm.controls['versionMin'].touched}" />
 			</div>
 
-      <div class="form-group col-md-6">
+			<div class="row">
+      	<div class="form-group col-md-12">
+
 				<label for="linkSrc">Lien vers la doc:</label>
 				<input type="string" class="form-control" id="linkSrc"
 					formControlName="linkSrc"
 					[ngClass]="{
 						'is-invalid': (versionForm.controls['linkSrc'].invalid && versionForm.controls['linkSrc'].touched),
 						'is-valid': versionForm.controls['linkSrc'].touched}" />
+					</div>
 			</div>
 
-      <div class="form-group col-md-6">
+			<div class="row">
+      	<div class="form-group col-md-12">
 				<label for="linkBld">Lien vers le build:</label>
 				<input type="string" class="form-control" id="linkBld"
 					formControlName="linkBld"
 					[ngClass]="{
 						'is-invalid': (versionForm.controls['linkBld'].invalid && versionForm.controls['linkBld'].touched),
 						'is-valid': versionForm.controls['linkBld'].touched}" />
+					</div>
 			</div>
 
-      <div class="form-group col-md-6">
+			<div class="row">
+      <div class="form-group col-md-12">
 				<label for="linkDoc">Lien vers le build:</label>
 				<input type="string" class="form-control" id="linkDoc"
 					formControlName="linkDoc"
 					[ngClass]="{
 						'is-invalid': (versionForm.controls['linkDoc'].invalid && versionForm.controls['linkDoc'].touched),
 						'is-valid': versionForm.controls['linkDoc'].touched}" />
+					</div>
 			</div>
 
-      <div class="form-group col-md-6">
+			<div class="row">
+      <div class="form-group col-md-12">
 				<label for="linkTst">Lien vers les tests:</label>
 				<input type="string" class="form-control" id="linkTst"
 					formControlName="linkTst"
 					[ngClass]="{
 						'is-invalid': (versionForm.controls['linkTst'].invalid && versionForm.controls['linkTst'].touched),
 						'is-valid': versionForm.controls['linkTst'].touched}" />
+					</div>
 			</div>
 
 		</div>

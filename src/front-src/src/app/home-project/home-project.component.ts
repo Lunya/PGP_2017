@@ -6,6 +6,7 @@ import { ProjectComponent } from './project/project.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUserComponent } from '../popups/add-user/add-user.component';
 import { NewSprintComponent } from '../popups/new-sprint/new-sprint.component';
+import { NewVersionComponent } from '../popups/new-version/new-version.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { HttpClient } from '@angular/common/http';
 import { Project } from '../objects/Project';
@@ -85,6 +86,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 		this.sidebar.onSelectSprint.subscribe(sprint => {
 			this.pageContent.remove();
+			console.log(sprint);
 			const sprintComponent = this.pageContent.createComponent(sprintComponentFactory);
 			sprintComponent.instance.project = this.project;
 			sprintComponent.instance.setSprint(sprint);
@@ -121,7 +123,7 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 
 
-		this.sidebar.onAccessVersions(() => {
+		this.sidebar.onAccessVersions.subscribe(version => {
 			this.pageContent.remove();
 			const versionComponent = this.pageContent.createComponent(versionComponentFactory);
 			versionComponent.instance.project = this.project;
@@ -132,12 +134,11 @@ export class HomeProjectComponent implements OnInit, OnDestroy {
 
 
 		this.sidebar.onAddVersion.subscribe(() => {
-			const modalRef = this.modalService.open(AddVersionComponent);
+			const modalRef = this.modalService.open(NewVersionComponent);
 			modalRef.componentInstance.project = this.project;
 			modalRef.componentInstance.version = this.version;
 			modalRef.result
 				.then(value => {
-					this.updateSidebar();
 					console.log(value);
 				}).catch(reason => console.log(reason));
 		});

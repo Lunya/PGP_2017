@@ -3,7 +3,6 @@ import { NgbActiveModal, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { HttpClient } from '@angular/common/http';
-
 import { Project } from '../../objects/Project';
 
 const versionUrl = 'http://localhost:3000/api/version';
@@ -27,12 +26,12 @@ export class NewVersionComponent implements OnInit, OnDestroy {
   	) {
 
 		this.versionForm = this.fb.group({
-			num_version_maj: [1, [Validators.required]],
-      num_version_min: [0, [Validators.required]],
-      link_build: [null, [Validators.required]],
-      link_source: [null, [Validators.required]],
-      link_doc: [null],
-      link_test: [null]
+			versionMaj: [1, [Validators.required]],
+      versionMin: [0, [Validators.required]],
+      linkBld: [null, [Validators.required]],
+      linkSrc: [null, [Validators.required]],
+      linkDoc: [null, []],
+      linkTst: [null, []]
 		});
 		this.formAction = 'New';
 	}

@@ -11,7 +11,8 @@ import { Version } from '../../objects/Version';
 export class SidebarComponent implements OnInit {
 	private content: {
 		sprints: Array<Sprint>,
-		users: Array<User>};
+		users: Array<User>,
+		versions: Array<Version>};
 
 	@Output() onSelectProject = new EventEmitter<void>();
 	@Output() onSelectSprint = new EventEmitter < { sprint: Sprint; developers: User[]; } > ();
@@ -29,7 +30,7 @@ export class SidebarComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		this.content = { sprints: [], users: [] };
+		this.content = { sprints: [], users: [], versions: [] };
 		this.onProjectSelected();
 	}
 
@@ -42,6 +43,7 @@ export class SidebarComponent implements OnInit {
 		this.projectElement.nativeElement.classList.remove('active');
 		this.sprintsElement.nativeElement.querySelectorAll('.active').forEach(e => e.classList.remove('active'));
 		this.usersElement.nativeElement.querySelectorAll('.active').forEach(e => e.classList.remove('active'));
+		this.versionElement.nativeElement.classList.remove('active');
 		element.classList.add('active');
 	}
 
@@ -68,13 +70,13 @@ export class SidebarComponent implements OnInit {
 	}
 
 
-	onAccessVersions(event: MouseEvent, version: Version[]): void {
-	 	this.onAddVersion.emit(version);
+	onVersionsAccess(event: MouseEvent, version: Version[]): void {
+	 	this.onAccessVersions.emit(version);
 		const target: any = event.currentTarget;
 		this.unselectAllItemsAndSelectOne(target);
 	}
 
-	onAddVersion(): void {
+	onVersionAdd(): void {
 		this.onAddVersion.emit();
 	}
 }

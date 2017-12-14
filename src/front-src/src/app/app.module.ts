@@ -25,6 +25,7 @@ import { AddUserComponent } from './popups/add-user/add-user.component';
 import { UserInfoComponent } from './home-project/user-info/user-info.component';
 import { NewProjectComponent } from './workspace/new-project/new-project.component';
 import { NewSprintComponent } from './popups/new-sprint/new-sprint.component';
+import { NewVersionComponent } from './popups/new-version/new-version.component';
 import { EditProjectComponent } from './home-project/project/edit-project/edit-project.component';
 import { VersionComponent } from './home-project/version/version.component';
 
@@ -50,7 +51,8 @@ import { VersionComponent } from './home-project/version/version.component';
 		UserInfoComponent,
 		NewProjectComponent,
 		NewSprintComponent,
-		VersionComponent
+		VersionComponent,
+		NewVersionComponent
 	],
 	imports: [
 		BrowserModule,
@@ -75,7 +77,8 @@ import { VersionComponent } from './home-project/version/version.component';
 		UserInfoComponent,
 		NewProjectComponent,
 		NewSprintComponent,
-		NewVersionComponent
+		NewVersionComponent,
+		VersionComponent
 	]
 })
 export class AppModule { }
