@@ -1,12 +1,12 @@
-let express = require('express');
-let databaseConnect = require('../databaseConnect');
-let login = require('./login');
+const express = require('express');
+const databaseConnect = require('../databaseConnect');
+const login = require('./login');
 
-let router = express.Router();
+const router = express.Router();
 
 function checkUndefinedObject(object, fields) {
 	let ok = true;
-	for (let field in fields) {
+	for (const field in fields) {
 		if (object[fields[field]] === undefined)
 			ok = false;
 	}
@@ -20,12 +20,12 @@ function sendError(res, reason) {
 
 
 router.get('/tasks/:id', login.tokenVerifier, (req, res) => {
-	let db = databaseConnect();
+	const db = databaseConnect();
 	db.query('SELECT * FROM Task WHERE id_sprint = ?', [req.params.id], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			let tasks = [];
+			const tasks = [];
 			for (let i = 0; i < results.length; i++) {
 				tasks.push({
 					id: results[i].id,
@@ -40,12 +40,12 @@ router.get('/tasks/:id', login.tokenVerifier, (req, res) => {
 });
 
 router.get('/tasks/:idproject/:developerName', login.tokenVerifier, (req, res) => {
-	let db = databaseConnect();
+	const db = databaseConnect();
 	db.query('SELECT * FROM Task WHERE developer = ?', [req.params.developerName], (error, results) => {
 		if (error)
 			sendError(res, 'Database error');
 		else {
-			let tasks = [];
+			const tasks = [];
 			for (let i = 0; i < results.length; i++) {
 				tasks.push({
 					id: results[i].id,
@@ -82,17 +82,17 @@ router.get('/tasks/:idproject/:developerName', login.tokenVerifier, (req, res) =
 
 router.post('/tasks/:id', login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
-		let db = databaseConnect();
+		const db = databaseConnect();
 		db.query('INSERT INTO Task (id_sprint, description, developer, state) VALUES (?,?,?,?)',
-		[req.params.id, req.body.description, req.body.developer, req.body.state], (error, dbRes) => {
-			if (error)
-				sendError(res, 'Unable to query database');
-			else {
-				res.status(200).send({
-					insertId: dbRes.insertId
-				});
-			}
-		});
+			[req.params.id, req.body.description, req.body.developer, req.body.state], (error, dbRes) => {
+				if (error)
+					sendError(res, 'Unable to query database');
+				else {
+					res.status(200).send({
+						insertId: dbRes.insertId
+					});
+				}
+			});
 	} else
 		sendError(res, 'Error: required parameters not set');
 });
@@ -100,23 +100,23 @@ router.post('/tasks/:id', login.tokenVerifier, (req, res) => {
 
 router.patch('/task/:idsprint/:id' ,login.tokenVerifier, (req, res) => {
 	if (checkUndefinedObject(req.body, ['description', 'developer', 'state'])) {
-		let db = databaseConnect();
+		const db = databaseConnect();
 		db.query('UPDATE Task SET description = ?, developer=?, state = ? WHERE id_sprint = ? AND id = ? ',
-	            [req.body.description, req.body.developer, req.body.state, req.params.idsprint, req.params.id], (error, dbRes) => {
-			if (error)
-				sendError(res, 'Unable to query database');
-			else {
-				res.status(200).send({
-					insertId: dbRes.insertId
-				});
-			}
-		});
+			[req.body.description, req.body.developer, req.body.state, req.params.idsprint, req.params.id], (error, dbRes) => {
+				if (error)
+					sendError(res, 'Unable to query database');
+				else {
+					res.status(200).send({
+						insertId: dbRes.insertId
+					});
+				}
+			});
 	} else
 		sendError(res, 'Error: required parameters not set');
 });
 
 router.delete('/task/:idsprint/:id', login.tokenVerifier, (req, res) => {
-	let db = databaseConnect();
+	const db = databaseConnect();
 	db.query("DELETE FROM Task WHERE id_sprint = ? AND id = ?", [req.params.idsprint, req.params.id], (error, dbRes) => {
 		if (error)
 			sendError(res, 'Unable to query database');
@@ -129,51 +129,3 @@ router.delete('/task/:idsprint/:id', login.tokenVerifier, (req, res) => {
 });
 
 module.exports = router;
-
-
-/*router.get('/tasks/:idSprint', (req, res) => {
-  let idSprint = req.params.idSprint;
-  bd.query('SELECT * FROM Task WHERE id_sprint = ?',[idSprint], (err,cols) => {
-    let values = [];
-    treatment(err,res,values,cols)
-  })
-});
-
-router.post('/tasks/:idSprint', (req, res) => {
-  let id_sprint = req.params.idSprint;
-  let values = [];
-  if (typeof req.body.description !== 'undefined'){
-    bd.query('INSERT INTO Task VALUES(?,?)',[id_sprint,req.body.description],(err,result) => {
-      treatment(err,result,values,"success")
-    });
-  }
-  else{
-    values.push({'result' : 'error', 'msg' : 'Missing field'});
-    res.setHeader('Content-Type', 'application/json');
-    res.send(200, JSON.stringify(values));
-  }
-});
-
-router.patch('/tasks/:idSprint/:idTask', (req,res) => {
-  let id_sprint = req.params.idSprint;
-  let id = req.params.idTask;
-  bd.query('UPDATE Task SET description = ? state = ? WHERE id = ? AND id_sprint = ? ',
-            [req.body.description, req.body.state,id,id_sprint], (err, cols) => {
-      let values = [];
-      treatment(err,res,values,"success");
-  });
-});
-
-router.delete('/tasks/:idSprint/:idTask', (req,res) => {
-  let id_sprint = req.params.idSprint;
-  let id = req.params.idTask;
-  bd.query('DELETE FROM Task WHERE id_sprint = ? AND id = ?', [id_sprint,id], (err,count) => {
-    if(err) throw err;
-    else{
-      let values = [];
-      treatment(err,res,values,"success");
-    }
-  });
-});
-
-module.exports  = router;*/
