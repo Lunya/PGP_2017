@@ -86,7 +86,7 @@ router.delete('/version/:idProject/:idVersion', (req, res) => {
 router.patch('/version/:idProject/:idVersion', (req, res) => {
 	if (checkUndefinedObject(req.body, ['num_version_maj', 'num_version_min', 'link_source', 'link_build', 'link_test', 'link_doc'])) {
 		let db = databaseConnect();
-		db.query('UPDATE Version SET num_version_maj=?, num_version_min=?, link_source=?, link_build=?, link_test=?, link_doc=? WHERE id_project=? AND id=?', [req.body.num_version_maj, req.body.num_version_min, req.body.link_source, req.body.link_build, req.body.link_test ,req.body.link_doc, req.params.idProject, req.params.idVersion], (err, dbRes) => {
+		db.query('UPDATE Version SET num_version_maj=?, num_version_min=?, link_source=?, link_build=?, link_test=?, link_doc=? WHERE id_project=? AND id=?', [req.body.num_version_maj, req.body.num_version_min, req.body.link_source, req.body.link_build, req.body.link_test ,req.body.link_doc, req.params.idProject, req.params.idVersion], (error, dbRes) => {
 			if (error)
 				sendError(res, 'Unable to query database');
 			else {

@@ -8,48 +8,48 @@ import { AuthService } from '../../services/auth.service';
 const urlVersion = 'http://localhost:3000/api/version';
 
 @Component({
-  selector: 'app-version',
-  templateUrl: './version.component.html',
-  styleUrls: ['./version.component.css']
+	selector: 'app-version',
+	templateUrl: './version.component.html',
+	styleUrls: ['./version.component.css']
 })
 export class VersionComponent implements OnInit {
 
 
-  public version : Version;
-  public versionTableView = false;
-  private versionList = [];
-  private previousVersion = new Array<Version>();
+	public version : Version;
+	public versionTableView = false;
+	private versionList = [];
+	private previousVersion = new Array<Version>();
 
-  @Input('project')
-  public project: Project;
+	@Input('project')
+	public project: Project;
 
-  constructor(
-    private el: ElementRef,
-    private http: HttpClient,
-    private modalService: NgbModal,
-    private auth: AuthService
-  ) { }
+	constructor(
+		private el: ElementRef,
+		private http: HttpClient,
+		private modalService: NgbModal,
+		private auth: AuthService
+	) { }
 
-  ngOnInit() {
-    this.loadVersion();
-  }
+	ngOnInit() {
+		this.loadVersion();
+	}
 
-  loadVersion(): void {
+	loadVersion(): void {
 		this.http.get<Version[]>(urlVersion + 's/' + this.project.id).subscribe((result) => {
-      console.log(result);
-			  this.versionList = result;
+			console.log(result);
+			this.versionList = result;
 		}, error => console.log(error));
 	}
 
-  public setVersion(versionFrom): void {
+	public setVersion(versionFrom): void {
 		this.versionList = versionFrom;
 	}
 
-  versionsView(value) {
+	versionsView(value) {
 		this.versionTableView = value;
 	}
 
-  onDeleteVersionRow(ligne) {
+	onDeleteVersionRow(ligne) {
 		const urlRequest = urlVersion + '/' + this.project.id + '/' + ligne['id'];
 		let headers = new HttpHeaders();
 		headers = this.auth.addAuthHeader(headers);
@@ -66,7 +66,7 @@ export class VersionComponent implements OnInit {
 			});
 	}
 
-  onEditVersionRow(ligne) {
+	onEditVersionRow(ligne) {
 		const tr_id = '#Version' + ligne['id'];
 		ligne['onEdit'] = true;
 		this.previousVersion.push(Object.assign(new Version(), ligne));
@@ -77,7 +77,7 @@ export class VersionComponent implements OnInit {
 		}
 	}
 
-  onConfirmVersionRow(ligne) {
+	onConfirmVersionRow(ligne) {
 		const tr_id = '#Version' + ligne['id'];
 		const urlRequest = urlVersion + '/' + this.project.id + '/' + ligne['id'];
 		let headers = new HttpHeaders();
@@ -100,14 +100,14 @@ export class VersionComponent implements OnInit {
 		ligne['onEdit'] = false;
 	}
 
-  onBackVersionRow(ligne) {
+	onBackVersionRow(ligne) {
 		const tr_id = '#Version' + ligne['id'];
 		const save = this.previousVersion.filter((version) => version.id === ligne.id)[0];
 		ligne['num_version_maj'] = save.numVersionMaj;
 		ligne['link_source'] = save.linkSource;
 		ligne['link_build'] = save.linkBuild;
 		ligne['link_test'] = save.linkTest;
-    ligne['link_doc'] = save.linkDoc;
+		ligne['link_doc'] = save.linkDoc;
 		ligne['onEdit'] = false;
 		this.previousVersion.splice(this.previousVersion.indexOf(save), 1);
 		this.el.nativeElement.querySelector(tr_id).classList.remove('table-info');

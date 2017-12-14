@@ -1,3 +1,12 @@
-table thead {
-				background-color: #f9f9f9;
+.break-words {
+	word-wrap: break-word;
+}
+.table-nowrap {
+	table-layout:fixed;
+}
+
+.table-nowrap td {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

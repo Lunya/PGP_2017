@@ -1,10 +1,11 @@
-<div class="jumbotron py-2 mt-3 mb-1">
-	<h4 class="display-4 text-center">Version</h4>
-</div>
+<div class="container-fluid">
+	<div class="jumbotron py-2 mt-3 mb-1">
+		<h4 class="display-4 text-center">Version</h4>
+	</div>
 
-<div class="col-md-12">
-	<table class="table table-bordered">
-		<thead>
+	<div class="col-md-12">
+		<table class="table table-bordered table-nowrap">
+			<thead>
 			<tr>
 				<th>ID</th>
 				<th>Version</th>
@@ -14,16 +15,16 @@
 				<th>Doc</th>
 				<th>Action</th>
 			</tr>
-		</thead>
-    <tbody>
+			</thead>
+			<tbody>
 			<ng-container *ngFor="let version of versionList">
 				<tr id="{{ 'Version' + version.id  }}" >
 					<td align="center"><strong>{{version.id}}</strong></td>
 					<td align="center" contenteditable='false' class="editable"  [(ngModel)]="version.num_version_maj" #num_version_maj="ngModel"> {{version.num_version_maj}} </td>
-					<td contenteditable='false' class="editable" [(ngModel)]="version.link_source" #linkSource="ngModel">{{version.link_source}}</td>
-					<td contenteditable='false' class="editable" [(ngModel)]="version.link_build" #link_build="ngModel">{{version.link_build}}</td>
-					<td contenteditable='false' class="editable" [(ngModel)]="version.link_test" #link_test="ngModel">{{version.link_test}}</td>
-          <td contenteditable='false' class="editable" [(ngModel)]="version.link_doc" #link_doc="ngModel">{{version.link_doc}}</td>
+					<td contenteditable='false' class="editable break-words" [(ngModel)]="version.link_source" #linkSource="ngModel">{{version.link_source}}</td>
+					<td contenteditable='false' class="editable break-words" [(ngModel)]="version.link_build" #link_build="ngModel">{{version.link_build}}</td>
+					<td contenteditable='false' class="editable break-words" [(ngModel)]="version.link_test" #link_test="ngModel">{{version.link_test}}</td>
+					<td contenteditable='false' class="editable break-words" [(ngModel)]="version.link_doc" #link_doc="ngModel">{{version.link_doc}}</td>
 					<td>
 						<button *ngIf='!version.onEdit' class="btn btn-default" (click)="onEditVersionRow(version)"><i class="fa fa-edit"></i> Edit </button>
 						<button *ngIf='!version.onEdit' class="btn btn-danger" (click)="onDeleteVersionRow(version)"><i class="fa fa-times"></i> Delete </button>
@@ -32,6 +33,7 @@
 					</td>
 				</tr>
 			</ng-container>
-		</tbody>
-  </table>
+			</tbody>
+		</table>
+	</div>
 </div>
