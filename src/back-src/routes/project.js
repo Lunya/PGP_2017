@@ -28,7 +28,7 @@ function checkUndefinedObject(object, fields) {
 
 function sendError(res, reason) {
 	res.status(400).send({ error: true, reason: reason });
-	// console.log(reason);
+
 }
 
 router.get('/project/:id', login.tokenVerifier, (req, res) => {
@@ -36,12 +36,10 @@ router.get('/project/:id', login.tokenVerifier, (req, res) => {
 	const db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end FROM Project WHERE id=?', [req.params.id], (error, result) => {
 		if (error) {
-			// console.log(error);
 			sendError(res, 'Database error');
 		} else {
 			const  project = result[0];
 			if (project) {
-				// console.log(result);
 				res.send({
 					id: project.id,
 					name: project.name,
@@ -118,7 +116,7 @@ router.patch('/project/:id', login.tokenVerifier, (req, res) => {
 
 router.delete('/project/:id', login.tokenVerifier, (req, res) => {
 	const db = databaseConnect();
-	db.query('DELETE FROM Project WHERE id = ?', [req.params.id], (error, dbRes) => {
+	db.query('DELETE FROM Project WHERE id = ?', [req.params.id], (error) => {
 		if (error)
 			sendError(res, 'Unable to query database');
 		else {
@@ -134,11 +132,10 @@ router.get('/projects/:id', login.tokenVerifier, (req, res) => {
 		const db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project up INNER JOIN Project p ON up.id_project = p.id WHERE id_user = ?', [req.params.id], (error, results) => {
 		if (error) {
-			console.log(error);
 			sendError(res, 'Database error');
 		}
 		else {
-			let projects = [];
+			const projects = [];
 			for (let i = 0; i < results.length; i++) {
 				projects.push({
 					id: results[i].id, name: results[i].name,
