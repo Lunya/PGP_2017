@@ -1,6 +1,6 @@
 let express = require('express');
 let databaseConnect = require('../databaseConnect');
-
+let login = require('./login');
 let router = express.Router();
 
 
@@ -158,7 +158,7 @@ router.delete('/project/:id', (req, res) => {
 	});*/
 
 
-router.get('/projects/:id', (req, res) => {
+router.get('/projects/:id', login.tokenVerifier, (req, res) => {
 	res.contentType('application/json');
 		let db = databaseConnect();
 	db.query('SELECT id, name, description, url, begin, end, id_project, id_user, status FROM User_Project up INNER JOIN Project p ON up.id_project = p.id WHERE id_user = ?', [req.params.id], (error, results) => {

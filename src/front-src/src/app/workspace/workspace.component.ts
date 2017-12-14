@@ -2,8 +2,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Project } from '../objects/Project';
 import { NgbDatepickerConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewProjectComponent } from './new-project/new-project.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { current } from 'codelyzer/util/syntaxKind';
+import { AuthService } from '../services/auth.service';
+import { RequestOptions } from '@angular/http';
 
 const projectsUrl = 'http://localhost:3000/api/projects';
 
@@ -20,11 +22,14 @@ export class WorkspaceComponent implements OnInit {
 
 	constructor(
 		private modalService: NgbModal,
-		private http: HttpClient
+		private http: HttpClient,
+		private auth: AuthService
 	) {}
 
 	private loadProjects(): void {
-		this.http.get<Project[]>(projectsUrl + '/' + localStorage.getItem('user.id')).subscribe((result) => {
+		let headers = new HttpHeaders();
+		headers = this.auth.addAuthHeader(headers);
+		this.http.get<Project[]>(projectsUrl + '/' + localStorage.getItem('user.id'), {headers: headers}).subscribe((result) => {
 			this.myProjects = []; this.otherProjects = [];
 			for (let i = 0; i < result.length; i++) {
 				result[i].begin = new Date(result[i].begin);
