@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
@@ -15,7 +15,7 @@ const usSprintUrl = 'http://localhost:3000/api/userstories';
 	templateUrl: './popup-sprint.component.html',
 	providers: [NgbDatepickerConfig]
 })
-export class NewSprintComponent implements OnInit, OnDestroy {
+export class NewSprintComponent {
 	private sprintForm: FormGroup;
 	private formAction: string;
 	private dateModel;
@@ -37,15 +37,6 @@ export class NewSprintComponent implements OnInit, OnDestroy {
 			duration: [1, [Validators.required, CustomValidators.gte(1)]]
 		});
 		this.formAction = 'New';
-	}
-
-	ngOnInit() {
-		console.log('AddUserComponent initialized');
-		console.log(this.usSelection);
-	}
-
-	ngOnDestroy() {
-		console.log('AddUserComponent destroyed');
 	}
 
 	ngOnSubmit(event): void {

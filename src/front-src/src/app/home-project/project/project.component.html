@@ -52,7 +52,7 @@
 					</tr>
 					<ng-container *ngFor="let us of usList">
 						<tr id="{{ 'US' + us.id  }}" >
-							<td (click)="selectUS(us)" style="padding-right:0; padding-left:0;" align="center"><button class="btn btn-outline-secondary usID"><strong>{{us.id}}</strong></button></td>
+							<td (click)="selectUS(us)" style="padding-right:0; padding-left:0;" align="center"><button class="btn btn-outline-secondary usID"><strong>{{us.visibleId}}</strong></button></td>
 							<td contenteditable='false' class="editable" [(ngModel)]="us.description" #description="ngModel">{{us.description}}</td>
 							<td contenteditable='false' class="editable" [(ngModel)]="us.difficulty" #difficulty="ngModel">{{us.difficulty}}</td>
 							<td contenteditable='false' class="priority editable" [(ngModel)]="us.priority" #priority="ngModel">{{us.priority}}</td>

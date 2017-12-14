@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,7 @@ const versionUrl = 'http://localhost:3000/api/version';
 	selector: 'app-new-version',
 	templateUrl: './popup-version.component.html'
 })
-export class NewVersionComponent implements OnInit, OnDestroy {
+export class NewVersionComponent {
 	private versionForm: FormGroup;
 	private formAction: string;
 
@@ -23,25 +23,17 @@ export class NewVersionComponent implements OnInit, OnDestroy {
 		public activeModal: NgbActiveModal,
 		private fb: FormBuilder,
 		private http: HttpClient
-  	) {
+	) {
 
 		this.versionForm = this.fb.group({
 			versionMaj: [1, [Validators.required]],
-      versionMin: [0, [Validators.required]],
-      linkBld: [null, [Validators.required, CustomValidators.url]],
-      linkSrc: [null, [Validators.required, CustomValidators.url]],
-      linkDoc: [null, [CustomValidators.url]],
-      linkTst: [null, [CustomValidators.url]]
+			versionMin: [0, [Validators.required]],
+			linkBld: [null, [Validators.required, CustomValidators.url]],
+			linkSrc: [null, [Validators.required, CustomValidators.url]],
+			linkDoc: [null, [CustomValidators.url]],
+			linkTst: [null, [CustomValidators.url]]
 		});
 		this.formAction = 'New';
-	}
-
-	ngOnInit() {
-		console.log('AddVersionComponent initialized');
-	}
-
-	ngOnDestroy() {
-		console.log('AddVersionComponent destroyed');
 	}
 
 	ngOnSubmit(event): void {

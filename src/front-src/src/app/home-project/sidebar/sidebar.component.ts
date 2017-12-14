@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
 	@Output() onAccessVersions = new EventEmitter<Version[]>();
 	@Output() onAddVersion = new EventEmitter<void>();
 
-	@ViewChild('version') private versionElement:ElementRef;
+	@ViewChild('version') private versionElement: ElementRef;
 	@ViewChild('project') private projectElement: ElementRef;
 	@ViewChild('sprints') private sprintsElement: ElementRef;
 	@ViewChild('users') private usersElement: ElementRef;
@@ -66,12 +66,12 @@ export class SidebarComponent implements OnInit {
 
 
 	onUserAdd(): void {
-	  this.onAddUser.emit();
+		this.onAddUser.emit();
 	}
 
 
 	onVersionsAccess(event: MouseEvent): void {
-	 	this.onAccessVersions.emit(this.content.versions);
+		this.onAccessVersions.emit(this.content.versions);
 		const target: any = event.currentTarget;
 		this.unselectAllItemsAndSelectOne(target);
 	}
