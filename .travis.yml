@@ -35,7 +35,7 @@ mysql:
   database: pgp_test
 before_deploy:
   - cd ../
-  - zip -r release.zip back-src/ front-src/ -x "back-src/node_modules/*" "front-src/node_modules/*"
+  - zip -r release.zip Dockerfile_prod docker-compose-prod.yml back-src/ front-src/ -x "back-src/node_modules/*" "front-src/node_modules/*"
 deploy:
   provider: releases
   api_key:
